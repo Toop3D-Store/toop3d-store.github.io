@@ -39,3 +39,25 @@ function showCart(){
     });
 
 }
+function sendWhatsApp(){
+
+    if(cart.length === 0){
+        alert("السلة فارغة");
+        return;
+    }
+
+    let message = "طلب جديد من متجر Toop3D:%0A%0A";
+
+    cart.forEach((item, index)=>{
+
+        message += `${index + 1}- ${item.name_ar} - ${item.color} - ${item.price}%0A`;
+
+    });
+
+    let phone = "9647827573964";
+
+    let url = "https://wa.me/" + phone + "?text=" + message;
+
+    window.open(url, "_blank");
+
+}
