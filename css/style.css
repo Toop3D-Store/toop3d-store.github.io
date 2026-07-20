@@ -35,15 +35,15 @@
     width: 100% !important;
     max-width: 100% !important;
     
-    /* جعل الصورة مربعة متساوية الأبعاد */
+    /* جعل أبعاد الصور مربعة 1:1 */
     aspect-ratio: 1 / 1 !important;
     height: auto !important; 
     
-    /* إظهار الصورة بالكامل بدون أي قص للتفاصيل */
+    /* إظهار الصورة كاملة دون أي اقتطاع */
     object-fit: contain !important;
     object-position: center !important;
     
-    /* خلفية خفيفة ناعمة لملء أي فراغ جانبي إن وجد */
+    /* خلفية خفيفة لملء أي فراغ جانبي */
     background-color: #f8fafc !important; 
     
     display: block !important;
@@ -80,4 +80,29 @@
 
 .product-card button:hover {
     background-color: #1d4ed8 !important;
+}
+
+/* ==========================================
+   5. جعل زر السلة عائماً وبارزاً دائماً
+   ========================================== */
+#cart-nav-btn {
+    position: fixed !important;
+    bottom: 25px !important;   /* المسافة من أسفل الشاشة */
+    left: 25px !important;     /* يظهر في الزاوية اليسرى المريحة للإبهام */
+    z-index: 9999 !important;   /* لضمان ظهوره فوق جميع العناصر */
+    
+    padding: 12px 22px !important;
+    font-size: 1.05em !important;
+    border-radius: 30px !important;
+    background-color: #2563eb !important;
+    color: #ffffff !important;
+    
+    /* ظل أزرق بارز لإعطاء شعور بالعمق والوضوح */
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4) !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+#cart-nav-btn:hover {
+    transform: scale(1.05) !important;
+    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.5) !important;
 }
