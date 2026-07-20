@@ -5,6 +5,14 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCartUI();
 });
 
+// فتح وإغلاق نافذة السلة المنبثقة
+function toggleCart() {
+    const modal = document.getElementById('cart-modal');
+    if (modal) {
+        modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+    }
+}
+
 function fetchProducts() {
     fetch('./products.json')
         .then(response => {
@@ -33,10 +41,11 @@ function renderProducts(products) {
     });
 }
 
-// إضافة منتج للسلة
+// إضافة منتج فتح السلة تلقائياً ليرى الزبون الإضافة
 function addToCart(name, price) {
     cart.push({ name, price });
     updateCartUI();
+    toggleCart(); // فتح النافذة تلقائياً لتأكيد الإضافة
 }
 
 // حذف منتج من السلة
@@ -45,39 +54,39 @@ function removeFromCart(index) {
     updateCartUI();
 }
 
-// تحديث واجهة السلة والعدادات
+// تحديث واجهة السلة المنبثقة والعدادات
 function updateCartUI() {
     const cartContainer = document.getElementById('cart-items');
     const totalContainer = document.getElementById('cart-total');
     const countContainer = document.getElementById('cart-items-count');
     const navCountContainer = document.getElementById('nav-cart-count');
 
-    // 1. تحديث العدادات (زر Nav + أسفل عنوان السلة)
     const itemCount = cart.length;
     if (navCountContainer) navCountContainer.innerText = itemCount;
     if (countContainer) countContainer.innerText = `عدد المنتجات المطلوبة: ${itemCount} قطعة`;
 
     if (!cartContainer) return;
 
-    // 2. حالة السلة الفارغة
     if (itemCount === 0) {
-        cartContainer.innerHTML = '<p>السلة فارغة حالياً.</p>';
+        cartContainer.innerHTML = '<p style="color: #94a3b8; text-align: center; margin-top: 40px;">السلة فارغة حالياً.</p>';
         if (totalContainer) totalContainer.innerText = 'المجموع الكلي: 0 د.ع';
         return;
     }
 
-    // 3. عرض المنتجات في السلة
     cartContainer.innerHTML = '';
     let total = 0;
 
     cart.forEach((item, index) => {
         total += item.price;
         const itemElement = document.createElement('div');
-        itemElement.style.cssText = 'display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px;';
+        itemElement.style.cssText = 'display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px;';
         
         itemElement.innerHTML = `
-            <span>${item.name} - ${item.price} د.ع</span>
-            <button onclick="removeFromCart(${index})" style="background-color: #ff4d4d; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer;">حذف</button>
+            <div>
+                <strong style="display: block; color: #1e293b; font-size: 0.95em;">${item.name}</strong>
+                <span style="color: #2563eb; font-size: 0.85em;">${item.price} د.ع</span>
+            </div>
+            <button onclick="removeFromCart(${index})" style="background-color: #fee2e2; color: #ef4444; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8em;">حذف</button>
         `;
         
         cartContainer.appendChild(itemElement);
@@ -93,8 +102,7 @@ function sendWhatsApp() {
     const phoneNumber = "9647827573964"; 
 
     if (cart.length === 0) {
-        const message = encodeURIComponent("مرحباً Toop3D، أود الاستفسار عن منتجات الطباعة ثلاثية الأبعاد.");
-        window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+        alert("سلتك فارغة حالياً!");
         return;
     }
 
