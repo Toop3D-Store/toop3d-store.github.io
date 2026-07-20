@@ -1,81 +1,80 @@
-* {
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
+/* ==========================================
+   1. التنسيقات العامة للشبكة وحاوية المنتجات
+   ========================================== */
+#products-container {
+    display: grid !important;
+    /* ترتيب المنتجات بشبكة متناسقة تتكيف مع شاشات الهواتف والكمبيوتر */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+    gap: 20px !important;
+    padding: 10px 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
 }
 
-body {
-    margin: 0;
-    background: #f5f5f5;
-    color: #222;
+/* ==========================================
+   2. تنسيق بطاقات المنتجات (Cards)
+   ========================================== */
+.product-card {
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 10px !important;
+    padding: 12px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+    overflow: hidden !important; /* يمنع أي محتوى خروج عن حدود الكارت */
+    box-sizing: border-box !important;
 }
 
-header {
-    background: #111827;
-    color: white;
-    text-align: center;
-    padding: 30px;
+/* ==========================================
+   3. الحل النهائي لحجم الصور ومنع التداخل
+   ========================================== */
+.product-card img,
+#products-container img {
+    /* تجبر الصورة على الالتزام بعرض الكارت */
+    width: 100% !important;
+    max-width: 100% !important;
+    
+    /* تحديد ارتفاع موحد ومناسب لجميع الصور */
+    height: 180px !important; 
+    
+    /* الخاصية السحرية: تقص الحواف الزائدة وتمنع تشوه أو تمطط الصورة */
+    object-fit: cover !important;
+    object-position: center !important;
+    
+    display: block !important;
+    border-radius: 6px !important;
+    margin: 0 0 12px 0 !important;
 }
 
-header h1 {
-    font-size: 40px;
-    margin: 0;
+/* ==========================================
+   4. تحسين الأزرار والنصوص داخل البطاقة
+   ========================================== */
+.product-card h3 {
+    font-size: 1em !important;
+    margin: 5px 0 !important;
+    color: #0f172a !important;
 }
 
-nav {
-    background: white;
-    padding: 15px;
-    text-align: center;
-    box-shadow: 0 2px 5px #ddd;
+.product-card .price {
+    font-weight: bold !important;
+    color: #2563eb !important;
+    margin-bottom: 10px !important;
 }
 
-nav a {
-    margin: 0 15px;
-    text-decoration: none;
-    color: #111827;
-    font-weight: bold;
+.product-card button {
+    background-color: #2563eb !important;
+    color: white !important;
+    border: none !important;
+    padding: 8px 12px !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    font-weight: bold !important;
+    width: 100% !important;
+    transition: background-color 0.2s ease !important;
 }
 
-.hero {
-    background: white;
-    margin: 20px;
-    padding: 40px;
-    text-align: center;
-    border-radius: 15px;
-}
-
-.hero h2 {
-    font-size: 32px;
-}
-
-#products {
-    padding: 20px;
-}
-
-.product {
-    background: white;
-    width: 300px;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 3px 10px #ddd;
-}
-
-button {
-    background: #2563eb;
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-button:hover {
-    background: #1d4ed8;
-}
-
-footer {
-    margin-top: 40px;
-    background: #111827;
-    color: white;
-    text-align: center;
-    padding: 20px;
+.product-card button:hover {
+    background-color: #1d4ed8 !important;
 }
