@@ -1,5 +1,7 @@
+// متغير السلة الرئيسي
 let cart = [];
 
+// عند تحميل عناصر الصفحة
 document.addEventListener('DOMContentLoaded', () => {
     fetchProducts();
     updateCartUI();
@@ -28,7 +30,7 @@ function fetchProducts() {
         .catch(error => console.error('خطأ في جلب البيانات:', error));
 }
 
-// عرض المنتجات في الصفحة
+// عرض المنتجات في الصفحة وتنسيق الحجم المباشر للصور
 function renderProducts(products) {
     const container = document.getElementById('products-container');
     if (!container) return;
@@ -37,22 +39,36 @@ function renderProducts(products) {
     products.forEach(product => {
         const productCard = document.createElement('div');
         productCard.className = 'product-card';
+        
+        // تنسيق تصميم الكارت ليكون متناسقاً ومترتباً
+        productCard.style.cssText = 'background: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; padding: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);';
+
         productCard.innerHTML = `
-            <img src="${product.image}" alt="${product.name}">
-            <h3>${product.name}</h3>
-            <p class="price">${product.price} د.ع</p>
-            <button onclick="addToCart('${product.name}', ${product.price})">إضافة للسلة</button>
+            <div>
+                <!-- التنسيق المباشر يحل مشكلة حجم الصور والتداخل فوراً -->
+                <img src="${product.image}" alt="${product.name}" style="width: 100%; height: 180px; object-fit: cover; border-radius: 6px; display: block; margin-bottom: 10px;">
+                <h3 style="font-size: 1.05em; margin: 8px 0; color: #0f172a;">${product.name}</h3>
+                <p class="price" style="font-weight: bold; color: #2563eb; margin-bottom: 12px;">${product.price} د.ع</p>
+            </div>
+            <button onclick="addToCart('${product.name}', ${product.price})" style="background-color: #2563eb; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%;">إضافة للسلة</button>
         `;
         container.appendChild(productCard);
     });
 }
 
-// إضافة منتج للسلة دون فتح النافذة المنبثقة تلقائياً
+// إضافة منتج للسلة وتجميع العناصر المتكررة
 function addToCart(name, price) {
-    cart.push({ name, price });
+    const existingItem = cart.find(item => item.name === name);
+    
+    if (existingItem) {
+        existingItem.quantity = (existingItem.quantity || 1) + 1;
+    } else {
+        cart.push({ name, price, quantity: 1 });
+    }
+    
     updateCartUI();
 
-    // إضافة تأثير انكماش/تكبير سريع لزر السلة العلوي لتنبيه الزبون
+    // تأثير انكماش/تكبير سريع لزر السلة العلوي لتنبيه الزبون
     const navBtn = document.getElementById('cart-nav-btn');
     if (navBtn) {
         navBtn.style.transform = 'scale(1.15)';
@@ -73,16 +89,17 @@ function updateCartUI() {
     const countContainer = document.getElementById('cart-items-count');
     const navCountContainer = document.getElementById('nav-cart-count');
 
-    const itemCount = cart.length;
+    // إجمالي عدد القطع مع مراعاة الكميات
+    const totalItemsCount = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
     
-    // تحديث الأرقام
-    if (navCountContainer) navCountContainer.innerText = itemCount;
-    if (countContainer) countContainer.innerText = `عدد المنتجات المطلوبة: ${itemCount} قطعة`;
+    // تحديث الأرقام والعدادات
+    if (navCountContainer) navCountContainer.innerText = totalItemsCount;
+    if (countContainer) countContainer.innerText = `عدد المنتجات المطلوبة: ${totalItemsCount} قطعة`;
 
     if (!cartContainer) return;
 
     // إذا كانت السلة فارغة
-    if (itemCount === 0) {
+    if (cart.length === 0) {
         cartContainer.innerHTML = '<p style="color: #94a3b8; text-align: center; margin-top: 40px;">السلة فارغة حالياً.</p>';
         if (totalContainer) totalContainer.innerText = 'المجموع الكلي: 0 د.ع';
         return;
@@ -93,14 +110,17 @@ function updateCartUI() {
     let total = 0;
 
     cart.forEach((item, index) => {
-        total += item.price;
+        const itemQuantity = item.quantity || 1;
+        const itemTotal = item.price * itemQuantity;
+        total += itemTotal;
+
         const itemElement = document.createElement('div');
         itemElement.style.cssText = 'display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px;';
         
         itemElement.innerHTML = `
             <div>
-                <strong style="display: block; color: #1e293b; font-size: 0.95em;">${item.name}</strong>
-                <span style="color: #2563eb; font-size: 0.85em;">${item.price} د.ع</span>
+                <strong style="display: block; color: #1e293b; font-size: 0.95em;">${item.name} ${itemQuantity > 1 ? `(×${itemQuantity})` : ''}</strong>
+                <span style="color: #2563eb; font-size: 0.85em;">${itemTotal} د.ع</span>
             </div>
             <button onclick="removeFromCart(${index})" style="background-color: #fee2e2; color: #ef4444; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8em;">حذف</button>
         `;
@@ -124,13 +144,17 @@ function sendWhatsApp() {
 
     let orderText = "مرحباً Toop3D، أرغب بتأكيد الطلب التالي:\n\n";
     let total = 0;
+    let totalPieces = 0;
 
     cart.forEach((item, index) => {
-        orderText += `${index + 1}. ${item.name} - ${item.price} د.ع\n`;
-        total += item.price;
+        const qty = item.quantity || 1;
+        const itemTotal = item.price * qty;
+        orderText += `${index + 1}. ${item.name} ${qty > 1 ? `(العدد: ${qty})` : ''} - ${itemTotal} د.ع\n`;
+        total += itemTotal;
+        totalPieces += qty;
     });
 
-    orderText += `\n*عدد القطع:* ${cart.length}`;
+    orderText += `\n*عدد القطع الكلي:* ${totalPieces}`;
     orderText += `\n*المجموع الكلي:* ${total} د.ع`;
 
     const encodedMessage = encodeURIComponent(orderText);
