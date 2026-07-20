@@ -2,91 +2,91 @@
   {
     "id": 1,
     "name": "PETG Black",
-    "price": 17000,
-    "image": "./images/petg-black.jpg"
+    "price": 15000,
+    "image": "./images/petg%20black.jpg"
   },
   {
     "id": 2,
     "name": "PETG Blue",
-    "price": 17000,
-    "image": "./images/petg-blue.jpg"
+    "price": 15000,
+    "image": "./images/petg%20blue.jpg"
   },
   {
     "id": 3,
     "name": "PETG Clear",
-    "price": 17000,
-    "image": "./images/petg-clear.jpg"
+    "price": 15000,
+    "image": "./images/petg%20clear.jpg"
   },
   {
     "id": 4,
     "name": "PETG Cyan",
-    "price": 17000,
-    "image": "./images/petg-cyan.jpg"
+    "price": 15000,
+    "image": "./images/petg%20cyan.jpg"
   },
   {
     "id": 5,
     "name": "PETG Golden",
-    "price": 17000,
-    "image": "./images/petg-golden.jpg"
+    "price": 15000,
+    "image": "./images/petg%20golden.jpg"
   },
   {
     "id": 6,
     "name": "PETG Green",
-    "price": 17000,
-    "image": "./images/petg-green.jpg"
+    "price": 15000,
+    "image": "./images/petg%20green.jpg"
   },
   {
     "id": 7,
     "name": "PETG Latte",
-    "price": 17000,
-    "image": "./images/petg-latte.jpg"
+    "price": 15000,
+    "image": "./images/petg%20latte.png"
   },
   {
     "id": 8,
     "name": "PETG Orange",
-    "price": 17000,
-    "image": "./images/petg-orange.jpg"
+    "price": 15000,
+    "image": "./images/petg%20orange.jpg"
   },
   {
     "id": 9,
     "name": "PETG Pink",
-    "price": 17000,
-    "image": "./images/petg-pink.jpg"
+    "price": 15000,
+    "image": "./images/petg%20pink.jpg"
   },
   {
     "id": 10,
     "name": "PETG Skin",
-    "price": 17000,
-    "image": "./images/petg-skin.jpg"
+    "price": 15000,
+    "image": "./images/petg%20skin.jpg"
   },
   {
     "id": 11,
     "name": "PETG Taro Purple",
-    "price": 17000,
-    "image": "./images/petg-taro-purple.jpg"
+    "price": 15000,
+    "image": "./images/petg%20taro%20purple.jpg"
   },
   {
     "id": 12,
     "name": "PETG Trans Blue",
-    "price": 18000,
-    "image": "./images/petg-trans-blue.jpg"
+    "price": 15000,
+    "image": "./images/petg%20trans%20blue.jpg"
   },
   {
     "id": 13,
     "name": "PETG Trans Green",
-    "price": 17000,
-    "image": "./images/petg-trans-green.jpg"
+    "price": 15000,
+    "image": "./images/petg%20trans%20green.jpg"
   },
   {
     "id": 14,
     "name": "PETG Violet",
-    "price": 17000,
-    "image": "./images/petg-violet.jpg"
+    "price": 15000,
+    "image": "./images/petg%20violet.jpg"
   },
   {
     "id": 15,
     "name": "PETG Yellow",
-    "price": 17000,
-    "image": "./images/petg-yellow.jpg"
+    "price": 15000,
+    "image": "./images/petg%20yellow.jpg"
   }
 ]
