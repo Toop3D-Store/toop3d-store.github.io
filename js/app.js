@@ -8,8 +8,16 @@ document.addEventListener('DOMContentLoaded', () => {
 // فتح وإغلاق نافذة السلة المنبثقة
 function toggleCart() {
     const modal = document.getElementById('cart-modal');
-    if (modal) {
-        modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+    if (!modal) {
+        console.error("لم يتم العثور على العنصر cart-modal");
+        return;
+    }
+    
+    // التبديل بين الإظهار والإخفاء
+    if (modal.style.display === 'none' || modal.style.display === '') {
+        modal.style.display = 'flex';
+    } else {
+        modal.style.display = 'none';
     }
 }
 
