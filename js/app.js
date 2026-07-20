@@ -4,6 +4,7 @@ let cart = [];
 // 1. دالة جلب المنتجات وعرضها عند تحميل الصفحة
 document.addEventListener('DOMContentLoaded', () => {
     fetchProducts();
+    updateCartUI(); // ✅ لتحديث السلة فور فتح الصفحة
 });
 
 function fetchProducts() {
