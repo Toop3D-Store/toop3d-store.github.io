@@ -1,14 +1,92 @@
 [
   {
-    "id": "1",
-    "name": "خيط طباعة PLA",
-    "price": 25000,
-    "image": "./images/Red.jfif"
+    "id": 1,
+    "name": "PETG Black",
+    "price": 17000,
+    "image": "./images/petg-black.jpg"
   },
   {
-    "id": "2",
-    "name": "معدات طباعة 3D",
-    "price": 15000,
-    "image": "./images/Brown.jfif"
+    "id": 2,
+    "name": "PETG Blue",
+    "price": 17000,
+    "image": "./images/petg-blue.jpg"
+  },
+  {
+    "id": 3,
+    "name": "PETG Clear",
+    "price": 17000,
+    "image": "./images/petg-clear.jpg"
+  },
+  {
+    "id": 4,
+    "name": "PETG Cyan",
+    "price": 17000,
+    "image": "./images/petg-cyan.jpg"
+  },
+  {
+    "id": 5,
+    "name": "PETG Golden",
+    "price": 17000,
+    "image": "./images/petg-golden.jpg"
+  },
+  {
+    "id": 6,
+    "name": "PETG Green",
+    "price": 17000,
+    "image": "./images/petg-green.jpg"
+  },
+  {
+    "id": 7,
+    "name": "PETG Latte",
+    "price": 17000,
+    "image": "./images/petg-latte.jpg"
+  },
+  {
+    "id": 8,
+    "name": "PETG Orange",
+    "price": 17000,
+    "image": "./images/petg-orange.jpg"
+  },
+  {
+    "id": 9,
+    "name": "PETG Pink",
+    "price": 17000,
+    "image": "./images/petg-pink.jpg"
+  },
+  {
+    "id": 10,
+    "name": "PETG Skin",
+    "price": 17000,
+    "image": "./images/petg-skin.jpg"
+  },
+  {
+    "id": 11,
+    "name": "PETG Taro Purple",
+    "price": 17000,
+    "image": "./images/petg-taro-purple.jpg"
+  },
+  {
+    "id": 12,
+    "name": "PETG Trans Blue",
+    "price": 18000,
+    "image": "./images/petg-trans-blue.jpg"
+  },
+  {
+    "id": 13,
+    "name": "PETG Trans Green",
+    "price": 17000,
+    "image": "./images/petg-trans-green.jpg"
+  },
+  {
+    "id": 14,
+    "name": "PETG Violet",
+    "price": 17000,
+    "image": "./images/petg-violet.jpg"
+  },
+  {
+    "id": 15,
+    "name": "PETG Yellow",
+    "price": 17000,
+    "image": "./images/petg-yellow.jpg"
   }
 ]
