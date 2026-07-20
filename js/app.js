@@ -49,13 +49,11 @@ function renderProducts(products) {
     });
 }
 
-// إضافة منتج فتح السلة تلقائياً ليرى الزبون الإضافة
+// إضافة منتج للسلة وتحديث العداد بدون فتح النافذة تلقائياً
 function addToCart(name, price) {
     cart.push({ name, price });
-    updateCartUI();
-    toggleCart(); // فتح النافذة تلقائياً لتأكيد الإضافة
+    updateCartUI(); // تحديث الأرقام والعداد في الزر العلوي فقط
 }
-
 // حذف منتج من السلة
 function removeFromCart(index) {
     cart.splice(index, 1);
