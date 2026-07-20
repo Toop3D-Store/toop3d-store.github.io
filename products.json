@@ -1,0 +1,14 @@
+[
+  {
+    "id": "1",
+    "name": "خيط طباعة PLA",
+    "price": 25000,
+    "image": "images/pla.jpg"
+  },
+  {
+    "id": "2",
+    "name": "معدات طباعة 3D",
+    "price": 15000,
+    "image": "images/supplies.jpg"
+  }
+]
