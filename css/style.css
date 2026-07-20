@@ -75,13 +75,13 @@
 }
 
 /* ==========================================
-   5. زر السلة العائم الحر
+   5. زر السلة العائم (أولوية ظهور عادية)
    ========================================== */
 #cart-nav-btn {
     position: fixed !important;
     bottom: 25px !important;
     left: 25px !important;
-    z-index: 999999 !important;
+    z-index: 99 !important; /* تم تخفيض الأولوية ليبقى أسفل النافذة المنبثقة */
     
     background-color: #2563eb !important;
     color: #ffffff !important;
@@ -113,21 +113,28 @@
 }
 
 /* ==========================================
-   6. رفع المجموع الكلي وزر الواتساب داخل النافذة المنبثقة
+   6. النافذة المنبثقة للسلة (أولوية ظهور فائقة)
    ========================================== */
-#cart-modal .modal-content,
-.cart-modal-content {
-    /* إضافة مسافة سفليّة تضمن عدم غطاء الزر العائم على المجموع والتأكيد */
-    padding-bottom: 90px !important; 
-    max-height: 85vh !important;
-    overflow-y: auto !important;
+#cart-modal,
+.modal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background-color: rgba(0, 0, 0, 0.6) !important; /* خلفية معتمة تمنع الرؤية خلف السلة */
+    z-index: 999999 !important; /* قيمة عالية جداً لتعلو فوق زر السلة الأزرق */
 }
 
-/* رفع خاوية المجموع الكلي والأزرار داخل النافذة */
-#cart-total, 
-.cart-footer,
-#cart-modal button:not(#cart-nav-btn) {
-    margin-bottom: 12px !important;
+/* رفع وتنسيق صندوق المحتوى داخل السلة */
+#cart-modal .modal-content,
+.cart-modal-content,
+.modal-content {
     position: relative !important;
     z-index: 1000000 !important;
+    
+    /* هامش سفلي آمن يضمن رفع المجموع وزر الواتساب لأعلى الشاشة */
+    padding-bottom: 80px !important; 
+    max-height: 85vh !important;
+    overflow-y: auto !important;
 }
