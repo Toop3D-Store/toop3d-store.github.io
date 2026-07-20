@@ -3,7 +3,7 @@
    ========================================== */
 #products-container {
     display: grid !important;
-    /* ترتيب المنتجات بشبكة متناسقة تتكيف مع شاشات الهواتف والكمبيوتر */
+    /* شبكة متناسقة تتكيف مع مختلف الشاشات */
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
     gap: 20px !important;
     padding: 10px 0 !important;
@@ -23,25 +23,28 @@
     flex-direction: column !important;
     justify-content: space-between !important;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
-    overflow: hidden !important; /* يمنع أي محتوى خروج عن حدود الكارت */
+    overflow: hidden !important;
     box-sizing: border-box !important;
 }
 
 /* ==========================================
-   3. الحل النهائي لحجم الصور ومنع التداخل
+   3. جعل الصور مربعة بالكامل وإظهار كافة التفاصيل
    ========================================== */
 .product-card img,
 #products-container img {
-    /* تجبر الصورة على الالتزام بعرض الكارت */
     width: 100% !important;
     max-width: 100% !important;
     
-    /* تحديد ارتفاع موحد ومناسب لجميع الصور */
-    height: 180px !important; 
+    /* جعل الصورة مربعة متساوية الأبعاد */
+    aspect-ratio: 1 / 1 !important;
+    height: auto !important; 
     
-    /* الخاصية السحرية: تقص الحواف الزائدة وتمنع تشوه أو تمطط الصورة */
-    object-fit: cover !important;
+    /* إظهار الصورة بالكامل بدون أي قص للتفاصيل */
+    object-fit: contain !important;
     object-position: center !important;
+    
+    /* خلفية خفيفة ناعمة لملء أي فراغ جانبي إن وجد */
+    background-color: #f8fafc !important; 
     
     display: block !important;
     border-radius: 6px !important;
