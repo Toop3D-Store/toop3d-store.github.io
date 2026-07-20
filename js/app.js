@@ -1,4 +1,3 @@
-
 // مصفوفة لتخزين عناصر السلة
 let cart = [];
 
@@ -20,7 +19,7 @@ function fetchProducts() {
             renderProducts(products);
         })
         .catch(error => {
-            console.error('خطأ:', error);
+            console.error('خطأ في جلب المنتجات:', error);
         });
 }
 
@@ -38,7 +37,7 @@ function renderProducts(products) {
         productCard.className = 'product-card';
         
         productCard.innerHTML = `
-            <img src="./${product.image}" alt="${product.name}">
+            <img src="${product.image}" alt="${product.name}">
             <h3>${product.name}</h3>
             <p class="price">${product.price} د.ع</p>
             <button onclick="addToCart('${product.name}', ${product.price})">إضافة للسلة</button>
@@ -56,7 +55,6 @@ function addToCart(name, price) {
 
 // 4. دالة إرسال الطلب عبر الواتساب (sendWhatsApp)
 function sendWhatsApp() {
-    // ضع رقم هاتفك مع المفتاح الدولي بدون علامة + (مثلاً للعراق: 9647700000000)
     const phoneNumber = "9647827573964"; 
 
     if (cart.length === 0) {
