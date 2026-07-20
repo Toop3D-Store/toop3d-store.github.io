@@ -5,15 +5,11 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCartUI();
 });
 
-// فتح وإغلاق نافذة السلة المنبثقة
+// دالة فتح وإغلاق النافذة المنبثقة للسلة
 function toggleCart() {
     const modal = document.getElementById('cart-modal');
-    if (!modal) {
-        console.error("لم يتم العثور على العنصر cart-modal");
-        return;
-    }
+    if (!modal) return;
     
-    // التبديل بين الإظهار والإخفاء
     if (modal.style.display === 'none' || modal.style.display === '') {
         modal.style.display = 'flex';
     } else {
@@ -21,16 +17,18 @@ function toggleCart() {
     }
 }
 
+// جلب المنتجات من ملف JSON
 function fetchProducts() {
     fetch('./products.json')
         .then(response => {
-            if (!response.ok) throw new Error('فشل في جلب المنتجات');
+            if (!response.ok) throw new Error('فشل في جلب ملف المنتجات');
             return response.json();
         })
         .then(products => renderProducts(products))
-        .catch(error => console.error('خطأ:', error));
+        .catch(error => console.error('خطأ في جلب البيانات:', error));
 }
 
+// عرض المنتجات في الصفحة
 function renderProducts(products) {
     const container = document.getElementById('products-container');
     if (!container) return;
@@ -49,18 +47,26 @@ function renderProducts(products) {
     });
 }
 
-// إضافة منتج للسلة وتحديث العداد بدون فتح النافذة تلقائياً
+// إضافة منتج للسلة دون فتح النافذة المنبثقة تلقائياً
 function addToCart(name, price) {
     cart.push({ name, price });
-    updateCartUI(); // تحديث الأرقام والعداد في الزر العلوي فقط
+    updateCartUI();
+
+    // إضافة تأثير انكماش/تكبير سريع لزر السلة العلوي لتنبيه الزبون
+    const navBtn = document.getElementById('cart-nav-btn');
+    if (navBtn) {
+        navBtn.style.transform = 'scale(1.15)';
+        setTimeout(() => navBtn.style.transform = 'scale(1)', 200);
+    }
 }
+
 // حذف منتج من السلة
 function removeFromCart(index) {
     cart.splice(index, 1);
     updateCartUI();
 }
 
-// تحديث واجهة السلة المنبثقة والعدادات
+// تحديث الواجهة والعدادات
 function updateCartUI() {
     const cartContainer = document.getElementById('cart-items');
     const totalContainer = document.getElementById('cart-total');
@@ -68,17 +74,21 @@ function updateCartUI() {
     const navCountContainer = document.getElementById('nav-cart-count');
 
     const itemCount = cart.length;
+    
+    // تحديث الأرقام
     if (navCountContainer) navCountContainer.innerText = itemCount;
     if (countContainer) countContainer.innerText = `عدد المنتجات المطلوبة: ${itemCount} قطعة`;
 
     if (!cartContainer) return;
 
+    // إذا كانت السلة فارغة
     if (itemCount === 0) {
         cartContainer.innerHTML = '<p style="color: #94a3b8; text-align: center; margin-top: 40px;">السلة فارغة حالياً.</p>';
         if (totalContainer) totalContainer.innerText = 'المجموع الكلي: 0 د.ع';
         return;
     }
 
+    // عرض عناصر السلة
     cartContainer.innerHTML = '';
     let total = 0;
 
