@@ -215,3 +215,68 @@
 .btn-inquiry:hover {
     background-color: #1d4ed8;
 }
+/* ==========================================
+   شريط التنقل والقائمة المنسدلة العمودية
+   ========================================== */
+.main-nav {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-link {
+    color: #0f172a;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 5px 10px;
+}
+
+.nav-link.active, .nav-link:hover {
+    color: #2563eb;
+}
+
+/* حاوية القائمة المنسدلة */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* المحتوى العمودي المنسدل */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #ffffff;
+    min-width: 180px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    z-index: 1000;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+}
+
+/* روابط التصنيفات داخل القائمة */
+.dropdown-content a {
+    color: #0f172a;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 0.95em;
+    font-weight: 500;
+    transition: background-color 0.2s;
+    text-align: right;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f5f9;
+    color: #2563eb;
+}
+
+/* إظهار القائمة عند التمرير بالماوس أو الضغط */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
