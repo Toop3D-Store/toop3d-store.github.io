@@ -3,97 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toop3D - توب 3 دي لمستلزمات الطباعه ثلاثية الابعاد</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Toop3D - متجر الطباعة ثلاثية الأبعاد</title>
+    <link rel="stylesheet" href="css/style.css?v=2">
 </head>
 <body>
 
-    <!-- الهيدر وشريط التنقل -->
-    <header style="background-color: #0f172a; color: white; text-align: center; padding: 20px 10px;">
-        <h1 style="margin: 0; font-size: 2em;">Toop3D</h1>
-        <p style="margin: 5px 0 0 0; opacity: 0.8;">متجر الطباعة ثلاثية الأبعاد</p>
+    <!-- الهيدر الرئيسي للمتجر -->
+    <header class="main-header">
+        <h1>Toop3D</h1>
+        <p>متجر الطباعة ثلاثية الأبعاد</p>
     </header>
 
-    <nav style="background-color: #ffffff; border-bottom: 1px solid #e2e8f0; padding: 12px 20px; text-align: left;">
-        <a href="#" style="margin-left: 15px; color: #0f172a; text-decoration: none; font-weight: bold;">الرئيسية</a>
-        <a href="#products" style="color: #2563eb; text-decoration: none; font-weight: bold;">المنتجات</a>
+    <!-- شريط التنقل العلوي -->
+    <nav class="navbar">
+        <a href="#" class="nav-link">الرئيسية</a>
+        <a href="#products" class="nav-link active-link">المنتجات</a>
     </nav>
-<!-- قسم الهيرو الرئيسي الاحترافي -->
-<section class="hero-section">
-    <div class="hero-overlay">
-        <div class="hero-content">
-            <h1 class="hero-title">Toop3D <span>Best QUALITY FILAMENT</span></h1>
-            <ul class="hero-features">
-                <li>✓ (طباعة عالية السرعة) High-Speed Printing </li>
-                <li>✓ (طباعة عالية السرعة) Excellent Toughness </li>
-                <li>✓ (التحام قوي للطبقات) Strong Layer Adhesion </li>
-                <li>✓ (لا تشابك للخيوط) Low Warping </li>
-            </ul>
-            <div class="hero-buttons">
-                <a href="#products" class="btn-primary">تسوق الآن / Buy Now</a>
-                <button onclick="sendWhatsAppOrder()" class="btn-inquiry">إرسال استفسار ✉️</button>
-            </div>
-        </div>
+
+    <!-- 📌 شريط التصنيفات الرئيسية (تحت كلمة المنتجات مباشرة) -->
+    <div class="sub-header-categories">
+        <button class="sub-cat-btn active" onclick="filterCategory('ALL', this)">الكل</button>
+        <button class="sub-cat-btn" onclick="filterCategory('PLA', this)">PLA Filament</button>
+        <button class="sub-cat-btn" onclick="filterCategory('PETG', this)">PETG Filament</button>
+        <button class="sub-cat-btn" onclick="filterCategory('TPU', this)">TPU (Flex)</button>
+        <button class="sub-cat-btn" onclick="filterCategory('ABS', this)">ABS / ASA</button>
+        <button class="sub-cat-btn" onclick="filterCategory('RESIN', this)">3D Resin</button>
     </div>
-</section>
-    <!-- واجهة المنتجات مع شريط التصنيفات الثابت -->
-<main style="max-width: 1000px; margin: 30px auto; padding: 0 20px;">
-    <section id="products">
-        <h2 style="border-bottom: 2px solid #2563eb; padding-bottom: 8px; color: #0f172a; margin-bottom: 15px;">
-            المنتجات
-        </h2>
 
-        <!-- 📌 شريط التصنيفات الثابت والمرئي للزبون -->
-        <div class="category-bar">
-            <button class="cat-btn active" onclick="filterCategory('ALL', this)">الكل</button>
-            <button class="cat-btn" onclick="filterCategory('PLA', this)">خيوط PLA</button>
-            <button class="cat-btn" onclick="filterCategory('PETG', this)">خيوط PETG</button>
-            <button class="cat-btn" onclick="filterCategory('TPU', this)">خيوط TPU (مرن)</button>
-            <button class="cat-btn" onclick="filterCategory('ABS', this)">ABS / ASA</button>
-            <button class="cat-btn" onclick="filterCategory('RESIN', this)">راتنج Resin</button>
-        </div>
-
-        <!-- حاوية عرض المنتجات -->
-        <div id="products-container"></div>
-    </section>
-</main>
-
-    <!-- الهوتر (الفوتير) -->
-    <footer style="text-align: center; padding: 20px; background-color: #0f172a; color: white; margin-top: 50px;">
-        Toop3D © 2026
-    </footer>
-
-    <!-- 🛒 زر السلة العائم الحر -->
-    <button id="cart-nav-btn" onclick="toggleCart()">
-        🛒 السلة 
-        <span id="nav-cart-count">0</span>
-    </button>
-
-    <!-- النافذة المنبثقة للسلة (Modal) -->
-    <div id="cart-modal" class="modal">
-        <div class="modal-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 10px;">
-                <h2 style="margin: 0;">سلة التسوق</h2>
-                <button onclick="toggleCart()" style="background: none; border: none; font-size: 1.5em; cursor: pointer;">✕</button>
-            </div>
-            
-            <div id="cart-items" style="margin: 20px 0; max-height: 250px; overflow-y: auto;">
-                <!-- تُحقن عناصر السلة هنا عبر JS -->
-            </div>
-
-            <div style="border-top: 1px solid #ddd; padding-top: 15px;">
-                <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1em; margin-bottom: 15px;">
-                    <span>المجموع الكلي:</span>
-                    <span id="cart-total-price">0 د.ع</span>
+    <!-- قسم الهيرو (Hero Section) -->
+    <section class="hero-section">
+        <div class="hero-overlay">
+            <div class="hero-content">
+                <h1 class="hero-title">Toop3D <span>Best QUALITY FILAMENT</span></h1>
+                <ul class="hero-features">
+                    <li>✓ High-Speed Printing (طباعة عالية السرعة)</li>
+                    <li>✓ Excellent Toughness (متانة ممتازة)</li>
+                    <li>✓ Strong Layer Adhesion (التحام قوي للطبقات)</li>
+                </ul>
+                <div class="hero-buttons">
+                    <a href="#products" class="btn-primary">تسوق الآن / Buy Now</a>
                 </div>
-                <button id="checkout-whatsapp-btn" onclick="sendWhatsAppOrder()" style="background-color: #25d366; color: white; border: none; width: 100%; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 1em; cursor: pointer;">
-                    إتمام الطلب عبر الواتساب 📱
-                </button>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- استدعاء الجافاسكربت -->
-    <script src="js/app.js"></script>
+    <!-- قسم المنتجات الرئيسي -->
+    <main style="max-width: 1200px; margin: 30px auto; padding: 0 20px;">
+        <section id="products">
+            <h2 style="border-bottom: 2px solid #2563eb; padding-bottom: 8px; color: #0f172a; margin-bottom: 20px;">
+                قائمة المنتجات
+            </h2>
+
+            <!-- حاوية عرض المنتجات المفلترة -->
+            <div id="products-container" class="products-grid"></div>
+        </section>
+    </main>
+
+    <!-- ملف الجافاسكربت -->
+    <script src="js/app.js?v=2"></script>
 </body>
 </html>
