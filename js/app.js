@@ -1,16 +1,16 @@
 // قائمة المنتجات مع إضافة التصنيف (category) لكل منتج
 const products = [
-    { id: 1, category: "PETG", name: "PETG - أسود", price: 25000, image: "images/petg%20black.jpg" },
-    { id: 2, category: "PETG", name: "PETG - أزرق", price: 25000, image: "images/petg%20blue.jpg" },
-    { id: 3, category: "PETG", name: "PETG - شفاف", price: 28000, image: "images/petg%20clear.jpg" },
-    { id: 4, category: "PETG", name: "PETG - سماوي (Cyan)", price: 25000, image: "images/petg%20cyan.jpg" },
-    { id: 5, category: "PETG", name: "PETG - ذهبي (Golden)", price: 27000, image: "images/petg%20golden.jpg" },
-    { id: 6, category: "PETG", name: "PETG - أخضر", price: 25000, image: "images/petg%20green.jpg" },
-    { id: 7, category: "PETG", name: "PETG - بيج (Latte)", price: 25000, image: "images/petg%20latte.png" },
-    { id: 8, category: "PETG", name: "PETG - برتقالي", price: 25000, image: "images/petg%20orange.jpg" },
-    { id: 9, category: "PETG", name: "PETG - وردي (Pink)", price: 25000, image: "images/petg%20pink.jpg" },
-    { id: 10, category: "PETG", name: "PETG - بنفسجي (Taro Purple)", price: 25000, image: "images/petg%20taro%20purple.jpg" },
-    { id: 11, category: "PETG", name: "PETG - أصفر", price: 25000, image: "images/petg%20yellow.jpg" }
+    { id: 1, category: "PETG", name: "PETG - أسود Black ", price: 17,000, image: "images/petg%20black.jpg" },
+    { id: 2, category: "PETG", name: "PETG - أزرق Blue ", price: 17,000, image: "images/petg%20blue.jpg" },
+    { id: 3, category: "PETG", name: "PETG - شفاف Clear ", price: 17,000, image: "images/petg%20clear.jpg" },
+    { id: 4, category: "PETG", name: "PETG - سماوي Cyan ", price: 17,000, image: "images/petg%20cyan.jpg" },
+    { id: 5, category: "PETG", name: "PETG - ذهبي Golden ", price: 17,000, image: "images/petg%20golden.jpg" },
+    { id: 6, category: "PETG", name: "PETG - أخضر Green ", price: 17,000, image: "images/petg%20green.jpg" },
+    { id: 7, category: "PETG", name: "PETG - بيج Latte ", price: 17,000, image: "images/petg%20latte.png" },
+    { id: 8, category: "PETG", name: "PETG - برتقالي Orange ", price: 17,000, image: "images/petg%20orange.jpg" },
+    { id: 9, category: "PETG", name: "PETG - وردي Pink ", price: 17,000, image: "images/petg%20pink.jpg" },
+    { id: 10, category: "PETG", name: "PETG - بنفسجي Taro Purple ", price: 17,000, image: "images/petg%20taro%20purple.jpg" },
+    { id: 11, category: "PETG", name: "PETG - أصفر Yellow ", price: 17,000, image: "images/petg%20yellow.jpg" }
 ];
 
 let cart = [];
