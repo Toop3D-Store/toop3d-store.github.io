@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toop3D - متجر الطباعة ثلاثية الأبعاد</title>
-    <link rel="stylesheet" href="css/style.css?v=103">
+    <link rel="stylesheet" href="css/style.css?v=104">
     
     <style>
         /* ==========================================
@@ -29,7 +29,31 @@
             color: #38bdf8 !important;
         }
 
-        /* 🛒 أزرار إضافة للسلة باللون الأزرق التقني */
+        /* ==========================================
+           2. 🖼️ إجبار ضبط حجم الصور لمنع التضخم
+           ========================================== */
+        .products-grid {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
+            gap: 20px !important;
+            margin-top: 20px !important;
+        }
+
+        /* تحديد حجم كروت المنتجات والصور بداخلها */
+        .product-card img, 
+        #products-container img, 
+        .products-grid img {
+            width: 100% !important;
+            height: 200px !important; /* ارتفاع ثابت ومتناسق لجميع الصور */
+            max-height: 200px !important;
+            object-fit: contain !important; /* إظهار المنتج بالكامل دون اقتطاع */
+            border-radius: 8px !important;
+            background-color: #f8fafc !important;
+            margin-bottom: 12px !important;
+            display: block !important;
+        }
+
+        /* 🛒 أزرار إضافة للسلة باللون الأزرق */
         .add-to-cart-btn, .product-card button {
             background-color: #2563eb !important;
             color: #ffffff !important;
@@ -47,7 +71,7 @@
         }
 
         /* ==========================================
-           2. 🎈 زر السلة العائم الثابت (Floating Button)
+           3. 🎈 زر السلة العائم الثابت (Floating Button)
            ========================================== */
         #cart-nav-btn {
             position: fixed !important;
@@ -82,7 +106,7 @@
         }
 
         /* ==========================================
-           3. 🖼️ نافذة السلة المنبثقة (Modal Style)
+           4. 🖼️ نافذة السلة المنبثقة (Modal Style)
            ========================================== */
         .modal {
             display: none;
@@ -91,7 +115,7 @@
             left: 0 !important;
             width: 100% !important;
             height: 100% !important;
-            background-color: rgba(15, 23, 42, 0.6) !important; /* خلفية معتمة */
+            background-color: rgba(15, 23, 42, 0.6) !important;
             backdrop-filter: blur(4px) !important;
             z-index: 10000 !important;
             justify-content: center !important;
@@ -265,7 +289,6 @@
                 </div>
             </div>
 
-            <!-- شبكة عرض المنتجات (تستخدم تنسيق style.css الأصلي دون فرض أبعاد) -->
             <div id="products-container" class="products-grid"></div>
         </section>
     </main>
@@ -295,6 +318,6 @@
         </div>
     </div>
 
-    <script src="js/app.js?v=103"></script>
+    <script src="js/app.js?v=104"></script>
 </body>
 </html>
