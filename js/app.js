@@ -1,23 +1,42 @@
 // قائمة المنتجات
 // قائمة المنتجات مع المسارات الصحيحة للصور
+// قائمة المنتجات مع المسارات المباشرة والمطابقة لمجلد images
 const products = [
     { 
         id: 1, 
-        name: "خيط PLA - أزرق", 
+        name: "خيط PETG - أسود", 
         price: 25000, 
-        image: "images/pla-blue.jpg"  // 👈 غير هذا إلى المسار والامتداد الفعلي لصورة المنتَج
+        image: "images/petg black.jpg"
     },
     { 
         id: 2, 
-        name: "خيط PLA - أسود", 
+        name: "خيط PETG - أزرق", 
         price: 25000, 
-        image: "images/pla-black.jpg" // 👈 اسم الصورة والامتداد الحقيقي
+        image: "images/petg blue.jpg"
     },
     { 
         id: 3, 
         name: "خيط PETG - شفاف", 
         price: 28000, 
-        image: "images/petg-clear.jpg" // 👈 اسم الصورة والامتداد الحقيقي
+        image: "images/petg clear.jpg"
+    },
+    { 
+        id: 4, 
+        name: "خيط PETG - بيج (Latte)", 
+        price: 25000, 
+        image: "images/petg latte.png" // 👈 انتبه هذا الملف بصيغة png
+    },
+    { 
+        id: 5, 
+        name: "خيط PETG - برتقالي", 
+        price: 25000, 
+        image: "images/petg orange.jpg"
+    },
+    { 
+        id: 6, 
+        name: "خيط PETG - بنفسجي (Taro Purple)", 
+        price: 25000, 
+        image: "images/petg taro purple.jpg"
     }
 ];
 
