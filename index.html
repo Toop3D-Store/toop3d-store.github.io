@@ -3,28 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toop3D - متجر الطباعة ثلاثية الأبعاد</title>
-    <link rel="stylesheet" href="css/style.css?v=5">
+    <title>Toop3D Technology - متجر الطباعة ثلاثية الأبعاد</title>
+    <link rel="stylesheet" href="css/style.css?v=4">
 </head>
 <body>
 
-    <!-- الهيدر الرئيسي للمتجر -->
-    <header class="main-header" style="background-color: #0f172a; color: white; text-align: center; padding: 20px 10px;">
-        <h1 style="margin: 0; font-size: 2em;">Toop3D</h1>
-        <p style="margin: 5px 0 0 0; opacity: 0.8;">متجر الطباعة ثلاثية الأبعاد</p>
+    <!-- 📌 1. البنر العلوي الاحترافي (Toop3D Header Banner) -->
+    <header class="top-brand-banner">
+        <div class="banner-container">
+            
+            <!-- القسم الأيسر: الشعار واسم الشركة -->
+            <div class="brand-left">
+                <img src="images/logo.png" alt="Toop3D Logo" class="brand-logo" onerror="this.style.display='none'">
+                <div class="brand-title-box">
+                    <h1 class="company-name">Toop3D TECHNOLOGY CO., LTD.</h1>
+                    <p class="company-sub">10+ Years of Industry Experience | Specializing in 3D printer material</p>
+                </div>
+            </div>
+
+            <!-- الخط الفاصل العمودي -->
+            <div class="banner-divider"></div>
+
+            <!-- القسم الأيمن: الشارات والكبسولات الزرقاء -->
+            <div class="brand-right">
+                <!-- شارات الجودة والشهادات -->
+                <div class="badges-row">
+                    <span class="badge-icon">ISO</span>
+                    <span class="badge-icon">UKCA</span>
+                    <span class="badge-icon">TUV</span>
+                    <span class="badge-icon">MSDS</span>
+                    <span class="badge-icon">RoHS</span>
+                </div>
+
+                <!-- المنتجات الرئيسية (Main Products) -->
+                <div class="main-products-row">
+                    <span class="product-tag">3D printer filament</span>
+                    <span class="product-tag">matte filament</span>
+                    <span class="product-tag">petg filament</span>
+                    <span class="product-tag">abs filament</span>
+                    <span class="product-tag">pla filament</span>
+                    <span class="product-tag">3D resin</span>
+                </div>
+            </div>
+
+        </div>
     </header>
 
-    <!-- شريط التنقل العلوي البسيط والأنبق -->
-    <nav class="navbar" style="background-color: #ffffff; border-bottom: 1px solid #e2e8f0; padding: 12px 20px; display: flex; gap: 20px;">
-        <a href="#" class="nav-link active" style="color: #2563eb; text-decoration: none; font-weight: bold;">الرئيسية</a>
-        <a href="#products" class="nav-link" style="color: #0f172a; text-decoration: none; font-weight: bold;">المنتجات</a>
+    <!-- 📌 2. شريط التنقل العلوي (Navbar) -->
+    <nav class="navbar">
+        <a href="#" class="nav-link">الرئيسية</a>
+        <a href="#products" class="nav-link active-link">المنتجات</a>
+        
+        <span class="nav-divider">|</span>
+
+        <!-- التصنيفات بجانب المنتجات -->
+        <button class="sub-cat-btn active" onclick="filterCategory('ALL', this)">الكل</button>
+        <button class="sub-cat-btn" onclick="filterCategory('PLA', this)">PLA Filament</button>
+        <button class="sub-cat-btn" onclick="filterCategory('PETG', this)">PETG Filament</button>
+        <button class="sub-cat-btn" onclick="filterCategory('TPU', this)">TPU (Flex)</button>
+        <button class="sub-cat-btn" onclick="filterCategory('ABS', this)">ABS / ASA</button>
+        <button class="sub-cat-btn" onclick="filterCategory('RESIN', this)">3D Resin</button>
     </nav>
 
-    <!-- قسم الهيرو (Hero Section) -->
+    <!-- 📌 3. قسم الهيرو (Hero Section) -->
     <section class="hero-section">
         <div class="hero-overlay">
             <div class="hero-content">
-                <h1 class="hero-title">Toop3D <span>Best QUALITY FILAMENT</span></h1>
+                <h1 class="hero-title">Toop3D <span>High Speed PETG HF Filament</span></h1>
                 <ul class="hero-features">
                     <li>✓ High-Speed Printing (طباعة عالية السرعة)</li>
                     <li>✓ Excellent Toughness (متانة ممتازة)</li>
@@ -37,63 +82,18 @@
         </div>
     </section>
 
-    <!-- قسم المنتجات مع القائمة المنسدلة للتصنيفات في الأسفل -->
-    <main style="max-width: 1000px; margin: 30px auto; padding: 0 20px;">
+    <!-- 📌 4. قسم عرض المنتجات -->
+    <main style="max-width: 1200px; margin: 30px auto; padding: 0 20px;">
         <section id="products">
-            
-            <!-- رأس قسم المنتجات مع قائمة التصفية المنسدلة -->
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #2563eb; padding-bottom: 10px; margin-bottom: 25px; flex-wrap: wrap; gap: 10px;">
-                <h2 style="margin: 0; color: #0f172a;">المنتجات</h2>
+            <h2 style="border-bottom: 2px solid #2563eb; padding-bottom: 8px; color: #0f172a; margin-bottom: 20px;">
+                قائمة المنتجات
+            </h2>
 
-                <!-- 📌 القائمة المنسدلة لاختيار التصنيف -->
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <label for="category-select" style="font-weight: bold; color: #475569; font-size: 0.95em;">تصفية حسب الخامات:</label>
-                    <select id="category-select" onchange="filterCategory(this.value)" style="padding: 8px 12px; border-radius: 6px; border: 1px solid #cbd5e1; font-weight: bold; color: #0f172a; background-color: #f8fafc; cursor: pointer; outline: none;">
-                        <option value="ALL">جميع المنتجات</option>
-                        <option value="PLA">خيوط PLA</option>
-                        <option value="PETG">خيوط PETG</option>
-                        <option value="TPU">خيوط TPU (Flex)</option>
-                        <option value="ABS">خيوط ABS / ASA</option>
-                        <option value="RESIN">راتينج 3D Resin</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- حاوية عرض المنتجات -->
             <div id="products-container" class="products-grid"></div>
         </section>
     </main>
 
-    <!-- الهوتر -->
-    <footer style="text-align: center; padding: 20px; background-color: #0f172a; color: white; margin-top: 50px;">
-        Toop3D © 2026
-    </footer>
-
-    <!-- زر السلة العائم والنافذة المنبثقة -->
-    <button id="cart-nav-btn" onclick="toggleCart()">
-        🛒 السلة <span id="nav-cart-count">0</span>
-    </button>
-
-    <div id="cart-modal" class="modal">
-        <div class="modal-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 10px;">
-                <h2 style="margin: 0;">سلة التسوق</h2>
-                <button onclick="toggleCart()" style="background: none; border: none; font-size: 1.5em; cursor: pointer;">✕</button>
-            </div>
-            <div id="cart-items" style="margin: 20px 0; max-height: 250px; overflow-y: auto;"></div>
-            <div style="border-top: 1px solid #ddd; padding-top: 15px;">
-                <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1em; margin-bottom: 15px;">
-                    <span>المجموع الكلي:</span>
-                    <span id="cart-total-price">0 د.ع</span>
-                </div>
-                <button id="checkout-whatsapp-btn" onclick="sendWhatsAppOrder()" style="background-color: #25d366; color: white; border: none; width: 100%; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 1em; cursor: pointer;">
-                    إتمام الطلب عبر الواتساب 📱
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- استدعاء الجافاسكربت -->
-    <script src="js/app.js?v=5"></script>
+    <!-- ملف الجافاسكربت -->
+    <script src="js/app.js?v=4"></script>
 </body>
 </html>
