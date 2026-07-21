@@ -123,3 +123,95 @@
     box-sizing: border-box;
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
+/* ==========================================
+   قسم الواجهة الرئيسية (Hero Banner)
+   ========================================== */
+.hero-section {
+    position: relative;
+    width: 100%;
+    min-height: 480px;
+    /* يمكنك استبدال الرابط أدناه بصورة من تصويرك لمنتجاتك */
+    background: url('images/banner-bg.jpg') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    border-bottom: 3px solid #2563eb;
+}
+
+/* طبقة تظليل خفيفة لجعل النص واضحاً فوق الصورة */
+.hero-overlay {
+    background: rgba(15, 23, 42, 0.65); 
+    width: 100%;
+    height: 100%;
+    min-height: 480px;
+    display: flex;
+    align-items: center;
+    padding: 40px 10%;
+    box-sizing: border-box;
+}
+
+.hero-content {
+    max-width: 600px;
+    color: #ffffff;
+    text-align: right;
+}
+
+.hero-title {
+    font-size: 2.2em;
+    font-weight: 800;
+    margin-bottom: 15px;
+    line-height: 1.2;
+}
+
+.hero-title span {
+    color: #10b981; /* لون أخضر فسفوري مميز */
+    display: block;
+}
+
+.hero-features {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.hero-features li {
+    font-size: 1.1em;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #f1f5f9;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+    flex-wrap: wrap;
+}
+
+.btn-primary {
+    background-color: #10b981;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #059669;
+}
+
+.btn-inquiry {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.btn-inquiry:hover {
+    background-color: #1d4ed8;
+}
