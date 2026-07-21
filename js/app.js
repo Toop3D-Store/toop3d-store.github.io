@@ -1,8 +1,24 @@
 // قائمة المنتجات
+// قائمة المنتجات مع المسارات الصحيحة للصور
 const products = [
-    { id: 1, name: "خيط PLA - أزرق", price: 25000, image: "https://via.placeholder.com/200" },
-    { id: 2, name: "خيط PLA - أسود", price: 25000, image: "https://via.placeholder.com/200" },
-    { id: 3, name: "خيط PETG - شفاف", price: 28000, image: "https://via.placeholder.com/200" }
+    { 
+        id: 1, 
+        name: "خيط PLA - أزرق", 
+        price: 25000, 
+        image: "images/pla-blue.jpg"  // 👈 غير هذا إلى المسار والامتداد الفعلي لصورة المنتَج
+    },
+    { 
+        id: 2, 
+        name: "خيط PLA - أسود", 
+        price: 25000, 
+        image: "images/pla-black.jpg" // 👈 اسم الصورة والامتداد الحقيقي
+    },
+    { 
+        id: 3, 
+        name: "خيط PETG - شفاف", 
+        price: 28000, 
+        image: "images/petg-clear.jpg" // 👈 اسم الصورة والامتداد الحقيقي
+    }
 ];
 
 let cart = [];
