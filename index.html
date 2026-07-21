@@ -4,32 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toop3D - متجر الطباعة ثلاثية الأبعاد</title>
-    <link rel="stylesheet" href="css/style.css?v=4">
+    <link rel="stylesheet" href="css/style.css?v=5">
 </head>
 <body>
 
-    <!-- الهيدر الرئيسي -->
-    <header style="background-color: #0f172a; color: white; text-align: center; padding: 20px 10px;">
+    <!-- الهيدر الرئيسي للمتجر -->
+    <header class="main-header" style="background-color: #0f172a; color: white; text-align: center; padding: 20px 10px;">
         <h1 style="margin: 0; font-size: 2em;">Toop3D</h1>
         <p style="margin: 5px 0 0 0; opacity: 0.8;">متجر الطباعة ثلاثية الأبعاد</p>
     </header>
 
-    <!-- شريط التنقل العلوي مع القائمة المنسدلة للتصنيفات -->
-    <nav class="main-nav">
-        <a href="#" class="nav-link active">الرئيسية</a>
-        
-        <!-- عنصر المنتجات مع القائمة العمودية المنسدلة -->
-        <div class="dropdown">
-            <a href="#products" class="nav-link dropbtn">المنتجات ▾</a>
-            <div class="dropdown-content">
-                <a href="#products" onclick="filterCategory('ALL', this)">كل المنتجات</a>
-                <a href="#products" onclick="filterCategory('PLA', this)">خيوط PLA</a>
-                <a href="#products" onclick="filterCategory('PETG', this)">خيوط PETG</a>
-                <a href="#products" onclick="filterCategory('TPU', this)">خيوط TPU (Flex)</a>
-                <a href="#products" onclick="filterCategory('ABS', this)">خيوط ABS / ASA</a>
-                <a href="#products" onclick="filterCategory('RESIN', this)">راتينج 3D Resin</a>
-            </div>
-        </div>
+    <!-- شريط التنقل العلوي البسيط والأنبق -->
+    <nav class="navbar" style="background-color: #ffffff; border-bottom: 1px solid #e2e8f0; padding: 12px 20px; display: flex; gap: 20px;">
+        <a href="#" class="nav-link active" style="color: #2563eb; text-decoration: none; font-weight: bold;">الرئيسية</a>
+        <a href="#products" class="nav-link" style="color: #0f172a; text-decoration: none; font-weight: bold;">المنتجات</a>
     </nav>
 
     <!-- قسم الهيرو (Hero Section) -->
@@ -49,10 +37,29 @@
         </div>
     </section>
 
-    <!-- قسم واجهة المنتجات -->
+    <!-- قسم المنتجات مع القائمة المنسدلة للتصنيفات في الأسفل -->
     <main style="max-width: 1000px; margin: 30px auto; padding: 0 20px;">
         <section id="products">
-            <h2 style="border-bottom: 2px solid #2563eb; padding-bottom: 8px; color: #0f172a;">المنتجات</h2>
+            
+            <!-- رأس قسم المنتجات مع قائمة التصفية المنسدلة -->
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #2563eb; padding-bottom: 10px; margin-bottom: 25px; flex-wrap: wrap; gap: 10px;">
+                <h2 style="margin: 0; color: #0f172a;">المنتجات</h2>
+
+                <!-- 📌 القائمة المنسدلة لاختيار التصنيف -->
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <label for="category-select" style="font-weight: bold; color: #475569; font-size: 0.95em;">تصفية حسب الخامات:</label>
+                    <select id="category-select" onchange="filterCategory(this.value)" style="padding: 8px 12px; border-radius: 6px; border: 1px solid #cbd5e1; font-weight: bold; color: #0f172a; background-color: #f8fafc; cursor: pointer; outline: none;">
+                        <option value="ALL">جميع المنتجات</option>
+                        <option value="PLA">خيوط PLA</option>
+                        <option value="PETG">خيوط PETG</option>
+                        <option value="TPU">خيوط TPU (Flex)</option>
+                        <option value="ABS">خيوط ABS / ASA</option>
+                        <option value="RESIN">راتينج 3D Resin</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- حاوية عرض المنتجات -->
             <div id="products-container" class="products-grid"></div>
         </section>
     </main>
@@ -87,6 +94,6 @@
     </div>
 
     <!-- استدعاء الجافاسكربت -->
-    <script src="js/app.js?v=4"></script>
+    <script src="js/app.js?v=5"></script>
 </body>
 </html>
