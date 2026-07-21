@@ -36,13 +36,27 @@
         </div>
     </div>
 </section>
-    <!-- واجهة المنتجات -->
-    <main style="max-width: 1000px; margin: 30px auto; padding: 0 20px;">
-        <section id="products">
-            <h2 style="border-bottom: 2px solid #2563eb; padding-bottom: 8px; color: #0f172a;">المنتجات</h2>
-            <div id="products-container"></div>
-        </section>
-    </main>
+    <!-- واجهة المنتجات مع شريط التصنيفات الثابت -->
+<main style="max-width: 1000px; margin: 30px auto; padding: 0 20px;">
+    <section id="products">
+        <h2 style="border-bottom: 2px solid #2563eb; padding-bottom: 8px; color: #0f172a; margin-bottom: 15px;">
+            المنتجات
+        </h2>
+
+        <!-- 📌 شريط التصنيفات الثابت والمرئي للزبون -->
+        <div class="category-bar">
+            <button class="cat-btn active" onclick="filterCategory('ALL', this)">الكل</button>
+            <button class="cat-btn" onclick="filterCategory('PLA', this)">خيوط PLA</button>
+            <button class="cat-btn" onclick="filterCategory('PETG', this)">خيوط PETG</button>
+            <button class="cat-btn" onclick="filterCategory('TPU', this)">خيوط TPU (مرن)</button>
+            <button class="cat-btn" onclick="filterCategory('ABS', this)">ABS / ASA</button>
+            <button class="cat-btn" onclick="filterCategory('RESIN', this)">راتنج Resin</button>
+        </div>
+
+        <!-- حاوية عرض المنتجات -->
+        <div id="products-container"></div>
+    </section>
+</main>
 
     <!-- الهوتر (الفوتير) -->
     <footer style="text-align: center; padding: 20px; background-color: #0f172a; color: white; margin-top: 50px;">
