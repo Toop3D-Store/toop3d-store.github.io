@@ -63,6 +63,19 @@ function addToCart(productId) {
     }
 
     updateCartUI();
+
+    // 💫 تشغيل حركة وميض واهتزاز زر السلة العائم عند الإضافة
+    const cartBtn = document.getElementById('cart-nav-btn');
+    if (cartBtn) {
+        cartBtn.classList.remove('cart-pop-animation');
+        void cartBtn.offsetWidth; // إعادة تشغيل الأنيميشن (Trigger Reflow)
+        cartBtn.classList.add('cart-pop-animation');
+
+        // إزالة الكلاس بعد انتهاء الأنيميشن
+        setTimeout(() => {
+            cartBtn.classList.remove('cart-pop-animation');
+        }, 500);
+    }
 }
 
 // تحديث واجهة السلة
