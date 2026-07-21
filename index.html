@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toop3D Technology - متجر الطباعة ثلاثية الأبعاد</title>
-    <link rel="stylesheet" href="css/style.css?v=4">
+    <title>Toop3D - متجر الطباعة ثلاثية الأبعاد</title>
+    <link rel="stylesheet" href="css/style.css?v=10">
 </head>
 <body>
 
-    <!-- 📌 1. البنر العلوي الاحترافي (Toop3D Header Banner) -->
+    <!-- 1. البنر العلوي الاحترافي -->
     <header class="top-brand-banner">
         <div class="banner-container">
-            
-            <!-- القسم الأيسر: الشعار واسم الشركة -->
             <div class="brand-left">
                 <img src="images/logo.png" alt="Toop3D Logo" class="brand-logo" onerror="this.style.display='none'">
                 <div class="brand-title-box">
@@ -21,12 +19,9 @@
                 </div>
             </div>
 
-            <!-- الخط الفاصل العمودي -->
             <div class="banner-divider"></div>
 
-            <!-- القسم الأيمن: الشارات والكبسولات الزرقاء -->
             <div class="brand-right">
-                <!-- شارات الجودة والشهادات -->
                 <div class="badges-row">
                     <span class="badge-icon">ISO</span>
                     <span class="badge-icon">UKCA</span>
@@ -34,8 +29,6 @@
                     <span class="badge-icon">MSDS</span>
                     <span class="badge-icon">RoHS</span>
                 </div>
-
-                <!-- المنتجات الرئيسية (Main Products) -->
                 <div class="main-products-row">
                     <span class="product-tag">3D printer filament</span>
                     <span class="product-tag">matte filament</span>
@@ -45,55 +38,77 @@
                     <span class="product-tag">3D resin</span>
                 </div>
             </div>
-
         </div>
     </header>
 
-    <!-- 📌 2. شريط التنقل العلوي (Navbar) -->
-    <nav class="navbar">
-        <a href="#" class="nav-link">الرئيسية</a>
-        <a href="#products" class="nav-link active-link">المنتجات</a>
-        
-        <span class="nav-divider">|</span>
-
-        <!-- التصنيفات بجانب المنتجات -->
-        <button class="sub-cat-btn active" onclick="filterCategory('ALL', this)">الكل</button>
-        <button class="sub-cat-btn" onclick="filterCategory('PLA', this)">PLA Filament</button>
-        <button class="sub-cat-btn" onclick="filterCategory('PETG', this)">PETG Filament</button>
-        <button class="sub-cat-btn" onclick="filterCategory('TPU', this)">TPU (Flex)</button>
-        <button class="sub-cat-btn" onclick="filterCategory('ABS', this)">ABS / ASA</button>
-        <button class="sub-cat-btn" onclick="filterCategory('RESIN', this)">3D Resin</button>
+    <!-- 2. شريط التنقل العلوي المرتب (الرئيسية والمنتجات فقط) -->
+    <nav class="main-nav">
+        <a href="#" class="nav-link active">الرئيسية</a>
+        <a href="#products" class="nav-link">المنتجات</a>
     </nav>
 
-    <!-- 📌 3. قسم الهيرو (Hero Section) -->
+    <!-- 3. قسم الهيرو -->
     <section class="hero-section">
-        <div class="hero-overlay">
-            <div class="hero-content">
-                <h1 class="hero-title">Toop3D <span>High Speed PETG HF Filament</span></h1>
-                <ul class="hero-features">
-                    <li>✓ High-Speed Printing (طباعة عالية السرعة)</li>
-                    <li>✓ Excellent Toughness (متانة ممتازة)</li>
-                    <li>✓ Strong Layer Adhesion (التحام قوي للطبقات)</li>
-                </ul>
-                <div class="hero-buttons">
-                    <a href="#products" class="btn-primary">تسوق الآن / Buy Now</a>
-                </div>
-            </div>
+        <div class="hero-content">
+            <h1 class="hero-title">Toop3D <span>High Speed PETG HF Filament</span></h1>
+            <ul class="hero-features">
+                <li>✓ High-Speed Printing (طباعة عالية السرعة)</li>
+                <li>✓ Excellent Toughness (متانة ممتازة)</li>
+                <li>✓ Strong Layer Adhesion (التحام قوي للطبقات)</li>
+            </ul>
+            <a href="#products" class="btn-primary">تسوق الآن / Buy Now</a>
         </div>
     </section>
 
-    <!-- 📌 4. قسم عرض المنتجات -->
-    <main style="max-width: 1200px; margin: 30px auto; padding: 0 20px;">
+    <!-- 4. قسم عرض المنتجات مع تصفية الخامات في الأسفل -->
+    <main class="main-content">
         <section id="products">
-            <h2 style="border-bottom: 2px solid #2563eb; padding-bottom: 8px; color: #0f172a; margin-bottom: 20px;">
-                قائمة المنتجات
-            </h2>
+            <div class="products-header">
+                <h2>قائمة المنتجات</h2>
+                
+                <!-- قائمة تصفية التصنيفات المنسدلة المرتبة -->
+                <div class="filter-box">
+                    <label for="category-select">اختر الخامة:</label>
+                    <select id="category-select" onchange="filterCategory(this.value)">
+                        <option value="ALL">جميع المنتجات</option>
+                        <option value="PLA">خيوط PLA</option>
+                        <option value="PETG">خيوط PETG</option>
+                        <option value="TPU">خيوط TPU (Flex)</option>
+                        <option value="ABS">خيوط ABS / ASA</option>
+                        <option value="RESIN">راتينج 3D Resin</option>
+                    </select>
+                </div>
+            </div>
 
+            <!-- شبكة عرض كروت المنتجات -->
             <div id="products-container" class="products-grid"></div>
         </section>
     </main>
 
-    <!-- ملف الجافاسكربت -->
-    <script src="js/app.js?v=4"></script>
+    <!-- زر السلة العائم والنافذة المنبثقة -->
+    <button id="cart-nav-btn" onclick="toggleCart()">
+        🛒 السلة <span id="nav-cart-count">0</span>
+    </button>
+
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>سلة التسوق</h2>
+                <button onclick="toggleCart()" class="close-btn">✕</button>
+            </div>
+            <div id="cart-items" class="cart-body"></div>
+            <div class="modal-footer">
+                <div class="total-price-box">
+                    <span>المجموع الكلي:</span>
+                    <span id="cart-total-price">0 د.ع</span>
+                </div>
+                <button id="checkout-whatsapp-btn" onclick="sendWhatsAppOrder()" class="whatsapp-btn">
+                    إتمام الطلب عبر الواتساب 📱
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js?v=10"></script>
 </body>
 </html>
