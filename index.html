@@ -376,42 +376,59 @@
                 </button>
             </div>
         </div>
-    </button>
+    </div>
 
     <!-- ==========================================
-       7. الجلب المباشر والربط الحقيقي مع Google Sheets
+       7. الجلب المباشر والآمن من Google Sheets
        ========================================== -->
     <script>
         const SHEET_ID = '2PACX-1vQswuYaNx5xNjan745b2Dca59YUIojFeP8DWKut0jADKMLl4uPnOOHbVQsBx55m0FmhwEpobJlIEaap';
-        const RAW_SHEET_URL = `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=0&single=true&output=csv`;
         
         let productsData = [];
         let cart = [];
 
-        // دالة جلب البيانات مع خادم وساطة لتجاوز حظر الـ CORS
         async function loadProductsFromSheet() {
             const container = document.getElementById('products-container');
+            const csvUrl = `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=0&single=true&output=csv`;
+
             try {
-                const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(RAW_SHEET_URL)}&nocache=${Date.now()}`;
-                const response = await fetch(proxyUrl);
+                let response = await fetch(csvUrl + '&t=' + Date.now());
                 
-                if (!response.ok) throw new Error('تعذر الوصول إلى خادم البيانات');
-                
+                if (!response.ok) {
+                    response = await fetch(`https://corsproxy.io/?${encodeURIComponent(csvUrl)}`);
+                }
+
+                if (!response.ok) throw new Error('تعذر الوصول لبيانات Google Sheets');
+
                 const csvText = await response.text();
                 productsData = parseCSVToProducts(csvText);
                 renderProducts();
             } catch (error) {
-                console.error('خطأ أثناء الجلب:', error);
-                if (container) {
-                    container.innerHTML = `<div class="loading-state" style="color: #ef4444;">
-                        تعذر تحميل المنتجات من Google Sheets.<br>
-                        <small>يرجى التأكد من نشر الشيت بصيغة CSV وتحديث الصفحة.</small>
-                    </div>`;
-                }
+                console.error('خطأ أثناء التحميل:', error);
+                fetchViaGoogleJSONP();
             }
         }
 
-        // تفكيك الـ CSV واستخراج أسماء الأعمدة بمختلف الاحتمالات
+        function fetchViaGoogleJSONP() {
+            const csvUrl = `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=0&single=true&output=csv`;
+            
+            fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(csvUrl)}`)
+                .then(res => res.text())
+                .then(csvText => {
+                    productsData = parseCSVToProducts(csvText);
+                    renderProducts();
+                })
+                .catch(err => {
+                    const container = document.getElementById('products-container');
+                    if (container) {
+                        container.innerHTML = `<div class="loading-state" style="color: #ef4444;">
+                            تعذر تحميل المنتجات حالياً.<br>
+                            <small>يرجى التأكد من اتصال الإنترنت وتحديث الصفحة.</small>
+                        </div>`;
+                    }
+                });
+        }
+
         function parseCSVToProducts(csvText) {
             const lines = csvText.trim().split('\n');
             if (lines.length < 2) return [];
@@ -428,8 +445,7 @@
                     row[header] = values[index] || '';
                 });
 
-                // البحث عن الاسم عبر احتمالات متناسبة مع اللغة العربية والإنجليزية
-                const name = row['name'] || row['اسم المنتج'] || row['title'] || row['product'] || row['المنتج'] || row['اسم'] || `منتج ${idx + 1}`;
+                const name = row['name'] || row['اسم المنتج'] || row['title'] || row['product'] || row['المنتج'] || row['اسم'] || row[headers[0]] || `منتج ${idx + 1}`;
                 const id = row['id'] || `product-${idx}`;
                 const category = (row['category'] || row['material'] || row['الخامة'] || 'PETG').toUpperCase();
                 
