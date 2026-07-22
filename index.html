@@ -30,31 +30,65 @@
         }
 
         /* ==========================================
-           2. 🖼️ إجبار ضبط صور المنتجات (للحاسبة والهاتف)
+           2. 🖼️ إجبار ضبط صور كروت المنتجات
            ========================================== */
         .products-grid {
             display: grid !important;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important;
             gap: 20px !important;
             margin-top: 20px !important;
         }
 
-        /* منع ضخامة الصور على الحاسبة */
-        .product-card img, 
-        #products-container img, 
-        .products-grid img {
+        .product-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .product-card img {
             width: 100% !important;
-            height: 180px !important;       /* ارتفاع ثابت ومتناسق */
+            height: 180px !important;
             max-height: 180px !important;
-            object-fit: contain !important; /* إظهار المنتج بالكامل بدون تشويه */
+            object-fit: contain !important;
             border-radius: 8px !important;
             background-color: #f8fafc !important;
             margin-bottom: 12px !important;
             display: block !important;
         }
 
-        /* 🛒 أزرار إضافة للسلة باللون الأزرق التقني */
-        .add-to-cart-btn, .product-card button {
+        /* تنسيق أزرار اختيار نوع التعبئة (Spool / Refill) */
+        .spool-options {
+            display: flex;
+            gap: 8px;
+            margin: 10px 0;
+        }
+
+        .spool-btn {
+            flex: 1;
+            padding: 6px 10px;
+            border: 1px solid #cbd5e1;
+            background-color: #f8fafc;
+            color: #334155;
+            border-radius: 6px;
+            font-size: 0.85em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .spool-btn.active {
+            border: 2px solid #2563eb !important;
+            background-color: #eff6ff !important;
+            color: #2563eb !important;
+        }
+
+        /* 🛒 أزرار إضافة للسلة */
+        .add-to-cart-btn {
             background-color: #2563eb !important;
             color: #ffffff !important;
             border: none !important;
@@ -66,7 +100,7 @@
             margin-top: 8px !important;
             transition: background-color 0.2s ease !important;
         }
-        .add-to-cart-btn:hover, .product-card button:hover {
+        .add-to-cart-btn:hover {
             background-color: #1d4ed8 !important;
         }
 
@@ -105,7 +139,6 @@
             font-weight: bold !important;
         }
 
-        /* 💫 حركة وميض واهتزاز زر السلة عند إضافة منتج */
         @keyframes cartBounce {
             0%   { transform: scale(1); }
             30%  { transform: scale(1.2) rotate(-6deg); background-color: #10b981 !important; }
@@ -187,6 +220,14 @@
             flex-grow: 1 !important;
         }
 
+        .cart-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
         .modal-footer {
             padding: 18px 20px !important;
             background-color: #f8fafc !important;
@@ -204,7 +245,6 @@
             color: #0f172a !important;
         }
 
-        /* 📱 زر الواتساب الأخضر الاحترافي */
         .whatsapp-btn, #checkout-whatsapp-btn {
             background-color: #25d366 !important;
             color: #ffffff !important;
@@ -328,6 +368,205 @@
         </div>
     </div>
 
-    <script src="js/app.js?v=105"></script>
+    <!-- ==========================================
+       7. برمجة المتجر ودعم PETG Refill (.webp)
+       ========================================== -->
+    <script>
+        // قائمة المنتجات مع دعم خيارات Refill لـ PETG وصور WebP
+        const productsData = [
+            {
+                id: 'petg-black',
+                name: 'خيوط PETG High Speed (أسود)',
+                category: 'PETG',
+                selectedOption: 'spool', // الخيار الافتراضي
+                options: {
+                    spool: {
+                        typeText: 'مع بكرة',
+                        price: 20000,
+                        image: 'images/petg-spool.webp'
+                    },
+                    refill: {
+                        typeText: 'بدون بكرة (Refill)',
+                        price: 17000,
+                        image: 'images/petg-refill.webp'
+                    }
+                }
+            },
+            {
+                id: 'petg-white',
+                name: 'خيوط PETG High Speed (أبيض)',
+                category: 'PETG',
+                selectedOption: 'spool',
+                options: {
+                    spool: {
+                        typeText: 'مع بكرة',
+                        price: 20000,
+                        image: 'images/petg-white-spool.webp'
+                    },
+                    refill: {
+                        typeText: 'بدون بكرة (Refill)',
+                        price: 17000,
+                        image: 'images/petg-white-refill.webp'
+                    }
+                }
+            }
+        ];
+
+        let cart = [];
+
+        // عرض المنتجات في الصفحة
+        function renderProducts(filter = 'ALL') {
+            const container = document.getElementById('products-container');
+            container.innerHTML = '';
+
+            const filtered = filter === 'ALL' 
+                ? productsData 
+                : productsData.filter(p => p.category === filter);
+
+            filtered.forEach(product => {
+                const currentOpt = product.options[product.selectedOption];
+
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <img id="img-${product.id}" src="${currentOpt.image}" alt="${product.name}" onerror="this.src='images/placeholder.webp'">
+                    <h3 style="font-size: 1.05em; margin: 0 0 8px 0; color: #0f172a;">${product.name}</h3>
+                    
+                    <div style="font-size: 1.1em; font-weight: bold; color: #16a34a; margin-bottom: 8px;">
+                        <span id="price-${product.id}">${currentOpt.price.toLocaleString()}</span> د.ع
+                    </div>
+
+                    <div class="spool-options">
+                        <button class="spool-btn ${product.selectedOption === 'spool' ? 'active' : ''}" 
+                                onclick="changeSpoolOption('${product.id}', 'spool')">
+                            📦 مع بكرة
+                        </button>
+                        <button class="spool-btn ${product.selectedOption === 'refill' ? 'active' : ''}" 
+                                onclick="changeSpoolOption('${product.id}', 'refill')">
+                            ♻️ بدون بكرة
+                        </button>
+                    </div>
+
+                    <button class="add-to-cart-btn" onclick="addToCart('${product.id}')">
+                        🛒 إضافة إلى السلة
+                    </button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // تغيير نوع التعبئة (Spool / Refill)
+        function changeSpoolOption(productId, optionType) {
+            const product = productsData.find(p => p.id === productId);
+            if (product) {
+                product.selectedOption = optionType;
+                const opt = product.options[optionType];
+                
+                // تحديث الصورة والسعر في الكارت الخاص بالمنتج
+                document.getElementById(`img-${productId}`).src = opt.image;
+                document.getElementById(`price-${productId}`).innerText = opt.price.toLocaleString();
+                
+                // إعادة رسم المنتجات لتحديث شكل الأزرار (Active State)
+                renderProducts(document.getElementById('category-select').value);
+            }
+        }
+
+        // إضافة إلى السلة
+        function addToCart(productId) {
+            const product = productsData.find(p => p.id === productId);
+            const opt = product.options[product.selectedOption];
+
+            const itemInCart = cart.find(item => item.id === productId && item.option === product.selectedOption);
+
+            if (itemInCart) {
+                itemInCart.qty += 1;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    option: product.selectedOption,
+                    typeText: opt.typeText,
+                    price: opt.price,
+                    qty: 1
+                });
+            }
+
+            updateCartUI();
+            
+            // تأثير حركي لزر السلة
+            const btn = document.getElementById('cart-nav-btn');
+            btn.classList.add('cart-pop-animation');
+            setTimeout(() => btn.classList.remove('cart-pop-animation'), 500);
+        }
+
+        // تحديث واجهة السلة
+        function updateCartUI() {
+            const countSpan = document.getElementById('nav-cart-count');
+            const totalSpan = document.getElementById('cart-total-price');
+            const cartBody = document.getElementById('cart-items');
+
+            const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            countSpan.innerText = totalCount;
+            totalSpan.innerText = totalPrice.toLocaleString() + ' د.ع';
+
+            if (cart.length === 0) {
+                cartBody.innerHTML = '<p style="text-align: center; color: #64748b;">السلة فارغة حالياً</p>';
+                return;
+            }
+
+            cartBody.innerHTML = cart.map((item, index) => `
+                <div class="cart-item-row">
+                    <div>
+                        <strong style="display: block; font-size: 0.95em;">${item.name}</strong>
+                        <span style="font-size: 0.85em; color: #2563eb;">(${item.typeText})</span>
+                        <div style="font-size: 0.85em; color: #64748b;">${item.price.toLocaleString()} د.ع × ${item.qty}</div>
+                    </div>
+                    <button onclick="removeFromCart(${index})" style="background: none; border: none; color: #ef4444; cursor: pointer; font-weight: bold;">إزالة</button>
+                </div>
+            `).join('');
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cart-modal');
+            modal.classList.toggle('open');
+        }
+
+        function filterCategory(cat) {
+            renderProducts(cat);
+        }
+
+        function sendWhatsAppOrder() {
+            if (cart.length === 0) {
+                alert('السلة فارغة!');
+                return;
+            }
+
+            let message = "مرحباً Toop3D، أرغب بتأكيد الطلب التالي:\n\n";
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                const subtotal = item.price * item.qty;
+                total += subtotal;
+                message += `${index + 1}. ${item.name} [${item.typeText}]\n   العدد: ${item.qty} | السعر: ${subtotal.toLocaleString()} د.ع\n`;
+            });
+
+            message += `\nالمجموع الكلي: ${total.toLocaleString()} د.ع`;
+
+            const phone = "9647000000000"; // ضَع رقم الواتساب الخاص بك هنا
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        // تشغيل البناء الأولي عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+        });
+    </script>
 </body>
 </html>
