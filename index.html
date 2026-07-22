@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toop3D - متجر الطباعة ثلاثية الأبعاد</title>
-    <link rel="stylesheet" href="css/style.css?v=107">
+    <!-- تم تغيير إصدار v=108 لإجبار المتصفح على تحديث الكاش -->
+    <link rel="stylesheet" href="css/style.css?v=108">
     
     <style>
         /* ==========================================
@@ -169,7 +170,7 @@
             box-sizing: border-box !important;
         }
         
-        .modal.open, .modal[style*="display: block"], .modal[style*="display: flex"] {
+        .modal.open {
             display: flex !important;
         }
 
@@ -245,7 +246,7 @@
             color: #0f172a !important;
         }
 
-        .whatsapp-btn, #checkout-whatsapp-btn {
+        .whatsapp-btn {
             background-color: #25d366 !important;
             color: #ffffff !important;
             border: none !important;
@@ -263,14 +264,14 @@
             transition: background-color 0.2s ease !important;
         }
 
-        .whatsapp-btn:hover, #checkout-whatsapp-btn:hover {
+        .whatsapp-btn:hover {
             background-color: #1ebc57 !important;
         }
     </style>
 </head>
 <body>
 
-    <!-- 1. البنر العلوي (الشعار والكبسولات) -->
+    <!-- 1. البنر العلوي -->
     <header class="top-brand-banner">
         <div class="banner-container">
             <div class="brand-left">
@@ -344,7 +345,7 @@
     </main>
 
     <!-- 🎈 5. زر السلة العائم الثابت -->
-    <button id="cart-nav-btn" onclick="toggleCart()">
+    <button id="cart-nav-btn" type="button" onclick="toggleCart()">
         🛒 السلة <span id="nav-cart-count">0</span>
     </button>
 
@@ -353,7 +354,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2>سلة التسوق</h2>
-                <button onclick="toggleCart()" class="close-btn">✕</button>
+                <button type="button" onclick="toggleCart()" class="close-btn">✕</button>
             </div>
             <div id="cart-items" class="cart-body"></div>
             <div class="modal-footer">
@@ -361,7 +362,7 @@
                     <span>المجموع الكلي:</span>
                     <span id="cart-total-price">0 د.ع</span>
                 </div>
-                <button id="checkout-whatsapp-btn" onclick="sendWhatsAppOrder()" class="whatsapp-btn">
+                <button id="checkout-whatsapp-btn" type="button" onclick="sendWhatsAppOrder()" class="whatsapp-btn">
                     💬 إتمام الطلب عبر الواتساب
                 </button>
             </div>
@@ -369,218 +370,37 @@
     </div>
 
     <!-- ==========================================
-       7. برمجة المتجر ودعم PETG Spool & Refill (.webp)
+       7. البرمجة التفاعلية للمتجر
        ========================================== -->
     <script>
-        // قائمة جميع منتجات PETG المحدثة بالكامل
         const productsData = [
-            {
-                id: 'petg-black',
-                name: 'خيوط PETG High Speed (أسود - Black)',
-                category: 'PETG',
-                selectedOption: 'spool',
-                options: {
-                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-black.webp' },
-                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-black.webp' }
-                }
-            },
-            {
-                id: 'petg-blue',
-                name: 'خيوط PETG High Speed (أزرق - Blue)',
-                category: 'PETG',
-                selectedOption: 'spool',
-                options: {
-                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-blue.webp' },
-                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-blue.webp' }
-                }
-            },
-            {
-                id: 'petg-clear',
-                name: 'خيوط PETG High Speed (شفاف - Clear)',
-                category: 'PETG',
-                selectedOption: 'spool',
-                options: {
-                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-clear.webp' },
-                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-clear.webp' }
-                }
-            },
-            {
-                id: 'petg-cyan',
-                name: 'خيوط PETG High Speed (سمائي - Cyan)',
-                category: 'PETG',
-                selectedOption: 'spool',
-                options: {
-                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-cyan.webp' },
-                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-cyan.webp' }
-                }
-            },
-            {
-                id: 'petg-deep-blue',
-                name: 'خيوط PETG High Speed (أزرق غامق - Deep Blue)',
-                category: 'PETG',
-                selectedOption: 'refill',
-                options: {
-                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-deep-blue.webp' },
-                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-deep-blue.webp' }
-                }
-            },
-            {
-                id: 'petg-golden',
-                name: 'خيوط PETG High Speed (ذهبي - Golden)',
-                category: 'PETG',
-                selectedOption: 'refill',
-                options: {
-                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-golden.webp' },
-                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-golden.webp' }
-                }
-            },
-            {
-                id: 'petg-green',
-                name: 'خيوط PETG High Speed (أخضر - Green)',
-                category: 'PETG',
-                selectedOption: 'refill',
-                options: {
-                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-green.webp' },
-                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-green.webp' }
-                }
-            },
-            {
-                id: 'petg-latte',
-                name: 'خيوط PETG High Speed (لاتيه - Latte)',
-                category: 'PETG',
-                selectedOption: 'spool',
-                options: {
-                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-latte.webp' },
-                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-latte.webp' }
-                }
-            },
-            {
-                id: 'petg-indigo-purple',
-                name: 'خيوط PETG High Speed (بنفسجي نيللي - Indigo Purple)',
-                category: 'PETG',
-                selectedOption: 'refill',
-                options: {
-                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-indigo-purple.webp' },
-                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-indigo-purple.webp' }
-                }
-            },
-            {
-                id: 'petg-orange',
-                name: 'خيوط PETG High Speed (برتقالي - Orange)',
-                category: 'PETG',
-                selectedOption: 'spool',
-                options: {
-                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-orange.webp' },
-                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-orange.webp' }
-                }
-            },
-            {
-                id: 'petg-pink',
-                name: 'خيوط PETG High Speed (وردي - Pink)',
-                category: 'PETG',
-                selectedOption: 'spool',
-                options: {
-                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-pink.webp' },
-                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-pink.webp' }
-                }
-            },
-            {
-                id: 'petg-purple',
-                name: 'خيوط PETG High Speed (أرجواني - Purple)',
-                category: 'PETG',
-                selectedOption: 'refill',
-                options: {
-                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-purple.webp' },
-                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-purple.webp' }
-                }
-            },
-            {
-                id: 'petg-taro-purple',
-                name: 'خيوط PETG High Speed (بنفسجي تارو - Taro Purple)',
-                category: 'PETG',
-                selectedOption: 'spool',
-                options: {
-                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-taro-purple.webp' },
-                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-taro-purple.webp' }
-                }
-            },
-            {
-                id: 'petg-red-rose',
-                name: 'خيوط PETG High Speed (أحمر وردي - Red Rose)',
-                category: 'PETG',
-                selectedOption: 'refill',
-                options: {
-                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-red-rose.webp' },
-                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-red-rose.webp' }
-                }
-            },
-            {
-                id: 'petg-skin',
-                name: 'خيوط PETG High Speed (بشري/بيج - Skin)',
-                category: 'PETG',
-                selectedOption: 'spool',
-                options: {
-                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-skin.webp' },
-                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-skin.webp' }
-                }
-            },
-            {
-                id: 'petg-trans-blue',
-                name: 'خيوط PETG High Speed (أزرق شفاف - Trans Blue)',
-                category: 'PETG',
-                selectedOption: 'spool',
-                options: {
-                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-trans-blue.webp' },
-                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-trans-blue.webp' }
-                }
-            },
-            {
-                id: 'petg-trans-green',
-                name: 'خيوط PETG High Speed (أخضر شفاف - Trans Green)',
-                category: 'PETG',
-                selectedOption: 'spool',
-                options: {
-                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-trans-green.webp' },
-                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-trans-green.webp' }
-                }
-            },
-            {
-                id: 'petg-turquoise',
-                name: 'خيوط PETG High Speed (تركوازي - Turquoise)',
-                category: 'PETG',
-                selectedOption: 'refill',
-                options: {
-                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-turquoise.webp' },
-                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-turquoise.webp' }
-                }
-            },
-            {
-                id: 'petg-violet',
-                name: 'خيوط PETG High Speed (بنفسجي - Violet)',
-                category: 'PETG',
-                selectedOption: 'spool',
-                options: {
-                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-violet.webp' },
-                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-violet.webp' }
-                }
-            },
-            {
-                id: 'petg-yellow',
-                name: 'خيوط PETG High Speed (أصفر - Yellow)',
-                category: 'PETG',
-                selectedOption: 'spool',
-                options: {
-                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-yellow.webp' },
-                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-yellow.webp' }
-                }
-            }
+            { id: 'petg-black', name: 'خيوط PETG High Speed (أسود - Black)', category: 'PETG', selectedOption: 'spool', options: { spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-black.webp' }, refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-black.webp' } } },
+            { id: 'petg-blue', name: 'خيوط PETG High Speed (أزرق - Blue)', category: 'PETG', selectedOption: 'spool', options: { spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-blue.webp' }, refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-blue.webp' } } },
+            { id: 'petg-clear', name: 'خيوط PETG High Speed (شفاف - Clear)', category: 'PETG', selectedOption: 'spool', options: { spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-clear.webp' }, refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-clear.webp' } } },
+            { id: 'petg-cyan', name: 'خيوط PETG High Speed (سمائي - Cyan)', category: 'PETG', selectedOption: 'spool', options: { spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-cyan.webp' }, refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-cyan.webp' } } },
+            { id: 'petg-deep-blue', name: 'خيوط PETG High Speed (أزرق غامق - Deep Blue)', category: 'PETG', selectedOption: 'spool', options: { spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-deep-blue.webp' }, refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-deep-blue.webp' } } },
+            { id: 'petg-golden', name: 'خيوط PETG High Speed (ذهبي - Golden)', category: 'PETG', selectedOption: 'spool', options: { spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-golden.webp' }, refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-golden.webp' } } },
+            { id: 'petg-green', name: 'خيوط PETG High Speed (أخضر - Green)', category: 'PETG', selectedOption: 'spool', options: { spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-green.webp' }, refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-green.webp' } } },
+            { id: 'petg-latte', name: 'خيوط PETG High Speed (لاتيه - Latte)', category: 'PETG', selectedOption: 'spool', options: { spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-latte.webp' }, refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-latte.webp' } } },
+            { id: 'petg-indigo-purple', name: 'خيوط PETG High Speed (بنفسجي نيللي - Indigo Purple)', category: 'PETG', selectedOption: 'spool', options: { spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-indigo-purple.webp' }, refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-indigo-purple.webp' } } },
+            { id: 'petg-orange', name: 'خيوط PETG High Speed (برتقالي - Orange)', category: 'PETG', selectedOption: 'spool', options: { spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-orange.webp' }, refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-orange.webp' } } },
+            { id: 'petg-pink', name: 'خيوط PETG High Speed (وردي - Pink)', category: 'PETG', selectedOption: 'spool', options: { spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-pink.webp' }, refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-pink.webp' } } },
+            { id: 'petg-purple', name: 'خيوط PETG High Speed (أرجواني - Purple)', category: 'PETG', selectedOption: 'spool', options: { spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-purple.webp' }, refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-purple.webp' } } },
+            { id: 'petg-taro-purple', name: 'خيوط PETG High Speed (بنفسجي تارو - Taro Purple)', category: 'PETG', selectedOption: 'spool', options: { spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-taro-purple.webp' }, refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-taro-purple.webp' } } },
+            { id: 'petg-red-rose', name: 'خيوط PETG High Speed (أحمر وردي - Red Rose)', category: 'PETG', selectedOption: 'spool', options: { spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-red-rose.webp' }, refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-red-rose.webp' } } },
+            { id: 'petg-skin', name: 'خيوط PETG High Speed (بشري/بيج - Skin)', category: 'PETG', selectedOption: 'spool', options: { spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-skin.webp' }, refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-skin.webp' } } },
+            { id: 'petg-trans-blue', name: 'خيوط PETG High Speed (أزرق شفاف - Trans Blue)', category: 'PETG', selectedOption: 'spool', options: { spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-trans-blue.webp' }, refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-trans-blue.webp' } } },
+            { id: 'petg-trans-green', name: 'خيوط PETG High Speed (أخضر شفاف - Trans Green)', category: 'PETG', selectedOption: 'spool', options: { spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-trans-green.webp' }, refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-trans-green.webp' } } },
+            { id: 'petg-turquoise', name: 'خيوط PETG High Speed (تركوازي - Turquoise)', category: 'PETG', selectedOption: 'spool', options: { spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-turquoise.webp' }, refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-turquoise.webp' } } },
+            { id: 'petg-violet', name: 'خيوط PETG High Speed (بنفسجي - Violet)', category: 'PETG', selectedOption: 'spool', options: { spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-violet.webp' }, refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-violet.webp' } } },
+            { id: 'petg-yellow', name: 'خيوط PETG High Speed (أصفر - Yellow)', category: 'PETG', selectedOption: 'spool', options: { spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-yellow.webp' }, refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-yellow.webp' } } }
         ];
 
         let cart = [];
 
-        // عرض المنتجات في الصفحة
         function renderProducts(filter = 'ALL') {
             const container = document.getElementById('products-container');
+            if(!container) return;
             container.innerHTML = '';
 
             const filtered = filter === 'ALL' 
@@ -602,17 +422,17 @@
                     </div>
 
                     <div class="spool-options">
-                        <button id="btn-spool-${product.id}" class="spool-btn ${product.selectedOption === 'spool' ? 'active' : ''}" 
+                        <button type="button" id="btn-spool-${product.id}" class="spool-btn ${product.selectedOption === 'spool' ? 'active' : ''}" 
                                 onclick="changeSpoolOption('${product.id}', 'spool')">
                             📦 مع بكرة
                         </button>
-                        <button id="btn-refill-${product.id}" class="spool-btn ${product.selectedOption === 'refill' ? 'active' : ''}" 
+                        <button type="button" id="btn-refill-${product.id}" class="spool-btn ${product.selectedOption === 'refill' ? 'active' : ''}" 
                                 onclick="changeSpoolOption('${product.id}', 'refill')">
                             ♻️ بدون بكرة
                         </button>
                     </div>
 
-                    <button class="add-to-cart-btn" onclick="addToCart('${product.id}')">
+                    <button type="button" class="add-to-cart-btn" onclick="addToCart('${product.id}')">
                         🛒 إضافة إلى السلة
                     </button>
                 `;
@@ -620,20 +440,18 @@
             });
         }
 
-        // تغيير نوع التعبئة (Spool / Refill) المباشر لتسهيل الاستجابة
         function changeSpoolOption(productId, optionType) {
             const product = productsData.find(p => p.id === productId);
             if (product) {
+                // حفظ الخيار المختار داخل الكائن
                 product.selectedOption = optionType;
                 const opt = product.options[optionType];
                 
-                // 1. تحديث الصورة والسعر
                 const imgElem = document.getElementById(`img-${productId}`);
                 const priceElem = document.getElementById(`price-${productId}`);
                 if (imgElem) imgElem.src = opt.image;
                 if (priceElem) priceElem.innerText = opt.price.toLocaleString();
                 
-                // 2. تحديث التنسيق النشط للزرين دون إعادة رسم الصفحة
                 const spoolBtn = document.getElementById(`btn-spool-${productId}`);
                 const refillBtn = document.getElementById(`btn-refill-${productId}`);
                 
@@ -649,9 +467,10 @@
             }
         }
 
-        // إضافة إلى السلة
         function addToCart(productId) {
             const product = productsData.find(p => p.id === productId);
+            if (!product) return;
+            
             const opt = product.options[product.selectedOption];
 
             const itemInCart = cart.find(item => item.id === productId && item.option === product.selectedOption);
@@ -671,13 +490,13 @@
 
             updateCartUI();
             
-            // تأثير حركي لزر السلة
             const btn = document.getElementById('cart-nav-btn');
-            btn.classList.add('cart-pop-animation');
-            setTimeout(() => btn.classList.remove('cart-pop-animation'), 500);
+            if (btn) {
+                btn.classList.add('cart-pop-animation');
+                setTimeout(() => btn.classList.remove('cart-pop-animation'), 500);
+            }
         }
 
-        // تحديث واجهة السلة
         function updateCartUI() {
             const countSpan = document.getElementById('nav-cart-count');
             const totalSpan = document.getElementById('cart-total-price');
@@ -686,11 +505,13 @@
             const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
             const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
-            countSpan.innerText = totalCount;
-            totalSpan.innerText = totalPrice.toLocaleString() + ' د.ع';
+            if (countSpan) countSpan.innerText = totalCount;
+            if (totalSpan) totalSpan.innerText = totalPrice.toLocaleString() + ' د.ع';
+
+            if (!cartBody) return;
 
             if (cart.length === 0) {
-                cartBody.innerHTML = '<p style="text-align: center; color: #64748b;">السلة فارغة حالياً</p>';
+                cartBody.innerHTML = '<p style="text-align: center; color: #64748b; margin-top: 20px;">السلة فارغة حالياً</p>';
                 return;
             }
 
@@ -701,7 +522,7 @@
                         <span style="font-size: 0.85em; color: #2563eb;">(${item.typeText})</span>
                         <div style="font-size: 0.85em; color: #64748b;">${item.price.toLocaleString()} د.ع × ${item.qty}</div>
                     </div>
-                    <button onclick="removeFromCart(${index})" style="background: none; border: none; color: #ef4444; cursor: pointer; font-weight: bold;">إزالة</button>
+                    <button type="button" onclick="removeFromCart(${index})" style="background: none; border: none; color: #ef4444; cursor: pointer; font-weight: bold;">إزالة</button>
                 </div>
             `).join('');
         }
@@ -713,7 +534,7 @@
 
         function toggleCart() {
             const modal = document.getElementById('cart-modal');
-            modal.classList.toggle('open');
+            if (modal) modal.classList.toggle('open');
         }
 
         function filterCategory(cat) {
@@ -737,11 +558,11 @@
 
             message += `\nالمجموع الكلي: ${total.toLocaleString()} د.ع`;
 
-            const phone = "9647000000000"; // رقم الواتساب الخاص بالمتجر
+            // ادخل رقم الواتساب الخاص بالمتجر هنا (مع الرمز الدولي بدون +)
+            const phone = "9647000000000"; 
             window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
         }
 
-        // تشغيل البناء الأولي عند تحميل الصفحة
         document.addEventListener('DOMContentLoaded', () => {
             renderProducts();
         });
