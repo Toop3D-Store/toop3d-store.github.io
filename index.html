@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toop3D - متجر الطباعة ثلاثية الأبعاد</title>
-    <link rel="stylesheet" href="css/style.css?v=114">
+    <link rel="stylesheet" href="css/style.css?v=115">
     
     <style>
         /* ==========================================
@@ -385,10 +385,10 @@
                 </button>
             </div>
         </div>
-    </modal>
+    </div>
 
     <!-- ==========================================
-       7. البرمجة ومزامنة Google Sheets (المصحة 100%)
+       7. البرمجة ومزامنة Google Sheets
        ========================================== -->
     <script>
         const SHEET_ID = '2PACX-1vQswuYaNx5xNjan745b2Dca59YUIojFeP8DWKut0jADKMLl4uPnOOHbVQsBx55m0FmhwEpobJlIEaap';
@@ -437,7 +437,6 @@
                 });
         }
 
-        // دالة تفكيك CSV متقدمة ومقاومة للأخطاء الفنية
         function parseCSVLine(text) {
             let p = '', c = '', r = [];
             let q = false;
@@ -462,7 +461,9 @@
             if (lines.length < 2) return [];
 
             const headers = parseCSVLine(lines[0]).map(h => h.toLowerCase().trim().replace(/^"|"$/g, ''));
-            const defaultUnavailableImg = 'https://via.placeholder.com/300x300/f1f5f9/64748b?text=%D8%B3%D9%8A%D8%AA%D9%88%D9%81%D8%B1+%D9%82%D8%B1%D9%8A%D8%A8%D8%A7%D9%8B';
+            
+            // الصورة التوضيحية عند عدم وجود صورة أصبحت تحمل عبارة "نفدت الكمية"
+            const defaultUnavailableImg = 'https://via.placeholder.com/300x300/f1f5f9/64748b?text=%D9%86%D9%81%D8%AF%D8%AA+%D8%A7%D9%84%D9%83%D9%85%D9%8A%D8%A9';
 
             return lines.slice(1).map((line, idx) => {
                 if (!line.trim()) return null;
@@ -473,25 +474,20 @@
                     row[header] = values[index] !== undefined ? values[index] : '';
                 });
 
-                // استخراج الخصائص بالتطابق التام مع الشيت الخاص بك
                 const material = (row['material'] || 'PETG').toUpperCase();
                 const color = row['color'] || '';
                 const name = `خيوط ${material} High Speed (${color})`;
                 const id = row['id'] || `product-${idx}`;
 
-                // التوفر بالنسبة لـ Spool
                 const spoolAvailRaw = (row['spool_avail'] || 'TRUE').toString().toUpperCase().trim();
                 const isSpoolAvailable = (spoolAvailRaw === 'TRUE' || spoolAvailRaw === '1');
 
-                // التوفر بالنسبة لـ Refill
                 const refillAvailRaw = (row['refill_avail'] || 'TRUE').toString().toUpperCase().trim();
                 const isRefillAvailable = (refillAvailRaw === 'TRUE' || refillAvailRaw === '1');
 
-                // الأسعار
                 const spoolPrice = parseFloat((row['spool_price'] || '0').replace(/[^0-9.]/g, '')) || 0;
                 const refillPrice = parseFloat((row['refill_price'] || '0').replace(/[^0-9.]/g, '')) || 0;
 
-                // الصور
                 let spoolImg = row['spool_image'] || defaultUnavailableImg;
                 let refillImg = row['refill_image'] || spoolImg;
 
@@ -534,7 +530,7 @@
                 return;
             }
 
-            const defaultUnavailableImg = 'https://via.placeholder.com/300x300/f1f5f9/64748b?text=%D8%B3%D9%8A%D8%AA%D9%88%D9%81%D8%B1+%D9%82%D8%B1%D9%8A%D8%A8%D8%A7%D9%8B';
+            const defaultUnavailableImg = 'https://via.placeholder.com/300x300/f1f5f9/64748b?text=%D9%86%D9%81%D8%AF%D8%AA+%D8%A7%D9%84%D9%83%D9%85%D9%8A%D8%A9';
 
             filtered.forEach(product => {
                 const currentOpt = product.options[product.selectedOption];
@@ -544,13 +540,14 @@
                 card.className = 'product-card';
                 card.id = `card-${product.id}`;
 
+                // 🔄 استبدال الكلمات للزر: أصبحت "⏳ نفدت الكمية" عند تعطيل الزر
                 const actionButtonHtml = `
                     <button type="button" 
                             id="add-btn-${product.id}" 
                             class="add-to-cart-btn ${!canAddToCart ? 'disabled' : ''}" 
                             ${!canAddToCart ? 'disabled' : ''} 
                             onclick="addToCart('${product.id}')">
-                        ${canAddToCart ? '🛒 إضافة إلى السلة' : '⏳ غير متوفر حالياً'}
+                        ${canAddToCart ? '🛒 إضافة إلى السلة' : '⏳ نفدت الكمية'}
                     </button>
                 `;
 
@@ -558,10 +555,11 @@
                     ? `<span id="price-${product.id}">${currentOpt.price.toLocaleString()}</span> د.ع`
                     : `غير متوفر حالياً`;
 
+                // 🔄 استبدال الكلمات للشارة فوق الصورة: أصبحت "سيتوفر قريباً"
                 card.innerHTML = `
                     <div style="position: relative;">
                         <img id="img-${product.id}" src="${currentOpt.image}" alt="${product.name}" onerror="this.src='${defaultUnavailableImg}'">
-                        <span id="badge-${product.id}" style="position: absolute; top: 10px; right: 10px; background: #ef4444; color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 0.75em; font-weight: bold; display: ${!canAddToCart ? 'block' : 'none'};">نفدت الكمية</span>
+                        <span id="badge-${product.id}" style="position: absolute; top: 10px; right: 10px; background: #64748b; color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 0.75em; font-weight: bold; display: ${!canAddToCart ? 'block' : 'none'};">سيتوفر قريباً</span>
                     </div>
 
                     <h3 style="font-size: 1.05em; margin: 8px 0; color: #0f172a; min-height: 2.4em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
@@ -629,6 +627,7 @@
                 badge.style.display = !canAddToCart ? 'block' : 'none';
             }
 
+            // 🔄 تحديث النص داخل الزر عند التبديل
             if (addBtn) {
                 addBtn.disabled = !canAddToCart;
                 if (canAddToCart) {
@@ -636,7 +635,7 @@
                     addBtn.innerHTML = '🛒 إضافة إلى السلة';
                 } else {
                     addBtn.classList.add('disabled');
-                    addBtn.innerHTML = '⏳ غير متوفر حالياً';
+                    addBtn.innerHTML = '⏳ نفدت الكمية';
                 }
             }
         }
