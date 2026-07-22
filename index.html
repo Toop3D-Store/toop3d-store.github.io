@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toop3D - متجر الطباعة ثلاثية الأبعاد</title>
-    <link rel="stylesheet" href="css/style.css?v=124">
+    <link rel="stylesheet" href="css/style.css?v=125">
     
     <style>
         /* ==========================================
@@ -607,7 +607,7 @@
         🛒 السلة <span id="nav-cart-count">0</span>
     </button>
 
-    <!-- 🖼️ 6. النافذة المنبثقة للسلة (مع الصور بالحجم الجديد الأكبر) -->
+    <!-- 🖼️ 6. النافذة المنبثقة للسلة -->
     <div id="cart-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -646,7 +646,7 @@
 
             <div class="footer-col">
                 <h4>الدعم الفني</h4>
-                <a href="https://wa.me/9647827573964" target="_blank" class="footer-contact-btn">
+                <a href="https://wa.me/964727573964" target="_blank" class="footer-contact-btn">
                     💬 راسلنا عبر الواتساب
                 </a>
             </div>
@@ -772,16 +772,20 @@
                     id: id,
                     name: name,
                     category: material,
+                    materialName: material,
+                    colorName: color,
                     selectedOption: defaultOption,
                     options: {
                         spool: {
                             typeText: 'مع بكرة',
+                            spoolStatusText: 'مع بكرة',
                             price: spoolPrice,
                             image: spoolImg,
                             isAvailable: hasSpool
                         },
                         refill: {
                             typeText: 'بدون بكرة (Refill)',
+                            spoolStatusText: 'بدون بكرة',
                             price: refillPrice,
                             image: refillImg,
                             isAvailable: hasRefill
@@ -933,8 +937,11 @@
                 cart.push({
                     id: product.id,
                     name: product.name,
+                    material: product.materialName,
+                    color: product.colorName,
                     option: product.selectedOption,
                     typeText: opt.typeText,
+                    spoolStatusText: opt.spoolStatusText,
                     price: opt.price,
                     image: opt.image, 
                     qty: 1
@@ -1026,12 +1033,17 @@
             cart.forEach((item, index) => {
                 const subtotal = item.price * item.qty;
                 total += subtotal;
-                message += `${index + 1}. ${item.name}\n   النوع: [${item.typeText}]\n   الكمية: ${item.qty} | السعر: ${subtotal.toLocaleString()} د.ع\n\n`;
+                message += `▪️ تسلسل المنتج: ${index + 1}\n` +
+                           `   - المادة: ${item.material}\n` +
+                           `   - اللون: ${item.color}\n` +
+                           `   - الخيار: ${item.spoolStatusText}\n` +
+                           `   - العدد: ${item.qty}\n` +
+                           `   - السعر الإجمالي: ${subtotal.toLocaleString()} د.ع\n\n`;
             });
 
-            message += `-------------------\nالمجموع الكلي: ${total.toLocaleString()} د.ع`;
+            message += `-------------------\nالمجموع الكلي للطلب: ${total.toLocaleString()} د.ع`;
 
-            const phone = "9647827573964"; 
+            const phone = "964727573964"; 
             window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
         }
 
