@@ -461,8 +461,6 @@
             if (lines.length < 2) return [];
 
             const headers = parseCSVLine(lines[0]).map(h => h.toLowerCase().trim().replace(/^"|"$/g, ''));
-            
-            // الصورة التوضيحية عند عدم وجود صورة أصبحت تحمل عبارة "نفدت الكمية"
             const defaultUnavailableImg = 'https://via.placeholder.com/300x300/f1f5f9/64748b?text=%D9%86%D9%81%D8%AF%D8%AA+%D8%A7%D9%84%D9%83%D9%85%D9%8A%D8%A9';
 
             return lines.slice(1).map((line, idx) => {
@@ -491,23 +489,32 @@
                 let spoolImg = row['spool_image'] || defaultUnavailableImg;
                 let refillImg = row['refill_image'] || spoolImg;
 
+                const hasSpool = isSpoolAvailable && spoolPrice > 0;
+                const hasRefill = isRefillAvailable && refillPrice > 0;
+
+                // ⚡ تحديد الخيار الافتراضي: إذا توفرت البكرة اختر spool، وإذا لم تتوفر وتوفر الـ refill تحول تلقائياً لـ refill
+                let defaultOption = 'spool';
+                if (!hasSpool && hasRefill) {
+                    defaultOption = 'refill';
+                }
+
                 return {
                     id: id,
                     name: name,
                     category: material,
-                    selectedOption: 'spool',
+                    selectedOption: defaultOption,
                     options: {
                         spool: {
                             typeText: 'مع بكرة',
                             price: spoolPrice,
                             image: spoolImg,
-                            isAvailable: isSpoolAvailable && spoolPrice > 0
+                            isAvailable: hasSpool
                         },
                         refill: {
                             typeText: 'بدون بكرة (Refill)',
                             price: refillPrice,
                             image: refillImg,
-                            isAvailable: isRefillAvailable && refillPrice > 0
+                            isAvailable: hasRefill
                         }
                     }
                 };
@@ -540,7 +547,6 @@
                 card.className = 'product-card';
                 card.id = `card-${product.id}`;
 
-                // 🔄 استبدال الكلمات للزر: أصبحت "⏳ نفدت الكمية" عند تعطيل الزر
                 const actionButtonHtml = `
                     <button type="button" 
                             id="add-btn-${product.id}" 
@@ -555,7 +561,6 @@
                     ? `<span id="price-${product.id}">${currentOpt.price.toLocaleString()}</span> د.ع`
                     : `غير متوفر حالياً`;
 
-                // 🔄 استبدال الكلمات للشارة فوق الصورة: أصبحت "سيتوفر قريباً"
                 card.innerHTML = `
                     <div style="position: relative;">
                         <img id="img-${product.id}" src="${currentOpt.image}" alt="${product.name}" onerror="this.src='${defaultUnavailableImg}'">
@@ -627,7 +632,6 @@
                 badge.style.display = !canAddToCart ? 'block' : 'none';
             }
 
-            // 🔄 تحديث النص داخل الزر عند التبديل
             if (addBtn) {
                 addBtn.disabled = !canAddToCart;
                 if (canAddToCart) {
