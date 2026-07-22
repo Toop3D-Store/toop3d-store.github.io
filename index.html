@@ -372,42 +372,176 @@
        7. برمجة المتجر ودعم PETG Refill (.webp)
        ========================================== -->
     <script>
-        // قائمة المنتجات مع دعم خيارات Refill لـ PETG وصور WebP
+        // قائمة جميع ألوان PETG الـ 17 المحدثة
         const productsData = [
             {
-                id: 'petg-black',
-                name: 'خيوط PETG High Speed (أسود)',
+                id: 'petg-blue',
+                name: 'خيوط PETG High Speed (أزرق - Blue)',
                 category: 'PETG',
-                selectedOption: 'spool', // الخيار الافتراضي
+                selectedOption: 'refill',
                 options: {
-                    spool: {
-                        typeText: 'مع بكرة',
-                        price: 20000,
-                        image: 'images/petg-spool.webp'
-                    },
-                    refill: {
-                        typeText: 'بدون بكرة (Refill)',
-                        price: 17000,
-                        image: 'images/petg-refill.webp'
-                    }
+                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-blue.webp' },
+                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-blue.webp' }
                 }
             },
             {
-                id: 'petg-white',
-                name: 'خيوط PETG High Speed (أبيض)',
+                id: 'petg-clear',
+                name: 'خيوط PETG High Speed (شفاف - Clear)',
                 category: 'PETG',
-                selectedOption: 'spool',
+                selectedOption: 'refill',
                 options: {
-                    spool: {
-                        typeText: 'مع بكرة',
-                        price: 20000,
-                        image: 'images/petg-white-spool.webp'
-                    },
-                    refill: {
-                        typeText: 'بدون بكرة (Refill)',
-                        price: 17000,
-                        image: 'images/petg-white-refill.webp'
-                    }
+                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-clear.webp' },
+                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-clear.webp' }
+                }
+            },
+            {
+                id: 'petg-cyan',
+                name: 'خيوط PETG High Speed (سمائي - Cyan)',
+                category: 'PETG',
+                selectedOption: 'refill',
+                options: {
+                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-cyan.webp' },
+                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-cyan.webp' }
+                }
+            },
+            {
+                id: 'petg-deep-blue',
+                name: 'خيوط PETG High Speed (أزرق غامق - Deep Blue)',
+                category: 'PETG',
+                selectedOption: 'refill',
+                options: {
+                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-deep-blue.webp' },
+                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-deep-blue.webp' }
+                }
+            },
+            {
+                id: 'petg-golden',
+                name: 'خيوط PETG High Speed (ذهبي - Golden)',
+                category: 'PETG',
+                selectedOption: 'refill',
+                options: {
+                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-golden.webp' },
+                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-golden.webp' }
+                }
+            },
+            {
+                id: 'petg-green',
+                name: 'خيوط PETG High Speed (أخضر - Green)',
+                category: 'PETG',
+                selectedOption: 'refill',
+                options: {
+                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-green.webp' },
+                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-green.webp' }
+                }
+            },
+            {
+                id: 'petg-latte',
+                name: 'خيوط PETG High Speed (لاتيه - Latte)',
+                category: 'PETG',
+                selectedOption: 'refill',
+                options: {
+                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-latte.webp' },
+                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-latte.webp' }
+                }
+            },
+            {
+                id: 'petg-indigo-purple',
+                name: 'خيوط PETG High Speed (بنفسجي نيللي - Indigo Purple)',
+                category: 'PETG',
+                selectedOption: 'refill',
+                options: {
+                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-indigo-purple.webp' },
+                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-ndigo-purple.webp' }
+                }
+            },
+            {
+                id: 'petg-orange',
+                name: 'خيوط PETG High Speed (برتقالي - Orange)',
+                category: 'PETG',
+                selectedOption: 'refill',
+                options: {
+                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-orange.webp' },
+                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-orange.webp' }
+                }
+            },
+            {
+                id: 'petg-pink',
+                name: 'خيوط PETG High Speed (وردي - Pink)',
+                category: 'PETG',
+                selectedOption: 'refill',
+                options: {
+                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-pink.webp' },
+                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-pink.webp' }
+                }
+            },
+            {
+                id: 'petg-purple',
+                name: 'خيوط PETG High Speed (أرجواني - Purple)',
+                category: 'PETG',
+                selectedOption: 'refill',
+                options: {
+                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-purple.webp' },
+                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-purple.webp' }
+                }
+            },
+            {
+                id: 'petg-red-rose',
+                name: 'خيوط PETG High Speed (أحمر وردي - Red Rose)',
+                category: 'PETG',
+                selectedOption: 'refill',
+                options: {
+                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-red-rose.webp' },
+                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-red-rose.webp' }
+                }
+            },
+            {
+                id: 'petg-skin',
+                name: 'خيوط PETG High Speed (بشري/بيج - Skin)',
+                category: 'PETG',
+                selectedOption: 'refill',
+                options: {
+                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-skin.webp' },
+                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-skin.webp' }
+                }
+            },
+            {
+                id: 'petg-trans-blue',
+                name: 'خيوط PETG High Speed (أزرق شفاف - Trans Blue)',
+                category: 'PETG',
+                selectedOption: 'refill',
+                options: {
+                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-trans-blue.webp' },
+                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-trans-blue.webp' }
+                }
+            },
+            {
+                id: 'petg-trans-green',
+                name: 'خيوط PETG High Speed (أخضر شفاف - Trans Green)',
+                category: 'PETG',
+                selectedOption: 'refill',
+                options: {
+                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-trans-green.webp' },
+                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-trans-green.webp' }
+                }
+            },
+            {
+                id: 'petg-turquoise',
+                name: 'خيوط PETG High Speed (تركوازي - Turquoise)',
+                category: 'PETG',
+                selectedOption: 'refill',
+                options: {
+                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-turquoise.webp' },
+                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-Turquoise.webp' }
+                }
+            },
+            {
+                id: 'petg-violet',
+                name: 'خيوط PETG High Speed (بنفسجي - Violet)',
+                category: 'PETG',
+                selectedOption: 'refill',
+                options: {
+                    spool: { typeText: 'مع بكرة', price: 20000, image: 'images/petg-spool-violet.webp' },
+                    refill: { typeText: 'بدون بكرة (Refill)', price: 17000, image: 'images/petg-refill-violet.webp' }
                 }
             }
         ];
