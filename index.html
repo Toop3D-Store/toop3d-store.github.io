@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toop3D - متجر الطباعة ثلاثية الأبعاد</title>
-    <link rel="stylesheet" href="css/style.css?v=113">
+    <link rel="stylesheet" href="css/style.css?v=114">
     
     <style>
         /* ==========================================
@@ -385,10 +385,10 @@
                 </button>
             </div>
         </div>
-    </div>
+    </modal>
 
     <!-- ==========================================
-       7. البرمجة ومزامنة Google Sheets (المحدثة)
+       7. البرمجة ومزامنة Google Sheets (المصحة 100%)
        ========================================== -->
     <script>
         const SHEET_ID = '2PACX-1vQswuYaNx5xNjan745b2Dca59YUIojFeP8DWKut0jADKMLl4uPnOOHbVQsBx55m0FmhwEpobJlIEaap';
@@ -437,50 +437,69 @@
                 });
         }
 
+        // دالة تفكيك CSV متقدمة ومقاومة للأخطاء الفنية
+        function parseCSVLine(text) {
+            let p = '', c = '', r = [];
+            let q = false;
+            for (let i = 0; i < text.length; i++) {
+                c = text[i];
+                if (c === '"') {
+                    if (q && text[i+1] === '"') { p += '"'; i++; }
+                    else { q = !q; }
+                } else if (c === ',' && !q) {
+                    r.push(p.trim());
+                    p = '';
+                } else {
+                    p += c;
+                }
+            }
+            r.push(p.trim());
+            return r;
+        }
+
         function parseCSVToProducts(csvText) {
-            const lines = csvText.trim().split('\n');
+            const lines = csvText.trim().split(/\r?\n/);
             if (lines.length < 2) return [];
 
-            const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, '').toLowerCase());
+            const headers = parseCSVLine(lines[0]).map(h => h.toLowerCase().trim().replace(/^"|"$/g, ''));
             const defaultUnavailableImg = 'https://via.placeholder.com/300x300/f1f5f9/64748b?text=%D8%B3%D9%8A%D8%AA%D9%88%D9%81%D8%B1+%D9%82%D8%B1%D9%8A%D8%A8%D8%A7%D9%8B';
 
             return lines.slice(1).map((line, idx) => {
-                const values = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.trim().replace(/^"|"$/g, ''));
+                if (!line.trim()) return null;
+                const values = parseCSVLine(line).map(v => v.trim().replace(/^"|"$/g, ''));
                 
                 const row = {};
                 headers.forEach((header, index) => {
-                    row[header] = values[index] || '';
+                    row[header] = values[index] !== undefined ? values[index] : '';
                 });
 
-                // 1. القراءة الصحيحة لـ material و color ورسم اسم المنتج
+                // استخراج الخصائص بالتطابق التام مع الشيت الخاص بك
                 const material = (row['material'] || 'PETG').toUpperCase();
                 const color = row['color'] || '';
                 const name = `خيوط ${material} High Speed (${color})`;
                 const id = row['id'] || `product-${idx}`;
 
-                // الاعتماد على خامة المنتج للفلترة
-                const filterCategory = material; 
+                // التوفر بالنسبة لـ Spool
+                const spoolAvailRaw = (row['spool_avail'] || 'TRUE').toString().toUpperCase().trim();
+                const isSpoolAvailable = (spoolAvailRaw === 'TRUE' || spoolAvailRaw === '1');
 
-                // 2. فحص توفر البكرة (spool_avail)
-                const spoolAvailRaw = (row['spool_avail'] || 'true').toString().toLowerCase().trim();
-                const isSpoolAvailable = (spoolAvailRaw === 'true' || spoolAvailRaw === '1');
+                // التوفر بالنسبة لـ Refill
+                const refillAvailRaw = (row['refill_avail'] || 'TRUE').toString().toUpperCase().trim();
+                const isRefillAvailable = (refillAvailRaw === 'TRUE' || refillAvailRaw === '1');
 
-                // 3. فحص توفر بدون بكرة (refill_avail)
-                const refillAvailRaw = (row['refill_avail'] || 'true').toString().toLowerCase().trim();
-                const isRefillAvailable = (refillAvailRaw === 'true' || refillAvailRaw === '1');
-
-                // الأسعار والصور
+                // الأسعار
                 const spoolPrice = parseFloat((row['spool_price'] || '0').replace(/[^0-9.]/g, '')) || 0;
                 const refillPrice = parseFloat((row['refill_price'] || '0').replace(/[^0-9.]/g, '')) || 0;
 
+                // الصور
                 let spoolImg = row['spool_image'] || defaultUnavailableImg;
                 let refillImg = row['refill_image'] || spoolImg;
 
                 return {
                     id: id,
                     name: name,
-                    category: filterCategory,
-                    selectedOption: 'spool', // الخيار الافتراضي عند الفتح
+                    category: material,
+                    selectedOption: 'spool',
                     options: {
                         spool: {
                             typeText: 'مع بكرة',
@@ -496,7 +515,7 @@
                         }
                     }
                 };
-            });
+            }).filter(item => item !== null);
         }
 
         function renderProducts(filter = 'ALL') {
@@ -519,8 +538,6 @@
 
             filtered.forEach(product => {
                 const currentOpt = product.options[product.selectedOption];
-                
-                // فحص توفر الخيار المختار حالياً
                 const canAddToCart = currentOpt.isAvailable;
 
                 const card = document.createElement('div');
@@ -584,10 +601,8 @@
             const addBtn = document.getElementById(`add-btn-${productId}`);
             const badge = document.getElementById(`badge-${productId}`);
 
-            // 1. تحديث الصورة
             if (imgElem) imgElem.src = opt.image;
 
-            // 2. تحديث ألوان وأزرار الاختيار
             const spoolBtn = document.getElementById(`btn-spool-${productId}`);
             const refillBtn = document.getElementById(`btn-refill-${productId}`);
             
@@ -601,7 +616,6 @@
                 }
             }
 
-            // 3. إعادة تقييم توفر الخيار الجديد فوراً
             const canAddToCart = opt.isAvailable;
 
             if (priceContainer) {
@@ -633,7 +647,6 @@
             
             const opt = product.options[product.selectedOption];
 
-            // ⛔ حماية برمجية صارمة: رفض الإضافة إذا كان الخيار غير متوفر
             if (!opt.isAvailable) {
                 alert('عذراً، هذا الخيار غير متوفر حالياً ولن يتم إضافته للسلة.');
                 return;
