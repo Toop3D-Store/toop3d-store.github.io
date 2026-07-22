@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toop3D - متجر الطباعة ثلاثية الأبعاد</title>
-    <link rel="stylesheet" href="css/style.css?v=123">
+    <link rel="stylesheet" href="css/style.css?v=124">
     
     <style>
         /* ==========================================
@@ -286,7 +286,7 @@
         .modal-content {
             background-color: #ffffff !important;
             width: 100% !important;
-            max-width: 540px !important;
+            max-width: 580px !important;
             max-height: 85vh !important;
             border-radius: 16px !important;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1) !important;
@@ -330,49 +330,49 @@
             flex-grow: 1 !important;
         }
 
-        /* تصميم صف المنتج داخل السلة مع صورة مكبرة وواضحة */
+        /* تصميم صف المنتج داخل السلة مع صورة أكبر وأكثر وضوحاً */
         .cart-item-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 15px;
-            padding: 14px 0;
+            gap: 18px;
+            padding: 16px 0;
             border-bottom: 1px solid #f1f5f9;
         }
 
         .cart-item-info {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 18px;
             flex-grow: 1;
         }
 
         .cart-item-thumb {
-            width: 85px !important;
-            height: 85px !important;
-            min-width: 85px !important;
+            width: 110px !important;
+            height: 110px !important;
+            min-width: 110px !important;
             object-fit: contain;
             background-color: #f8fafc;
             border: 1px solid #cbd5e1;
-            border-radius: 10px;
-            padding: 4px;
+            border-radius: 12px;
+            padding: 6px;
             flex-shrink: 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.06);
         }
 
         .qty-controls {
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-top: 6px;
+            margin-top: 8px;
         }
 
         .qty-btn {
             background-color: #e2e8f0;
             border: none;
             color: #0f172a;
-            width: 28px;
-            height: 28px;
+            width: 30px;
+            height: 30px;
             border-radius: 6px;
             font-weight: bold;
             cursor: pointer;
@@ -732,7 +732,7 @@
             if (lines.length < 2) return [];
 
             const headers = parseCSVLine(lines[0]).map(h => h.toLowerCase().trim().replace(/^"|"$/g, ''));
-            const defaultUnavailableImg = 'https://via.placeholder.com/300x300/f1f5f9/64748b?text=%D9%86%D9%81%D8%AF%D8%tt+%D8%A7%D9%84%D9%83%D9%85%D9%8A%D8%A9';
+            const defaultUnavailableImg = 'https://via.placeholder.com/300x300/f1f5f9/64748b?text=%D9%86%D9%81%D8%df+%D8%A7%D9%84%D9%83%D9%85%D9%8A%D8%A9';
 
             return lines.slice(1).map((line, idx) => {
                 if (!line.trim()) return null;
@@ -807,7 +807,7 @@
                 return;
             }
 
-            const defaultUnavailableImg = 'https://via.placeholder.com/300x300/f1f5f9/64748b?text=%D9%86%D9%81%D8%AF%D8%tt+%D8%A7%D9%84%D9%83%D9%85%D9%8A%D8%A9';
+            const defaultUnavailableImg = 'https://via.placeholder.com/300x300/f1f5f9/64748b?text=%D9%86%D9%81%D8%df+%D8%A7%D9%84%D9%83%D9%85%D9%8A%D8%A9';
 
             filtered.forEach(product => {
                 const currentOpt = product.options[product.selectedOption];
@@ -1026,10 +1026,10 @@
             cart.forEach((item, index) => {
                 const subtotal = item.price * item.qty;
                 total += subtotal;
-                message += `${index + 1}. ${item.name} [${item.typeText}]\n   العدد: ${item.qty} | السعر: ${subtotal.toLocaleString()} د.ع\n`;
+                message += `${index + 1}. ${item.name}\n   النوع: [${item.typeText}]\n   الكمية: ${item.qty} | السعر: ${subtotal.toLocaleString()} د.ع\n\n`;
             });
 
-            message += `\nالمجموع الكلي: ${total.toLocaleString()} د.ع`;
+            message += `-------------------\nالمجموع الكلي: ${total.toLocaleString()} د.ع`;
 
             const phone = "964727573964"; 
             window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
