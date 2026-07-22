@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toop3D - متجر الطباعة ثلاثية الأبعاد</title>
-    <!-- تم تغيير إصدار v=108 لإجبار المتصفح على تحديث الكاش -->
-    <link rel="stylesheet" href="css/style.css?v=108">
+    <link rel="stylesheet" href="css/style.css?v=109">
     
     <style>
         /* ==========================================
@@ -267,6 +266,14 @@
         .whatsapp-btn:hover {
             background-color: #1ebc57 !important;
         }
+
+        .loading-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2em;
+            color: #64748b;
+        }
     </style>
 </head>
 <body>
@@ -340,7 +347,9 @@
                 </div>
             </div>
 
-            <div id="products-container" class="products-grid"></div>
+            <div id="products-container" class="products-grid">
+                <div class="loading-state">جاري تحميل المنتجات من Google Sheets...</div>
+            </div>
         </section>
     </main>
 
@@ -370,26 +379,96 @@
     </div>
 
     <!-- ==========================================
-       7. البرمجة التفاعلية للمتجر
+       7. الجلب المباشر والربط مع Google Sheets
        ========================================== -->
     <script>
-        // ❌ قم بحذف هذا الجزء القديم بالكامل:
-const productsData = [
-    { id: 'petg-black', name: 'خيوط PETG High Speed (أسود - Black)', ... },
-    { id: 'petg-blue', name: 'خيوط PETG High Speed (أزرق - Blue)', ... },
-    ...
-];
+        // رابط Google Sheets الخاص بك
+        const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQswuYaNx5xNjan745b2Dca59YUIojFeP8DWKut0jADKMLl4uPnOOHbVQsBx55m0FmhwEpobJlIEaap/pub?gid=0&single=true&output=csv';
 
+        let productsData = [];
         let cart = [];
+
+        // دالة جلب البيانات الحية المباشرة من Google Sheets
+        async function loadProductsFromSheet() {
+            try {
+                // إضافة &nocache لمنع التخزين المؤقت والحصول على أحدث التعديلات مباشرة
+                const response = await fetch(`${GOOGLE_SHEET_CSV_URL}&nocache=${Date.now()}`);
+                const csvText = await response.text();
+                
+                productsData = parseCSVToProducts(csvText);
+                renderProducts();
+            } catch (error) {
+                console.error('خطأ أثناء جلب البيانات من Google Sheets:', error);
+                const container = document.getElementById('products-container');
+                if (container) {
+                    container.innerHTML = '<div class="loading-state" style="color: #ef4444;">تعذر تحميل المنتجات. يرجى التأكد من الاتصال بالإنترنت وإعادة المحاولة.</div>';
+                }
+            }
+        }
+
+        // تحويل نص الـ CSV إلى مصفوفة كائنات متوافقة مع المتجر
+        function parseCSVToProducts(csvText) {
+            const lines = csvText.trim().split('\n');
+            if (lines.length < 2) return [];
+
+            // قراءة عناوين الأعمدة وتنظيفها
+            const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+
+            return lines.slice(1).map((line, idx) => {
+                // التعامل مع الخانات والفواصل بأمان
+                const values = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.trim().replace(/^"|"$/g, ''));
+                
+                const row = {};
+                headers.forEach((header, index) => {
+                    row[header] = values[index] || '';
+                });
+
+                const id = row.id || `product-${idx}`;
+                const name = row.name || row.title || `منتج ${idx + 1}`;
+                const category = (row.category || row.material || 'PETG').toUpperCase();
+                
+                const spoolPrice = parseFloat(row.spool_price || row.price) || 20000;
+                const refillPrice = parseFloat(row.refill_price) || 17000;
+
+                const spoolImg = row.spool_image || row.image || 'images/placeholder.webp';
+                const refillImg = row.refill_image || spoolImg;
+
+                return {
+                    id: id,
+                    name: name,
+                    category: category,
+                    selectedOption: 'spool',
+                    options: {
+                        spool: {
+                            typeText: 'مع بكرة',
+                            price: spoolPrice,
+                            image: spoolImg
+                        },
+                        refill: {
+                            typeText: 'بدون بكرة (Refill)',
+                            price: refillPrice,
+                            image: refillImg
+                        }
+                    }
+                };
+            });
+        }
 
         function renderProducts(filter = 'ALL') {
             const container = document.getElementById('products-container');
-            if(!container) return;
+            if (!container) return;
             container.innerHTML = '';
 
-            const filtered = filter === 'ALL' 
+            const activeCategory = filter || document.getElementById('category-select')?.value || 'ALL';
+
+            const filtered = activeCategory === 'ALL' 
                 ? productsData 
-                : productsData.filter(p => p.category === filter);
+                : productsData.filter(p => p.category === activeCategory);
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="loading-state">لا توجد منتجات متوفرة حالياً في القسم المختار.</div>';
+                return;
+            }
 
             filtered.forEach(product => {
                 const currentOpt = product.options[product.selectedOption];
@@ -427,7 +506,6 @@ const productsData = [
         function changeSpoolOption(productId, optionType) {
             const product = productsData.find(p => p.id === productId);
             if (product) {
-                // حفظ الخيار المختار داخل الكائن
                 product.selectedOption = optionType;
                 const opt = product.options[optionType];
                 
@@ -542,13 +620,12 @@ const productsData = [
 
             message += `\nالمجموع الكلي: ${total.toLocaleString()} د.ع`;
 
-            // ادخل رقم الواتساب الخاص بالمتجر هنا (مع الرمز الدولي بدون +)
             const phone = "9647000000000"; 
             window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            renderProducts();
+            loadProductsFromSheet();
         });
     </script>
 </body>
