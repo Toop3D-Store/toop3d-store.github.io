@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toop3D - متجر الطباعة ثلاثية الأبعاد</title>
-    <link rel="stylesheet" href="css/style.css?v=109">
+    <link rel="stylesheet" href="css/style.css?v=110">
     
     <style>
         /* ==========================================
@@ -30,7 +30,7 @@
         }
 
         /* ==========================================
-           2. 🖼️ إجبار ضبط صور كروت المنتجات
+           2. 🖼️ ضبط كروت المنتجات والصور
            ========================================== */
         .products-grid {
             display: grid !important;
@@ -61,7 +61,7 @@
             display: block !important;
         }
 
-        /* تنسيق أزرار اختيار نوع التعبئة (Spool / Refill) */
+        /* أزرار التعبئة (Spool / Refill) */
         .spool-options {
             display: flex;
             gap: 8px;
@@ -87,7 +87,7 @@
             color: #2563eb !important;
         }
 
-        /* 🛒 أزرار إضافة للسلة */
+        /* 🛒 أزرار الإضافة للسلة */
         .add-to-cart-btn {
             background-color: #2563eb !important;
             color: #ffffff !important;
@@ -105,7 +105,7 @@
         }
 
         /* ==========================================
-           3. 🎈 زر السلة العائم الثابت (Floating Button)
+           3. 🎈 زر السلة العائم الثابت
            ========================================== */
         #cart-nav-btn {
             position: fixed !important;
@@ -151,7 +151,7 @@
         }
 
         /* ==========================================
-           4. 🖼️ نافذة السلة المنبثقة (Modal Style)
+           4. 🖼️ النافذة المنبثقة للسلة (Modal)
            ========================================== */
         .modal {
             display: none;
@@ -376,46 +376,51 @@
                 </button>
             </div>
         </div>
-    </div>
+    </button>
 
     <!-- ==========================================
-       7. الجلب المباشر والربط مع Google Sheets
+       7. الجلب المباشر والربط الحقيقي مع Google Sheets
        ========================================== -->
     <script>
-        // رابط Google Sheets الخاص بك
-        const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQswuYaNx5xNjan745b2Dca59YUIojFeP8DWKut0jADKMLl4uPnOOHbVQsBx55m0FmhwEpobJlIEaap/pub?gid=0&single=true&output=csv';
-
+        const SHEET_ID = '2PACX-1vQswuYaNx5xNjan745b2Dca59YUIojFeP8DWKut0jADKMLl4uPnOOHbVQsBx55m0FmhwEpobJlIEaap';
+        const RAW_SHEET_URL = `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=0&single=true&output=csv`;
+        
         let productsData = [];
         let cart = [];
 
-        // دالة جلب البيانات الحية المباشرة من Google Sheets
+        // دالة جلب البيانات مع خادم وساطة لتجاوز حظر الـ CORS
         async function loadProductsFromSheet() {
+            const container = document.getElementById('products-container');
             try {
-                // إضافة &nocache لمنع التخزين المؤقت والحصول على أحدث التعديلات مباشرة
-                const response = await fetch(`${GOOGLE_SHEET_CSV_URL}&nocache=${Date.now()}`);
-                const csvText = await response.text();
+                const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(RAW_SHEET_URL)}&nocache=${Date.now()}`;
+                const response = await fetch(proxyUrl);
                 
+                if (!response.ok) throw new Error('تعذر الوصول إلى خادم البيانات');
+                
+                const csvText = await response.text();
                 productsData = parseCSVToProducts(csvText);
                 renderProducts();
             } catch (error) {
-                console.error('خطأ أثناء جلب البيانات من Google Sheets:', error);
-                const container = document.getElementById('products-container');
+                console.error('خطأ أثناء الجلب:', error);
                 if (container) {
-                    container.innerHTML = '<div class="loading-state" style="color: #ef4444;">تعذر تحميل المنتجات. يرجى التأكد من الاتصال بالإنترنت وإعادة المحاولة.</div>';
+                    container.innerHTML = `<div class="loading-state" style="color: #ef4444;">
+                        تعذر تحميل المنتجات من Google Sheets.<br>
+                        <small>يرجى التأكد من نشر الشيت بصيغة CSV وتحديث الصفحة.</small>
+                    </div>`;
                 }
             }
         }
 
-        // تحويل نص الـ CSV إلى مصفوفة كائنات متوافقة مع المتجر
+        // تفكيك الـ CSV واستخراج أسماء الأعمدة بمختلف الاحتمالات
         function parseCSVToProducts(csvText) {
             const lines = csvText.trim().split('\n');
             if (lines.length < 2) return [];
 
-            // قراءة عناوين الأعمدة وتنظيفها
-            const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+            const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, '').toLowerCase());
+
+            const defaultUnavailableImg = 'https://via.placeholder.com/300x300/f1f5f9/64748b?text=%D8%B3%D9%8A%D8%AA%D9%88%D9%81%D8%B1+%D9%82%D8%B1%D9%8A%D8%A8%D8%A7%D9%8B';
 
             return lines.slice(1).map((line, idx) => {
-                // التعامل مع الخانات والفواصل بأمان
                 const values = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.trim().replace(/^"|"$/g, ''));
                 
                 const row = {};
@@ -423,20 +428,27 @@
                     row[header] = values[index] || '';
                 });
 
-                const id = row.id || `product-${idx}`;
-                const name = row.name || row.title || `منتج ${idx + 1}`;
-                const category = (row.category || row.material || 'PETG').toUpperCase();
+                // البحث عن الاسم عبر احتمالات متناسبة مع اللغة العربية والإنجليزية
+                const name = row['name'] || row['اسم المنتج'] || row['title'] || row['product'] || row['المنتج'] || row['اسم'] || `منتج ${idx + 1}`;
+                const id = row['id'] || `product-${idx}`;
+                const category = (row['category'] || row['material'] || row['الخامة'] || 'PETG').toUpperCase();
                 
-                const spoolPrice = parseFloat(row.spool_price || row.price) || 20000;
-                const refillPrice = parseFloat(row.refill_price) || 17000;
+                const spoolPrice = parseFloat(row['spool_price'] || row['price'] || row['السعر'] || 0);
+                const refillPrice = parseFloat(row['refill_price'] || 0);
 
-                const spoolImg = row.spool_image || row.image || 'images/placeholder.webp';
-                const refillImg = row.refill_image || spoolImg;
+                let spoolImg = row['spool_image'] || row['image'] || row['الصورة'] || '';
+                let refillImg = row['refill_image'] || spoolImg;
+
+                if (!spoolImg) spoolImg = defaultUnavailableImg;
+                if (!refillImg) refillImg = defaultUnavailableImg;
+
+                const isAvailable = row['available'] !== 'false' && row['available'] !== 'no' && spoolPrice > 0;
 
                 return {
                     id: id,
                     name: name,
                     category: category,
+                    isAvailable: isAvailable,
                     selectedOption: 'spool',
                     options: {
                         spool: {
@@ -466,9 +478,11 @@
                 : productsData.filter(p => p.category === activeCategory);
 
             if (filtered.length === 0) {
-                container.innerHTML = '<div class="loading-state">لا توجد منتجات متوفرة حالياً في القسم المختار.</div>';
+                container.innerHTML = '<div class="loading-state">لا توجد منتجات متوفرة حالياً في هذا القسم.</div>';
                 return;
             }
+
+            const defaultUnavailableImg = 'https://via.placeholder.com/300x300/f1f5f9/64748b?text=%D8%B3%D9%8A%D8%AA%D9%88%D9%81%D8%B1+%D9%82%D8%B1%D9%8A%D8%A8%D8%A7%D9%8B';
 
             filtered.forEach(product => {
                 const currentOpt = product.options[product.selectedOption];
@@ -476,12 +490,27 @@
                 const card = document.createElement('div');
                 card.className = 'product-card';
                 card.id = `card-${product.id}`;
+
+                const actionButtonHtml = product.isAvailable && currentOpt.price > 0
+                    ? `<button type="button" class="add-to-cart-btn" onclick="addToCart('${product.id}')">🛒 إضافة إلى السلة</button>`
+                    : `<button type="button" class="add-to-cart-btn" style="background-color: #94a3b8 !important; cursor: not-allowed;" disabled>⏳ سيتوفر قريباً</button>`;
+
+                const priceHtml = currentOpt.price > 0 
+                    ? `<span id="price-${product.id}">${currentOpt.price.toLocaleString()}</span> د.ع`
+                    : `غير متوفر حالياً`;
+
                 card.innerHTML = `
-                    <img id="img-${product.id}" src="${currentOpt.image}" alt="${product.name}" onerror="this.src='images/placeholder.webp'">
-                    <h3 style="font-size: 1.05em; margin: 0 0 8px 0; color: #0f172a;">${product.name}</h3>
+                    <div style="position: relative;">
+                        <img id="img-${product.id}" src="${currentOpt.image}" alt="${product.name}" onerror="this.src='${defaultUnavailableImg}'">
+                        ${!product.isAvailable ? '<span style="position: absolute; top: 10px; right: 10px; background: #64748b; color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 0.75em; font-weight: bold;">غير متوفر</span>' : ''}
+                    </div>
+
+                    <h3 style="font-size: 1.05em; margin: 8px 0; color: #0f172a; min-height: 2.4em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                        ${product.name}
+                    </h3>
                     
-                    <div style="font-size: 1.1em; font-weight: bold; color: #16a34a; margin-bottom: 8px;">
-                        <span id="price-${product.id}">${currentOpt.price.toLocaleString()}</span> د.ع
+                    <div style="font-size: 1.1em; font-weight: bold; color: ${currentOpt.price > 0 ? '#16a34a' : '#64748b'}; margin-bottom: 8px;">
+                        ${priceHtml}
                     </div>
 
                     <div class="spool-options">
@@ -495,9 +524,7 @@
                         </button>
                     </div>
 
-                    <button type="button" class="add-to-cart-btn" onclick="addToCart('${product.id}')">
-                        🛒 إضافة إلى السلة
-                    </button>
+                    ${actionButtonHtml}
                 `;
                 container.appendChild(card);
             });
