@@ -9,7 +9,7 @@ const products = [
     { id: 7, category: "PETG", name: "PETG - بيج Latte ", price: 17000, image: "images/petg%20latte.png" },
     { id: 8, category: "PETG", name: "PETG - برتقالي Orange ", price: 17000, image: "images/petg%20orange.jpg" },
     { id: 9, category: "PETG", name: "PETG - وردي Pink ", price: 17000, image: "images/petg%20pink.jpg" },
-    { id: 10, category: "PETG", name: "PETG - بنفسجي Taro Purple ", price: 17,000, image: "images/petg%20taro%20purple.jpg" },
+    { id: 10, category: "PETG", name: "PETG - بنفسجي Taro Purple ", price: 17000, image: "images/petg%20taro%20purple.jpg" },
     { id: 11, category: "PETG", name: "PETG - أصفر Yellow ", price: 17000, image: "images/petg%20yellow.jpg" }
 ];
 
