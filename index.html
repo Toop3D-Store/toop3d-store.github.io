@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toop3D - متجر الطباعة ثلاثية الأبعاد</title>
-    <link rel="stylesheet" href="css/style.css?v=110">
+    <link rel="stylesheet" href="css/style.css?v=111">
     
     <style>
         /* ==========================================
@@ -100,8 +100,16 @@
             margin-top: 8px !important;
             transition: background-color 0.2s ease !important;
         }
-        .add-to-cart-btn:hover {
+        .add-to-cart-btn:hover:not(:disabled) {
             background-color: #1d4ed8 !important;
+        }
+
+        /* تصميم الزر المعطل */
+        .add-to-cart-btn:disabled {
+            background-color: #94a3b8 !important;
+            color: #ffffff !important;
+            cursor: not-allowed !important;
+            opacity: 0.8;
         }
 
         /* ==========================================
@@ -379,7 +387,7 @@
     </div>
 
     <!-- ==========================================
-       7. الجلب المباشر والآمن من Google Sheets
+       7. البرمجة ومزامنة Google Sheets
        ========================================== -->
     <script>
         const SHEET_ID = '2PACX-1vQswuYaNx5xNjan745b2Dca59YUIojFeP8DWKut0jADKMLl4uPnOOHbVQsBx55m0FmhwEpobJlIEaap';
@@ -388,7 +396,6 @@
         let cart = [];
 
         async function loadProductsFromSheet() {
-            const container = document.getElementById('products-container');
             const csvUrl = `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=0&single=true&output=csv`;
 
             try {
@@ -458,7 +465,9 @@
                 if (!spoolImg) spoolImg = defaultUnavailableImg;
                 if (!refillImg) refillImg = defaultUnavailableImg;
 
-                const isAvailable = row['available'] !== 'false' && row['available'] !== 'no' && spoolPrice > 0;
+                // التحقق المباشر من خانة available
+                const availVal = (row['available'] || 'true').toString().toLowerCase().trim();
+                const isAvailable = !(availVal === 'false' || availVal === 'no' || availVal === '0');
 
                 return {
                     id: id,
@@ -502,14 +511,21 @@
 
             filtered.forEach(product => {
                 const currentOpt = product.options[product.selectedOption];
+                const canAddToCart = product.isAvailable && currentOpt.price > 0;
 
                 const card = document.createElement('div');
                 card.className = 'product-card';
                 card.id = `card-${product.id}`;
 
-                const actionButtonHtml = product.isAvailable && currentOpt.price > 0
-                    ? `<button type="button" class="add-to-cart-btn" onclick="addToCart('${product.id}')">🛒 إضافة إلى السلة</button>`
-                    : `<button type="button" class="add-to-cart-btn" style="background-color: #94a3b8 !important; cursor: not-allowed;" disabled>⏳ سيتوفر قريباً</button>`;
+                const actionButtonHtml = `
+                    <button type="button" 
+                            id="add-btn-${product.id}" 
+                            class="add-to-cart-btn" 
+                            ${!canAddToCart ? 'disabled' : ''} 
+                            onclick="addToCart('${product.id}')">
+                        ${canAddToCart ? '🛒 إضافة إلى السلة' : '⏳ غير متوفر حالياً'}
+                    </button>
+                `;
 
                 const priceHtml = currentOpt.price > 0 
                     ? `<span id="price-${product.id}">${currentOpt.price.toLocaleString()}</span> د.ع`
@@ -518,14 +534,14 @@
                 card.innerHTML = `
                     <div style="position: relative;">
                         <img id="img-${product.id}" src="${currentOpt.image}" alt="${product.name}" onerror="this.src='${defaultUnavailableImg}'">
-                        ${!product.isAvailable ? '<span style="position: absolute; top: 10px; right: 10px; background: #64748b; color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 0.75em; font-weight: bold;">غير متوفر</span>' : ''}
+                        ${!product.isAvailable ? '<span style="position: absolute; top: 10px; right: 10px; background: #ef4444; color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 0.75em; font-weight: bold;">نفدت الكمية</span>' : ''}
                     </div>
 
                     <h3 style="font-size: 1.05em; margin: 8px 0; color: #0f172a; min-height: 2.4em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
                         ${product.name}
                     </h3>
                     
-                    <div style="font-size: 1.1em; font-weight: bold; color: ${currentOpt.price > 0 ? '#16a34a' : '#64748b'}; margin-bottom: 8px;">
+                    <div style="font-size: 1.1em; font-weight: bold; color: ${currentOpt.price > 0 && product.isAvailable ? '#16a34a' : '#64748b'}; margin-bottom: 8px;">
                         ${priceHtml}
                     </div>
 
@@ -548,27 +564,37 @@
 
         function changeSpoolOption(productId, optionType) {
             const product = productsData.find(p => p.id === productId);
-            if (product) {
-                product.selectedOption = optionType;
-                const opt = product.options[optionType];
-                
-                const imgElem = document.getElementById(`img-${productId}`);
-                const priceElem = document.getElementById(`price-${productId}`);
-                if (imgElem) imgElem.src = opt.image;
-                if (priceElem) priceElem.innerText = opt.price.toLocaleString();
-                
-                const spoolBtn = document.getElementById(`btn-spool-${productId}`);
-                const refillBtn = document.getElementById(`btn-refill-${productId}`);
-                
-                if (spoolBtn && refillBtn) {
-                    if (optionType === 'spool') {
-                        spoolBtn.classList.add('active');
-                        refillBtn.classList.remove('active');
-                    } else {
-                        refillBtn.classList.add('active');
-                        spoolBtn.classList.remove('active');
-                    }
+            if (!product) return;
+
+            product.selectedOption = optionType;
+            const opt = product.options[optionType];
+            
+            const imgElem = document.getElementById(`img-${productId}`);
+            const priceElem = document.getElementById(`price-${productId}`);
+            const addBtn = document.getElementById(`add-btn-${productId}`);
+
+            if (imgElem) imgElem.src = opt.image;
+            if (priceElem) priceElem.innerText = opt.price > 0 ? opt.price.toLocaleString() : 'غير متوفر حالياً';
+            
+            // تحديث الأزرار المحددة
+            const spoolBtn = document.getElementById(`btn-spool-${productId}`);
+            const refillBtn = document.getElementById(`btn-refill-${productId}`);
+            
+            if (spoolBtn && refillBtn) {
+                if (optionType === 'spool') {
+                    spoolBtn.classList.add('active');
+                    refillBtn.classList.remove('active');
+                } else {
+                    refillBtn.classList.add('active');
+                    spoolBtn.classList.remove('active');
                 }
+            }
+
+            // تحديث تعطيل/تفعيل زر الإضافة للسلة بناءً على توفر المنتج وسعر الخيار
+            const canAddToCart = product.isAvailable && opt.price > 0;
+            if (addBtn) {
+                addBtn.disabled = !canAddToCart;
+                addBtn.innerHTML = canAddToCart ? '🛒 إضافة إلى السلة' : '⏳ غير متوفر حالياً';
             }
         }
 
@@ -577,6 +603,9 @@
             if (!product) return;
             
             const opt = product.options[product.selectedOption];
+
+            // منع الإضافة كحماية إضافية
+            if (!product.isAvailable || opt.price <= 0) return;
 
             const itemInCart = cart.find(item => item.id === productId && item.option === product.selectedOption);
 
