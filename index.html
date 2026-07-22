@@ -889,115 +889,115 @@
 
             const optKey = product.selectedOption;
             const opt = product.options[optKey];
-
             if (!opt.isAvailable) return;
 
             const cartItemId = `${productId}-${optKey}`;
             const existingItem = cart.find(item => item.cartItemId === cartItemId);
 
             if (existingItem) {
-                existingItem.qty += 1;
+                existingItem.quantity += 1;
             } else {
                 cart.push({
                     cartItemId: cartItemId,
                     productId: productId,
                     name: product.name,
                     optionType: optKey,
-                    optionText: opt.spoolStatusText,
+                    typeName: opt.spoolStatusText,
                     price: opt.price,
                     image: opt.image,
-                    qty: 1
+                    quantity: 1
                 });
             }
 
-            updateCartCount();
-            renderCartItems();
-            
-            const cartBtn = document.getElementById('cart-nav-btn');
-            if (cartBtn) {
-                cartBtn.classList.remove('cart-pop-animation');
-                void cartBtn.offsetWidth;
-                cartBtn.classList.add('cart-pop-animation');
-            }
+            updateCartUI();
+            triggerCartAnimation();
         }
 
-        function updateCartCount() {
-            const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
-            const countEl = document.getElementById('nav-cart-count');
-            if (countEl) countEl.innerText = totalQty;
-        }
+        function updateCartUI() {
+            const cartCountEl = document.getElementById('nav-cart-count');
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartTotalPriceEl = document.getElementById('cart-total-price');
 
-        function toggleCart() {
-            const modal = document.getElementById('cart-modal');
-            if (modal) {
-                modal.classList.toggle('open');
-                if (modal.classList.contains('open')) {
-                    renderCartItems();
-                }
-            }
-        }
+            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            if (cartCountEl) cartCountEl.innerText = totalCount;
 
-        function changeQty(cartItemId, delta) {
-            const item = cart.find(i => i.cartItemId === cartItemId);
-            if (!item) return;
-
-            item.qty += delta;
-            if (item.qty <= 0) {
-                cart = cart.filter(i => i.cartItemId !== cartItemId);
-            }
-
-            updateCartCount();
-            renderCartItems();
-        }
-
-        function renderCartItems() {
-            const container = document.getElementById('cart-items');
-            const totalPriceEl = document.getElementById('cart-total-price');
-            if (!container) return;
+            if (!cartItemsContainer) return;
 
             if (cart.length === 0) {
-                container.innerHTML = `
-                    <div style="text-align: center; padding: 40px; color: #64748b;">
+                cartItemsContainer.innerHTML = `
+                    <div style="text-align: center; color: #64748b; padding: 40px 0;">
                         <div style="font-size: 3em; margin-bottom: 10px;">🛒</div>
-                        <p style="font-size: 1.1em; font-weight: bold; margin: 0;">سلة التسوق فارغة</p>
-                        <p style="font-size: 0.85em; color: #94a3b8; margin-top: 5px;">قم بإضافة بعض المنتجات البديلة أو الخيوط لبدء الطلب.</p>
+                        <p style="font-size: 1.1em; margin: 0;">سلة التسوق فارغة حالياً</p>
                     </div>
                 `;
-                if (totalPriceEl) totalPriceEl.innerText = '0 د.ع';
+                if (cartTotalPriceEl) cartTotalPriceEl.innerText = '0 د.ع';
                 return;
             }
 
             let html = '';
-            let totalSum = 0;
+            let totalPrice = 0;
 
             cart.forEach(item => {
-                const itemTotal = item.price * item.qty;
-                totalSum += itemTotal;
+                const itemTotal = item.price * item.quantity;
+                totalPrice += itemTotal;
 
                 html += `
                     <div class="cart-item-row">
                         <div class="cart-item-info">
                             <img src="${item.image}" alt="${item.name}" class="cart-item-thumb">
                             <div>
-                                <h4 style="margin: 0 0 4px 0; font-size: 0.98em; color: #0f172a;">${item.name}</h4>
-                                <p style="margin: 0 0 6px 0; font-size: 0.82em; color: #64748b;">التصنيف: ${item.optionText} | السعر: ${item.price.toLocaleString()} د.ع</p>
+                                <h4 style="margin: 0 0 4px 0; font-size: 1em; color: #0f172a;">${item.name}</h4>
+                                <span style="font-size: 0.85em; color: #2563eb; background: #eff6ff; padding: 2px 8px; border-radius: 4px; font-weight: bold;">${item.typeName}</span>
+                                <div style="font-size: 0.9em; color: #64748b; margin-top: 4px;">${item.price.toLocaleString()} د.ع للمنتج الواحد</div>
                                 <div class="qty-controls">
-                                    <button type="button" class="qty-btn" onclick="changeQty('${item.cartItemId}', -1)">-</button>
-                                    <span style="font-weight: bold; min-width: 24px; text-align: center;">${item.qty}</span>
-                                    <button type="button" class="qty-btn" onclick="changeQty('${item.cartItemId}', 1)">+</button>
+                                    <button type="button" class="qty-btn" onclick="updateQuantity('${item.cartItemId}', -1)">-</button>
+                                    <span style="font-weight: bold; min-width: 20px; text-align: center;">${item.quantity}</span>
+                                    <button type="button" class="qty-btn" onclick="updateQuantity('${item.cartItemId}', 1)">+</button>
                                 </div>
                             </div>
                         </div>
-                        <div style="text-align: left; min-width: 90px;">
-                            <div style="font-weight: bold; color: #2563eb; font-size: 1.05em;">${itemTotal.toLocaleString()} د.ع</div>
-                            <button type="button" onclick="changeQty('${item.cartItemId}', -${item.qty})" style="background: none; border: none; color: #ef4444; font-size: 0.78em; cursor: pointer; margin-top: 6px; padding: 0;">حذف</button>
+                        <div style="text-align: left; display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+                            <span style="font-weight: bold; color: #0f172a; font-size: 1.05em;">${itemTotal.toLocaleString()} د.ع</span>
+                            <button type="button" onclick="removeFromCart('${item.cartItemId}')" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 0.85em; font-weight: bold;">حذف</button>
                         </div>
                     </div>
                 `;
             });
 
-            container.innerHTML = html;
-            if (totalPriceEl) totalPriceEl.innerText = totalSum.toLocaleString() + ' د.ع';
+            cartItemsContainer.innerHTML = html;
+            if (cartTotalPriceEl) cartTotalPriceEl.innerText = `${totalPrice.toLocaleString()} د.ع`;
+        }
+
+        function updateQuantity(cartItemId, change) {
+            const item = cart.find(i => i.cartItemId === cartItemId);
+            if (!item) return;
+
+            item.quantity += change;
+            if (item.quantity <= 0) {
+                cart = cart.filter(i => i.cartItemId !== cartItemId);
+            }
+
+            updateCartUI();
+        }
+
+        function removeFromCart(cartItemId) {
+            cart = cart.filter(i => i.cartItemId !== cartItemId);
+            updateCartUI();
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cart-modal');
+            if (modal) {
+                modal.classList.toggle('open');
+            }
+        }
+
+        function triggerCartAnimation() {
+            const btn = document.getElementById('cart-nav-btn');
+            if (!btn) return;
+            btn.classList.remove('cart-pop-animation');
+            void btn.offsetWidth;
+            btn.classList.add('cart-pop-animation');
         }
 
         function sendWhatsAppOrder() {
@@ -1006,24 +1006,22 @@
                 return;
             }
 
-            let message = 'السلام عليكم، أود طلب المنتجات التالية من متجر Toop3D:%0A%0A';
-            let totalSum = 0;
+            let message = 'مرحباً، أود طلب المنتجات التالية من متجر Toop3D:\n\n';
+            let totalPrice = 0;
 
             cart.forEach((item, index) => {
-                const itemTotal = item.price * item.qty;
-                totalSum += itemTotal;
-                message += `${index + 1}. *${item.name}*%0A`;
-                message += `   - النوع: ${item.optionText}%0A`;
-                message += `   - الكمية: ${item.qty}%0A`;
-                message += `   - السعر الفردي: ${item.price.toLocaleString()} د.ع%0A`;
-                message += `   - المجموع: ${itemTotal.toLocaleString()} د.ع%0A%0A`;
+                const itemTotal = item.price * item.quantity;
+                totalPrice += itemTotal;
+                message += `${index + 1}. ${item.name} (${item.typeName})\n`;
+                message += `   - الكمية: ${item.quantity}\n`;
+                message += `   - السعر: ${itemTotal.toLocaleString()} د.ع\n\n`;
             });
 
-            message += `*المجموع الكلي للطلب:* ${totalSum.toLocaleString()} د.ع%0A%0A`;
-            message += `يرجى تأكيد الطلب وتفاصيل التوصيل. شكراً جزيلاً!`;
+            message += `-------------------\n`;
+            message += `المجموع الكلي: ${totalPrice.toLocaleString()} د.ع`;
 
-            const whatsappNumber = '9647827573964';
-            const url = `https://wa.me/${whatsappNumber}?text=${message}`;
+            const phone = '9647827573964';
+            const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
             window.open(url, '_blank');
         }
 
