@@ -979,14 +979,13 @@
             void btn.offsetWidth;
             btn.classList.add('cart-pop-animation');
         }
-
-        function sendWhatsAppOrder() {
+function sendWhatsAppOrder() {
     if (cart.length === 0) {
         alert('سلة التسوق فارغة!');
         return;
     }
 
-    let message = 'مرحباً، أود طلب  :\n\n';
+    let message = 'مرحباً، أود طلب:\n\n';
     let totalSum = 0;
 
     cart.forEach((item, index) => {
@@ -994,19 +993,19 @@
         const itemTotal = item.price * qty;
         totalSum += itemTotal;
 
-        message += `${index + 1}. *${item.name}*\n`;
-        message += `   - النوع: ${item.typeName || item.optionText || 'عادي'}\n`;
-        message += `   - الكمية: ${qty}\n`;
-        message += `   - السعر الفردي: ${item.price.toLocaleString()} د.ع\n`;
-        message += `   - المجموع: ${itemTotal.toLocaleString()} د.ع\n\n`;
+        const optionText = item.typeName || item.optionText || '';
+        
+        // التنسيق المطلوب: اسم المنتج (الخيار) والعدد في نهاية السطر
+        message += `${index + 1}. ${item.name} (${optionText}) - العدد: ${qty}\n`;
     });
 
-    message += `السعر الاجمالي الكلي : ${totalSum.toLocaleString()} د.ع`;
+    message += `\nالسعر الإجمالي النهائي: ${totalSum.toLocaleString()} د.ع`;
 
     const phone = '9647827573964';
     const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
 }
+       
 
         document.addEventListener('DOMContentLoaded', () => {
             loadProductsFromSheet();
