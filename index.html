@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toop3D - متجر الطباعة ثلاثية الأبعاد</title>
-
     <link rel="stylesheet" href="css/style.css?v=126">
-
 </head>
 <body>
 
@@ -48,31 +46,32 @@
         <a href="#products">المنتجات</a>
     </nav>
 
-<!-- ===== قسم الهيرو مع شريط الصور المتحرك ===== -->
-<section class="hero-section">
-    <div class="hero-content">
-        <div class="text-and-gallery">
-            <!-- الجزء النصي -->
-            <div class="hero-text-content">
-                <h1 class="hero-title">Toop3D <span>High Speed PETG HF Filament</span></h1>
-                <ul class="hero-features">
-                    <li>✓ High-Speed Printing (طباعة عالية السرعة)</li>
-                    <li>✓ Excellent Toughness (متانة ممتازة)</li>
-                    <li>✓ Strong Layer Adhesion (التحام قوي للطبقات)</li>
-                </ul>
-                <a href="#products" class="btn-primary">تسوق الآن / Buy Now</a>
-            </div>
+    <!-- ===== قسم الهيرو مع شريط الصور المتحرك ===== -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <div class="text-and-gallery">
+                <!-- الجزء النصي -->
+                <div class="hero-text-content">
+                    <h1 class="hero-title">Toop3D <span>High Speed PETG HF Filament</span></h1>
+                    <ul class="hero-features">
+                        <li>✓ High-Speed Printing (طباعة عالية السرعة)</li>
+                        <li>✓ Excellent Toughness (متانة ممتازة)</li>
+                        <li>✓ Strong Layer Adhesion (التحام قوي للطبقات)</li>
+                    </ul>
+                    <a href="#products" class="btn-primary">تسوق الآن / Buy Now</a>
+                </div>
 
-            <!-- معرض الصور المتحرك -->
-            <div class="hero-gallery-container">
-    <img src="images/1.webp" alt="Toop3D Filament 1" class="slide active">
-    <img src="images/2.webp" alt="Toop3D Filament 2" class="slide">
-    <img src="images/3.webp" alt="Toop3D Filament 3" class="slide">
-    <img src="images/4.webp" alt="Toop3D Filament 4" class="slide">
-</div>
+                <!-- معرض الصور المتحرك -->
+                <div class="hero-gallery-container">
+                    <img src="images/1.webp" alt="Toop3D Filament 1" class="slide active">
+                    <img src="images/2.webp" alt="Toop3D Filament 2" class="slide">
+                    <img src="images/3.webp" alt="Toop3D Filament 3" class="slide">
+                    <img src="images/4.webp" alt="Toop3D Filament 4" class="slide">
+                </div>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
+
     <!-- 4. قسم عرض المنتجات -->
     <main class="main-content">
         <section id="products">
@@ -98,27 +97,30 @@
     </main>
 
     <!-- 🎈 5. زر السلة العائم الثابت -->
-    <button id="cart-nav-btn" type="button" onclick="toggleCart()">
-        🛒 السلة <span id="nav-cart-count">0</span>
+    <button id="cart-nav-btn" type="button" class="floating-cart-btn" onclick="toggleCartModal()">
+        🛒 <span id="cart-counter">0</span>
     </button>
 
-    <!-- 🖼️ 6. النافذة المنبثقة للسلة -->
-    <div id="cart-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>سلة التسوق</h2>
-                <button type="button" onclick="toggleCart()" class="close-btn">✕</button>
+    <!-- 🖼️ 6. النافذة المنبثقة للسلة (Drawer) -->
+    <div class="cart-modal-overlay" id="cartOverlay" onclick="toggleCartModal()"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-drawer-header">
+            <h3>سلة التسوق</h3>
+            <button type="button" class="close-cart-btn" onclick="toggleCartModal()">&times;</button>
+        </div>
+        
+        <div class="cart-drawer-body" id="cartItemsContainer">
+            <p class="empty-cart-text">سلة التسوق فارغة حالياً</p>
+        </div>
+
+        <div class="cart-drawer-footer">
+            <div class="cart-total">
+                <span>الإجمالي:</span>
+                <span id="cartTotalPrice">0 د.ع</span>
             </div>
-            <div id="cart-items" class="cart-body"></div>
-            <div class="modal-footer">
-                <div class="total-price-box">
-                    <span>المجموع الكلي:</span>
-                    <span id="cart-total-price">0 د.ع</span>
-                </div>
-                <button id="checkout-whatsapp-btn" type="button" onclick="sendWhatsAppOrder()" class="whatsapp-btn">
-                    💬 إتمام الطلب عبر الواتساب
-                </button>
-            </div>
+            <button type="button" class="checkout-whatsapp-btn" onclick="checkoutWhatsApp()">
+                إرسال الطلب عبر واتساب 💬
+            </button>
         </div>
     </div>
 
@@ -135,7 +137,7 @@
                 <ul class="footer-links">
                     <li><a href="#">الرئيسية</a></li>
                     <li><a href="#products">المنتجات</a></li>
-                    <li><a href="javascript:void(0)" onclick="toggleCart()">السلة</a></li>
+                    <li><a href="javascript:void(0)" onclick="toggleCartModal()">السلة</a></li>
                 </ul>
             </div>
 
@@ -161,6 +163,11 @@
         
         let productsData = [];
         let cart = [];
+
+        // دالة فتح وإغلاق السلة
+        function toggleCartModal() {
+            document.body.classList.toggle('cart-open');
+        }
 
         async function loadProductsFromSheet() {
             const csvUrl = `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=0&single=true&output=csv`;
@@ -267,20 +274,16 @@
                     id: id,
                     name: name,
                     category: material,
-                    materialName: material,
-                    colorName: color,
                     selectedOption: defaultOption,
                     options: {
                         spool: {
-                            typeText: 'مع بكرة',
                             spoolStatusText: 'مع بكرة',
                             price: spoolPrice,
                             image: spoolImg,
                             isAvailable: hasSpool
                         },
                         refill: {
-                            typeText: 'بدون بكرة (Refill)',
-                            spoolStatusText: 'بدون بكرة',
+                            spoolStatusText: 'بدون بكرة (Refill)',
                             price: refillPrice,
                             image: refillImg,
                             isAvailable: hasRefill
@@ -388,139 +391,97 @@
 
             if (!opt.isAvailable) return;
 
-            const cartItemId = `${productId}-${optKey}`;
-            const existingItem = cart.find(item => item.cartItemId === cartItemId);
+            const finalName = `${product.name} (${opt.spoolStatusText})`;
+            const existingItem = cart.find(item => item.name === finalName);
 
             if (existingItem) {
-                existingItem.qty += 1;
+                existingItem.quantity += 1;
             } else {
                 cart.push({
-                    cartItemId: cartItemId,
-                    productId: productId,
-                    name: product.name,
-                    optionType: optKey,
-                    optionText: opt.spoolStatusText,
+                    name: finalName,
                     price: opt.price,
-                    image: opt.image,
-                    qty: 1
+                    quantity: 1
                 });
             }
 
-            updateCartCount();
-            renderCartItems();
+            updateCartUI();
+            toggleCartModal(); // فتح السلة تلقائياً عند الإضافة لرؤية المنتج
+        }
+
+        // دالة تحديث واجهة السلة بالكامل
+        function updateCartUI() {
+            const cartCounter = document.getElementById('cart-counter');
+            const container = document.getElementById('cartItemsContainer');
+            const totalPriceEl = document.getElementById('cartTotalPrice');
             
-            const cartBtn = document.getElementById('cart-nav-btn');
-            if (cartBtn) {
-                cartBtn.classList.remove('cart-pop-animation');
-                void cartBtn.offsetWidth;
-                cartBtn.classList.add('cart-pop-animation');
-            }
-        }
-
-        function updateCartCount() {
-            const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
-            const countEl = document.getElementById('nav-cart-count');
-            if (countEl) countEl.innerText = totalQty;
-        }
-
-        function toggleCart() {
-            const modal = document.getElementById('cart-modal');
-            if (modal) {
-                modal.classList.toggle('open');
-                if (modal.classList.contains('open')) {
-                    renderCartItems();
-                }
-            }
-        }
-
-        function changeQty(cartItemId, delta) {
-            const item = cart.find(i => i.cartItemId === cartItemId);
-            if (!item) return;
-
-            item.qty += delta;
-            if (item.qty <= 0) {
-                cart = cart.filter(i => i.cartItemId !== cartItemId);
-            }
-
-            updateCartCount();
-            renderCartItems();
-        }
-
-        function renderCartItems() {
-            const container = document.getElementById('cart-items');
-            const totalPriceEl = document.getElementById('cart-total-price');
             if (!container) return;
-
+            
+            let totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            if (cartCounter) cartCounter.textContent = totalCount;
+            
+            // إذا كانت السلة فارغة
             if (cart.length === 0) {
                 container.innerHTML = `
                     <div style="text-align: center; padding: 40px; color: #64748b;">
                         <div style="font-size: 3em; margin-bottom: 10px;">🛒</div>
                         <p style="font-size: 1.1em; font-weight: bold; margin: 0;">سلة التسوق فارغة</p>
-                        <p style="font-size: 0.85em; color: #94a3b8; margin-top: 5px;">قم بإضافة بعض المنتجات البديلة أو الخيوط لبدء الطلب.</p>
+                        <p style="font-size: 0.85em; color: #94a3b8; margin-top: 5px;">قم بإضافة بعض المنتجات لبدء الطلب</p>
                     </div>
                 `;
                 if (totalPriceEl) totalPriceEl.innerText = '0 د.ع';
                 return;
             }
-
-            let html = '';
-            let totalSum = 0;
-
-            cart.forEach(item => {
-                const itemTotal = item.price * item.qty;
-                totalSum += itemTotal;
-
-                html += `
-                    <div class="cart-item-row">
-                        <div class="cart-item-info">
-                            <img src="${item.image}" alt="${item.name}" class="cart-item-thumb">
-                            <div>
-                                <h4 style="margin: 0 0 4px 0; font-size: 0.98em; color: #0f172a;">${item.name}</h4>
-                                <p style="margin: 0 0 6px 0; font-size: 0.82em; color: #64748b;">التصنيف: ${item.optionText} | السعر: ${item.price.toLocaleString()} د.ع</p>
-                                <div class="qty-controls">
-                                    <button type="button" class="qty-btn" onclick="changeQty('${item.cartItemId}', -1)">-</button>
-                                    <span style="font-weight: bold; min-width: 24px; text-align: center;">${item.qty}</span>
-                                    <button type="button" class="qty-btn" onclick="changeQty('${item.cartItemId}', 1)">+</button>
-                                </div>
-                            </div>
+            
+            // إذا كانت السلة تحتوي على منتجات
+            let itemsHTML = '';
+            let totalPrice = 0;
+            
+            cart.forEach((item, index) => {
+                let itemTotal = item.price * item.quantity;
+                totalPrice += itemTotal;
+                
+                itemsHTML += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f1f5f9;">
+                        <div>
+                            <h4 style="margin: 0 0 5px 0; font-size: 0.95rem; color: #1e293b;">${item.name}</h4>
+                            <span style="font-size: 0.85rem; color: #64748b;">${item.price.toLocaleString()} د.ع × ${item.quantity}</span>
                         </div>
-                        <div style="text-align: left; min-width: 90px;">
-                            <div style="font-weight: bold; color: #2563eb; font-size: 1.05em;">${itemTotal.toLocaleString()} د.ع</div>
-                            <button type="button" onclick="changeQty('${item.cartItemId}', -${item.qty})" style="background: none; border: none; color: #ef4444; font-size: 0.78em; cursor: pointer; margin-top: 6px; padding: 0;">حذف</button>
-                        </div>
+                        <button type="button" onclick="removeFromCart(${index})" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem;" title="حذف">🗑️</button>
                     </div>
                 `;
             });
-
-            container.innerHTML = html;
-            if (totalPriceEl) totalPriceEl.innerText = totalSum.toLocaleString() + ' د.ع';
+            
+            container.innerHTML = itemsHTML;
+            if (totalPriceEl) totalPriceEl.innerText = `${totalPrice.toLocaleString()} د.ع`;
         }
 
-        function sendWhatsAppOrder() {
+        // دالة الحذف من السلة
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        // دالة إرسال الطلب عبر واتساب
+        function checkoutWhatsApp() {
             if (cart.length === 0) {
-                alert('سلة التسوق فارغة!');
+                alert("سلة التسوق فارغة!");
                 return;
             }
-
-            let message = 'السلام عليكم، أود طلب المنتجات التالية من متجر Toop3D:%0A%0A';
-            let totalSum = 0;
-
-            cart.forEach((item, index) => {
-                const itemTotal = item.price * item.qty;
-                totalSum += itemTotal;
-                message += `${index + 1}. *${item.name}*%0A`;
-                message += `   - النوع: ${item.optionText}%0A`;
-                message += `   - الكمية: ${item.qty}%0A`;
-                message += `   - السعر الفردي: ${item.price.toLocaleString()} د.ع%0A`;
-                message += `   - المجموع: ${itemTotal.toLocaleString()} د.ع%0A%0A`;
+            
+            const phoneNumber = "9647827573964"; // رقم هاتف الدعم الفني لديك
+            let message = "مرحباً، أريد طلب المنتجات التالية:\n\n";
+            
+            let totalPrice = 0;
+            cart.forEach(item => {
+                let itemTotal = item.price * item.quantity;
+                totalPrice += itemTotal;
+                message += `▪️ ${item.name} | الكمية: ${item.quantity} | السعر: ${itemTotal.toLocaleString()} د.ع\n`;
             });
-
-            message += `*المجموع الكلي للطلب:* ${totalSum.toLocaleString()} د.ع%0A%0A`;
-            message += `يرجى تأكيد الطلب وتفاصيل التوصيل. شكراً جزيلاً!`;
-
-            const whatsappNumber = '9647827573964';
-            const url = `https://wa.me/${whatsappNumber}?text=${message}`;
-            window.open(url, '_blank');
+            
+            message += `\n💰 الإجمالي الكلي: ${totalPrice.toLocaleString()} د.ع`;
+            
+            let encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -528,45 +489,19 @@
         });
     </script>
 
+    <!-- Script للتحكم بتبديل صور الهيرو تلقائياً -->
     <script>
-    // JavaScript للتحكم بتبديل الصور تلقائياً
-    let slides = document.querySelectorAll('.hero-gallery-container .slide');
-    let currentSlide = 0;
-    let slideInterval = setInterval(nextSlide, 5000); // التبديل كل 5 ثواني
+        let slides = document.querySelectorAll('.hero-gallery-container .slide');
+        let currentSlide = 0;
+        let slideInterval = setInterval(nextSlide, 5000);
 
-    function nextSlide() {
-        slides[currentSlide].className = 'slide';
-        currentSlide = (currentSlide + 1) % slides.length;
-        slides[currentSlide].className = 'slide active';
-    }
-</script>
-<!-- ===== زر سلة التسوق العائم ===== -->
-<div class="floating-cart-btn" onclick="toggleCartModal()">
-    🛒 <span id="cart-counter">0</span>
-</div>
-
-<!-- ===== نافذة سلة التسوق المنبثقة (Drawer) ===== -->
-<div class="cart-modal-overlay" id="cartOverlay" onclick="toggleCartModal()"></div>
-<div class="cart-drawer" id="cartDrawer">
-    <div class="cart-drawer-header">
-        <h3>سلة التسوق</h3>
-        <button class="close-cart-btn" onclick="toggleCartModal()">&times;</button>
-    </div>
-    
-    <div class="cart-drawer-body" id="cartItemsContainer">
-        <!-- ستظهر المنتجات المضافة هنا ديناميكياً -->
-        <p class="empty-cart-text">سلة التسوق فارغة حالياً</p>
-    </div>
-
-    <div class="cart-drawer-footer">
-        <div class="cart-total">
-            <span>الإجمالي:</span>
-            <span id="cartTotalPrice">0 د.ع</span>
-        </div>
-        <button class="checkout-whatsapp-btn" onclick="checkoutWhatsApp()">إرسال الطلب عبر واتساب 💬</button>
-    </div>
-</div>
-
-    
+        function nextSlide() {
+            if(slides.length > 0) {
+                slides[currentSlide].className = 'slide';
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].className = 'slide active';
+            }
+        }
+    </script>
 </body>
 </html>
