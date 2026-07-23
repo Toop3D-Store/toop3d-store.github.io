@@ -17,42 +17,137 @@ body {
 /* ==========================================
    2. البنر العلوي الاحترافي (Toop3D Top Banner)
    ========================================== */
+
 .top-brand-banner {
-    background-color: #ffffff;
-    padding: 12px 20px;
-    border-bottom: 1px solid #e2e8f0;
-    direction: ltr; /* لجعل العرض محاذى لليار للغة الإنكليزية */
+    background: linear-gradient(135deg, #090d16 0%, #0f172a 100%);
+    padding: 24px 20px;
+    border-bottom: 3px solid #2563eb;
+    box-shadow: 0 4px 20px rgba(0,0,0,.25);
+    direction: ltr;
 }
 
 .banner-container {
-    max-width: 1200px;
+    max-width: 1350px;
     margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 20px;
+    gap: 30px;
+    flex-wrap: wrap;
 }
 
 /* القسم الأيسر */
+
 .brand-left {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 18px;
 }
 
 .brand-logo {
-    height: 48px;
+    height: 75px;
     width: auto;
     object-fit: contain;
+    filter: drop-shadow(0 2px 8px rgba(255,255,255,.15));
+}
+
+.brand-title-box {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
 .company-name {
-    font-size: 1.35em;
-    font-weight: 900;
-    color: #0f172a;
+    color: #ffffff;
+    font-size: 1.8rem;
+    font-weight: 800;
     margin: 0;
-    letter-spacing: 0.5px;
+    letter-spacing: .5px;
 }
+
+.company-sub {
+    color: #38bdf8;
+    font-size: .95rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* الفاصل */
+
+.banner-divider {
+    width: 2px;
+    height: 60px;
+    background: linear-gradient(to bottom, transparent, #475569, transparent);
+}
+
+/* القسم الأيمن */
+
+.brand-right {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+.badges-row,
+.main-products-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* شارات الجودة */
+
+.badge-icon {
+    background: #1e293b;
+    color: #38bdf8;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: .82rem;
+    font-weight: bold;
+}
+
+/* أسماء المنتجات */
+
+.product-tag {
+    background: rgba(255,255,255,.08);
+    color: #e2e8f0;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: .82rem;
+    font-weight: 600;
+}
+
+/* الجوال */
+
+@media (max-width:768px){
+
+    .banner-container{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    .brand-left{
+        flex-direction:column;
+    }
+
+    .brand-right{
+        align-items:center;
+    }
+
+    .banner-divider{
+        display:none;
+    }
+
+    .brand-logo{
+        height:60px;
+    }
+
+    .company-name{
+        font-size:1.4rem;
+    }
 
 .company-sub {
     font-size: 0.78em;
