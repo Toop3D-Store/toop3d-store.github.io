@@ -540,6 +540,33 @@
         slides[currentSlide].className = 'slide active';
     }
 </script>
+<!-- ===== زر سلة التسوق العائم ===== -->
+<div class="floating-cart-btn" onclick="toggleCartModal()">
+    🛒 <span id="cart-counter">0</span>
+</div>
+
+<!-- ===== نافذة سلة التسوق المنبثقة (Drawer) ===== -->
+<div class="cart-modal-overlay" id="cartOverlay" onclick="toggleCartModal()"></div>
+<div class="cart-drawer" id="cartDrawer">
+    <div class="cart-drawer-header">
+        <h3>سلة التسوق</h3>
+        <button class="close-cart-btn" onclick="toggleCartModal()">&times;</button>
+    </div>
+    
+    <div class="cart-drawer-body" id="cartItemsContainer">
+        <!-- ستظهر المنتجات المضافة هنا ديناميكياً -->
+        <p class="empty-cart-text">سلة التسوق فارغة حالياً</p>
+    </div>
+
+    <div class="cart-drawer-footer">
+        <div class="cart-total">
+            <span>الإجمالي:</span>
+            <span id="cartTotalPrice">0 د.ع</span>
+        </div>
+        <button class="checkout-whatsapp-btn" onclick="checkoutWhatsApp()">إرسال الطلب عبر واتساب 💬</button>
+    </div>
+</div>
+
     
 </body>
 </html>
