@@ -351,11 +351,11 @@ body {
 }
 
 .product-card img {
-    width: 120px;       /* تحديد عرض ثابت وصغير بدلاً من 100% لتصغير الصورة تماماً */
-    height: 120px;      /* جعل الارتفاع متساوي مع العرض لتصبح الصورة مربعة ومتناسقة */
-    object-fit: contain; 
+    width: 140px;       /* عرض ثابت وصغير نسبياً */
+    height: 140px;      /* ارتفاع ثابت ليصبح شكلها مربع ومتناسق */
+    object-fit: contain; /* يحافظ على نسبة أبعاد الصورة بدون قصها */
     display: block;
-    margin: 0 auto 12px auto;
+    margin: 0 auto 12px auto; /* تمركز الصورة في المنتصف مع مسافة من الأسفل */
     background: #f8fafc;
     border-radius: 8px;
 }
