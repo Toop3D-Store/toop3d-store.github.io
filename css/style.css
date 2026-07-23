@@ -526,3 +526,115 @@ button[type="submit"]:active,
     border-radius: 50%;
     margin-left: -5px; /* لتقريبه قليلاً من النص */
 }
+/* تأثير ظهور وإخفاء سلة التسوق (Drawer) */
+.cart-drawer {
+    position: fixed;
+    top: 0;
+    right: -400px; /* مخفية بالكامل إلى اليمين */
+    width: 380px;
+    max-width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    transition: right 0.35s ease-in-out;
+}
+
+.cart-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease-in-out, visibility 0.35s ease-in-out;
+}
+
+/* عندما تفتح السلة (يتم إضافة هذا الكلاس للـ body برمجياً) */
+body.cart-open .cart-drawer {
+    right: 0; /* تتحرك لتظهر على الشاشة */
+}
+
+body.cart-open .cart-modal-overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* تنسيقات إضافية لمحتويات السلة داخل الـ Drawer */
+.cart-drawer-header {
+    padding: 20px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cart-drawer-body {
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.cart-drawer-footer {
+    padding: 20px;
+    border-top: 1px solid #e2e8f0;
+    background-color: #f8fafc;
+}
+
+.cart-total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #1e293b;
+}
+
+.checkout-whatsapp-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #22c55e;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.checkout-whatsapp-btn:hover {
+    background-color: #16a34a;
+}
+
+.close-cart-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #64748b;
+}
+
+.floating-cart-btn {
+    position: fixed;
+    bottom: 25px;
+    left: 25px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    z-index: 997;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
