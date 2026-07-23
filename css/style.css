@@ -183,8 +183,8 @@ body {
 
 /* تم ضبط مقاسات الصورة حصرياً هنا لمنع تكبرها */
 .product-card img {
-    width: 170px !important;
-    height: 170px !important;
+    width: 200px !important;
+    height: 200px !important;
     max-width: 100%;
     object-fit: contain;
     display: block;
