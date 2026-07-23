@@ -1,35 +1,9 @@
-// مصفوفة لتخزين المنتجات المضافة إلى السلة
+// مصفوفة لتخزين المنتجات في السلة
 let cart = [];
 
 // دالة فتح وإغلاق سلة التسوق
 function toggleCartModal() {
     document.body.classList.toggle('cart-open');
-}
-
-// دالة إضافة منتج إلى السلة (يتم استدعاؤها من زر "إضافة إلى السلة")
-function addToCart(productName, productPrice, spoolOption) {
-    // التحقق إذا كان المنتج بنفس خيار البكرة موجود مسبقاً
-    let existingItem = cart.find(item => item.name === productName && item.spool === spoolOption);
-    
-    if (existingItem) {
-        existingItem.quantity += 1;
-    } else {
-        cart.push({
-            name: productName + (spoolOption ? ` (${spoolOption})` : ''),
-            price: parseFloat(productPrice),
-            quantity: 1
-        });
-    }
-    
-    updateCartUI();
-    toggleCartModal5(); // فتح السلة تلقائياً عند الإضافة (اختياري) أو يمكنك تركها
-}
-
-// دالة فتح السلة تلقائياً عند الإضافة (اختياري)
-function toggleCartModal5() {
-    if (!document.body.classList.contains('cart-open')) {
-        document.body.classList.add('cart-open');
-    }
 }
 
 // دالة تحديث واجهة السلة (العداد، العناصر، الإجمالي)
@@ -38,7 +12,8 @@ function updateCartUI() {
     const cartItemsContainer = document.getElementById('cartItemsContainer');
     const cartTotalPrice = document.getElementById('cartTotalPrice');
     
-    // حساب العدد الإجمالي
+    if (!cartCounter || !cartItemsContainer || !cartTotalPrice) return;
+    
     let totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
     cartCounter.textContent = totalCount;
     
@@ -83,7 +58,7 @@ function checkoutWhatsApp() {
         return;
     }
     
-    const phoneNumber = "9640000000000"; // استبدل الأصفار برقم هاتفك الحقيقي مع رمز الدولة
+    const phoneNumber = "9647700000000"; // استبدل هذا الرقم برقم هاتفك الحقيقي مع رمز الدولة العراقية
     let message = "مرحباً، أريد طلب المنتجات التالية:\n\n";
     
     let totalPrice = 0;
@@ -98,3 +73,48 @@ function checkoutWhatsApp() {
     let encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
 }
+
+// نظام تلقائي يلتقط أي ضغطة على زر "إضافة إلى السلة" في المتجر استناداً لبطاقة المنتج
+document.addEventListener('click', function(event) {
+    if (event.target.closest('.add-to-cart-btn') || event.target.matches('.add-to-cart-btn')) {
+        const card = event.target.closest('.product-card') || event.target.closest('div');
+        
+        if (card) {
+            // محاولة استخراج اسم المنتج وسعره من البطاقة الحالية
+            const titleElement = card.querySelector('h2, h3, h4, .product-title');
+            const priceElement = card.querySelector('.price, span');
+            
+            let productName = titleElement ? titleElement.innerText : "منتج Toop3D";
+            let productPrice = 17000; // السعر الافتراضي
+            
+            if (priceElement) {
+                let priceText = priceElement.innerText.replace(/[^\d]/g, '');
+                if (priceText) productPrice = parseInt(priceText);
+            }
+            
+            // التحقق من خيار البكرة (مع بكرة / بدون بكرة) إذا كان موجوداً
+            let spoolOption = "";
+            const activeSpoolBtn = card.querySelector('.product-options button.active, .spool-options button.active, input[type="radio"]:checked');
+            if (activeSpoolBtn) {
+                spoolOption = activeSpoolBtn.innerText || activeSpoolBtn.value;
+            }
+            
+            let finalName = productName + (spoolOption ? ` (${spoolOption})` : '');
+            
+            // إضافة المنتج للمصفوفة
+            let existingItem = cart.find(item => item.name === finalName);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    name: finalName,
+                    price: productPrice,
+                    quantity: 1
+                });
+            }
+            
+            updateCartUI();
+            toggleCartModal(); // فتح السلة للتأكد من الإضافة
+        }
+    }
+});
