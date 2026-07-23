@@ -381,8 +381,7 @@
         function filterCategory(category) {
             renderProducts(category);
         }
-
-        function addToCart(productId) {
+function addToCart(productId) {
             const product = productsData.find(p => p.id === productId);
             if (!product) return;
 
@@ -405,7 +404,12 @@
             }
 
             updateCartUI();
-            toggleCartModal(); // فتح السلة تلقائياً عند الإضافة لرؤية المنتج
+            // تم إزالة toggleCartModal() من هنا لكي لا تفتح السلة تلقائياً
+        }
+
+
+
+        
         }
 
         // دالة تحديث واجهة السلة بالكامل
