@@ -8,24 +8,49 @@ function toggleCartModal() {
 // دالة تحديث واجهة السلة
 function updateCartUI() {
     const cartCounter = document.getElementById('cart-counter');
-    const container = document.getElementById('cartItemsContainer'); // اسم الحاوية حسب الكود الذي أرسلته
+    const container = document.getElementById('cartItemsContainer');
     const totalPriceEl = document.getElementById('cartTotalPrice');
     
     if (!container) return;
     
-    // حساب العدد الإجمالي
     let totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
     if (cartCounter) cartCounter.textContent = totalCount;
     
+    // إذا كانت السلة فارغة
     if (cart.length === 0) {
         container.innerHTML = `
             <div style="text-align: center; padding: 40px; color: #64748b;">
                 <div style="font-size: 3em; margin-bottom: 10px;">🛒</div>
                 <p style="font-size: 1.1em; font-weight: bold; margin: 0;">سلة التسوق فارغة</p>
-                <p style="font-size: 0.85em; color: #94a3b8; margin-top: 5px;">قم بإضافة بعض المنتجات البديلة أو الخيوط لبدء الطلب</p>
+                <p style="font-size: 0.85em; color: #94a3b8; margin-top: 5px;">قم بإضافة بعض المنتجات لبدء الطلب</p>
             </div>
         `;
         if (totalPriceEl) totalPriceEl.innerText = '0 د.ع';
+        return; // الخروج هنا صحيح لأن السلة فارغة ولا توجد منتجات لعرضها
+    }
+    
+    // إذا كانت السلة تحتوي على منتجات، سيتم إكمال التنفيذ هنا ولن يتم الخروج المبكر
+    let html = '';
+    let totalPrice = 0;
+    
+    cart.forEach((item, index) => {
+        let itemTotal = item.price * item.quantity;
+        totalPrice += itemTotal;
+        
+        html += `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f1f5f9;">
+                <div>
+                    <h4 style="margin: 0 0 5px 0; font-size: 0.95rem; color: #1e293b;">${item.name}</h4>
+                    <span style="font-size: 0.85rem; color: #64748b;">${item.price.toLocaleString()} د.ع × ${item.quantity}</span>
+                </div>
+                <button onclick="removeFromCart(${index})" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem;" title="حذف">🗑️</button>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+    if (totalPriceEl) totalPriceEl.innerText = `${totalPrice.toLocaleString()} د.ع`;
+}
         return;
     }
     
