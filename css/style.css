@@ -323,23 +323,27 @@ body {
     flex: 1 !important;
     max-width: 40% !important;
     position: relative !important;
-    height: auto !important; /* إلغاء الارتفاع الثابت الكبير */
-    min-height: 280px !important; /* الحد الأدنى المناسب */
+    height: auto !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     overflow: hidden !important;
-    background-color: transparent !important; /* إزالة أي خلفية رمادية أو بيضاء خلف الصورة */
+    background-color: #ffffff !important; /* جعل خلفية الحاوية بيضاء تماماً لتتطابق مع صفحة الويب */
+    border-radius: 12px !important;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.12) !important;
 }
 
-/* ضبط الصور داخل الهيرو لملء المساحة بشكل متناسق */
 .hero-gallery-container .slide {
     width: 100% !important;
-    height: 100% !important;
+    height: auto !important;
     max-height: 320px !important;
-    object-fit: cover !important; /* استخدام cover لملء الفراغات بالكامل (أو contain إذا كنت تريد إظهار الصورة كاملة بدون قص) */
-    object-position: center !important;
+    object-fit: contain !important; /* تغييرها إلى contain لضمان ظهور الصورة كاملة دون أي اقتطاع */
     display: none !important;
+    background-color: #ffffff !important; /* خلفية بيضاء للصورة نفسها ليتناسق أي فراغ جانبي أو علوي */
+}
+
+.hero-gallery-container .slide.active {
+    display: block !important;
 }
 
 .hero-gallery-container .slide.active {
