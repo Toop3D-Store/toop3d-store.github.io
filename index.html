@@ -1,30 +1,45 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toop3D - متجر الطباعة ثلاثية الأبعاد</title>
-    <link rel="stylesheet" href="css/style.css?v=126">
-    
-    <style>
 
+    <title>Toop3D - متجر الطباعة ثلاثية الأبعاد</title>
+
+    <link rel="stylesheet" href="css/style.css?v=1">
 </head>
+
 <body>
 
-    <!-- 1. البنر العلوي -->
+    <!-- =========================
+         Header
+    ========================== -->
     <header class="top-brand-banner">
         <div class="banner-container">
+
             <div class="brand-left">
-                <img src="images/logo.png" alt="Toop3D Logo" class="brand-logo" onerror="this.style.display='none'">
+                <img src="images/logo.png"
+                     alt="Toop3D Logo"
+                     class="brand-logo"
+                     onerror="this.style.display='none'">
+
                 <div class="brand-title-box">
-                    <h1 class="company-name">Toop3D TECHNOLOGY CO., LTD.</h1>
-                    <p class="company-sub">10+ Years of Industry Experience | Specializing in 3D printer material</p>
+                    <h1 class="company-name">
+                        Toop3D TECHNOLOGY CO., LTD.
+                    </h1>
+
+                    <p class="company-sub">
+                        10+ Years of Industry Experience |
+                        Specializing in 3D Printer Materials
+                    </p>
                 </div>
             </div>
 
             <div class="banner-divider"></div>
 
             <div class="brand-right">
+
                 <div class="badges-row">
                     <span class="badge-icon">ISO</span>
                     <span class="badge-icon">UKCA</span>
@@ -32,481 +47,234 @@
                     <span class="badge-icon">MSDS</span>
                     <span class="badge-icon">RoHS</span>
                 </div>
+
                 <div class="main-products-row">
-                    <span class="product-tag">3D printer filament</span>
-                    <span class="product-tag">matte filament</span>
-                    <span class="product-tag">petg filament</span>
-                    <span class="product-tag">abs filament</span>
-                    <span class="product-tag">pla filament</span>
+                    <span class="product-tag">PLA</span>
+                    <span class="product-tag">PETG</span>
+                    <span class="product-tag">ABS</span>
+                    <span class="product-tag">ASA</span>
+                    <span class="product-tag">TPU</span>
                 </div>
+
             </div>
+
         </div>
     </header>
 
-    <!-- 2. شريط التنقل العلوي -->
+    <!-- =========================
+         Navigation
+    ========================== -->
+
     <nav class="main-nav-bar">
-        <a href="#" class="active">الرئيسية</a>
-        <a href="#products">المنتجات</a>
+
+        <a href="#" class="active">
+            الرئيسية
+        </a>
+
+        <a href="#products">
+            المنتجات
+        </a>
+
     </nav>
 
-    <!-- 3. قسم الهيرو -->
+    <!-- =========================
+         Hero
+    ========================== -->
+
     <section class="hero-section">
+
         <div class="hero-content">
-            <h1 class="hero-title">Toop3D <span>High Speed PETG HF Filament</span></h1>
+
+            <h1 class="hero-title">
+                Toop3D
+                <span>High Speed PETG HF Filament</span>
+            </h1>
+
             <ul class="hero-features">
-                <li>✓ High-Speed Printing (طباعة عالية السرعة)</li>
-                <li>✓ Excellent Toughness (متانة ممتازة)</li>
-                <li>✓ Strong Layer Adhesion (التحام قوي للطبقات)</li>
+                <li>✓ High-Speed Printing</li>
+                <li>✓ Excellent Toughness</li>
+                <li>✓ Strong Layer Adhesion</li>
             </ul>
-            <a href="#products" class="btn-primary">تسوق الآن / Buy Now</a>
+
+            <a href="#products" class="btn-primary">
+                تسوق الآن
+            </a>
+
         </div>
+
     </section>
 
-    <!-- 4. قسم عرض المنتجات -->
+    <!-- =========================
+         Products
+    ========================== -->
+
     <main class="main-content">
+
         <section id="products">
+
             <div class="products-header">
-                <h2 style="margin: 0;">قائمة المنتجات</h2>
-                
+
+                <h2>المنتجات</h2>
+
                 <div class="filter-box">
-                    <label for="category-select" style="font-weight: bold; margin-left: 5px;">اختر الخامة:</label>
-                    <select id="category-select" onchange="filterCategory(this.value)" style="padding: 6px 12px; border-radius: 6px; border: 1px solid #cbd5e1; font-weight: bold;">
+
+                    <label for="category-select">
+                        اختر الخامة
+                    </label>
+
+                    <select id="category-select">
+
                         <option value="ALL">جميع المنتجات</option>
-                        <option value="PLA">خيوط PLA</option>
-                        <option value="PETG">خيوط PETG</option>
-                        <option value="TPU">خيوط TPU (Flex)</option>
-                        <option value="ABS">خيوط ABS / ASA</option>
+                        <option value="PLA">PLA</option>
+                        <option value="PETG">PETG</option>
+                        <option value="TPU">TPU</option>
+                        <option value="ABS">ABS</option>
+
                     </select>
+
                 </div>
+
             </div>
 
-            <div id="products-container" class="products-grid">
-                <div class="loading-state">جاري تحميل المنتجات من Google Sheets...</div>
+            <div id="products-container"
+                 class="products-grid">
+
             </div>
+
         </section>
+
     </main>
 
-    <!-- 🎈 5. زر السلة العائم الثابت -->
-    <button id="cart-nav-btn" type="button" onclick="toggleCart()">
-        🛒 السلة <span id="nav-cart-count">0</span>
+    <!-- =========================
+         Floating Cart Button
+    ========================== -->
+
+    <button id="cart-nav-btn" type="button">
+
+        🛒
+
+        <span id="nav-cart-count">
+            0
+        </span>
+
     </button>
 
-    <!-- 🖼️ 6. النافذة المنبثقة للسلة -->
+    <!-- =========================
+         Cart Modal
+    ========================== -->
+
     <div id="cart-modal" class="modal">
+
         <div class="modal-content">
+
             <div class="modal-header">
-                <h2>سلة التسوق</h2>
-                <button type="button" onclick="toggleCart()" class="close-btn">✕</button>
-            </div>
-            <div id="cart-items" class="cart-body"></div>
-            <div id="cart-total-container" style="padding: 15px 0; border-top: 1px solid #e2e8f0; margin-top: 15px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 1.1em; color: #0f172a;">
-    <span>المجموع الإجمالي:</span>
-    <span id="cart-total-price">0 د.ع</span>
-</div>
-            <div class="modal-footer">
-                <button id="checkout-whatsapp-btn" type="button" onclick="sendWhatsAppOrder()" class="whatsapp-btn">
-                    💬 إتمام الطلب عبر الواتساب
+
+                <h2>
+                    سلة التسوق
+                </h2>
+
+                <button class="close-btn"
+                        id="close-cart-btn">
+
+                    ✕
+
                 </button>
+
             </div>
+
+            <div id="cart-items"
+                 class="cart-body">
+
+            </div>
+
+            <div id="cart-total-container">
+
+                <span>
+                    المجموع
+                </span>
+
+                <span id="cart-total-price">
+                    0
+                </span>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button id="checkout-whatsapp-btn"
+                        class="whatsapp-btn">
+
+                    💬 إتمام الطلب عبر واتساب
+
+                </button>
+
+            </div>
+
         </div>
+
     </div>
 
-    <!-- 🦶 7. الشريط السفلي المدمج -->
+    <!-- =========================
+         Footer
+    ========================== -->
+
     <footer class="site-footer">
+
         <div class="footer-container">
+
             <div class="footer-col">
-                <h3>Toop3D / NextShapes</h3>
-                <p>متجر متخصص في توفير حلول ومستلزمات الطباعة ثلاثية الأبعاد وخيوط الفلامنت عالية الجودة.</p>
+
+                <h3>
+                    Toop3D
+                </h3>
+
+                <p>
+                    متجر متخصص في حلول الطباعة ثلاثية الأبعاد.
+                </p>
+
             </div>
 
             <div class="footer-col">
-                <h4>روابط سريعة</h4>
+
+                <h4>
+                    روابط
+                </h4>
+
                 <ul class="footer-links">
+
                     <li><a href="#">الرئيسية</a></li>
+
                     <li><a href="#products">المنتجات</a></li>
-                    <li><a href="javascript:void(0)" onclick="toggleCart()">السلة</a></li>
+
                 </ul>
+
             </div>
 
             <div class="footer-col">
-                <h4>الدعم الفني</h4>
-                <a href="https://wa.me/9647827573964" target="_blank" class="footer-contact-btn">
-                    💬 راسلنا عبر الواتساب
+
+                <h4>
+                    واتساب
+                </h4>
+
+                <a class="footer-contact-btn"
+                   href="https://wa.me/9647827573964"
+                   target="_blank">
+
+                    تواصل معنا
+
                 </a>
+
             </div>
+
         </div>
 
-        <div class="footer-bottom">
-            <div>© 2026 Toop3D Co. جميع الحقوق محفوظة.</div>
-            <div>تطوير وإدارة متجر Toop3D الرقمي</div>
-        </div>
     </footer>
 
-    <!-- ==========================================
-        8. البرمجة ومزامنة Google Sheets
-        ========================================== -->
-    <script>
-        const SHEET_ID = '2PACX-1vQswuYaNx5xNjan745b2Dca59YUIojFeP8DWKut0jADKMLl4uPnOOHbVQsBx55m0FmhwEpobJlIEaap';
-        
-        let productsData = [];
-        let cart = [];
+    <!-- JavaScript -->
 
-        async function loadProductsFromSheet() {
-            const csvUrl = `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=0&single=true&output=csv`;
+    <script src="js/app.js"></script>
+    <script src="js/cart.js"></script>
 
-            try {
-                let response = await fetch(csvUrl + '&t=' + Date.now());
-                
-                if (!response.ok) {
-                    response = await fetch(`https://corsproxy.io/?${encodeURIComponent(csvUrl)}`);
-                }
-
-                if (!response.ok) throw new Error('تعذر الوصول لبيانات Google Sheets');
-
-                const csvText = await response.text();
-                productsData = parseCSVToProducts(csvText);
-                renderProducts();
-            } catch (error) {
-                console.error('خطأ أثناء التحميل:', error);
-                fetchViaGoogleJSONP();
-            }
-        }
-
-        function fetchViaGoogleJSONP() {
-            const csvUrl = `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=0&single=true&output=csv`;
-            
-            fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(csvUrl)}`)
-                .then(res => res.text())
-                .then(csvText => {
-                    productsData = parseCSVToProducts(csvText);
-                    renderProducts();
-                })
-                .catch(err => {
-                    const container = document.getElementById('products-container');
-                    if (container) {
-                        container.innerHTML = `<div class="loading-state" style="color: #ef4444;">
-                            تعذر تحميل المنتجات حالياً.<br>
-                            <small>يرجى التأكد من اتصال الإنترنت وتحديث الصفحة.</small>
-                        </div>`;
-                    }
-                });
-        }
-
-        function parseCSVLine(text) {
-            let p = '', c = '', r = [];
-            let q = false;
-            for (let i = 0; i < text.length; i++) {
-                c = text[i];
-                if (c === '"') {
-                    if (q && text[i+1] === '"') { p += '"'; i++; }
-                    else { q = !q; }
-                } else if (c === ',' && !q) {
-                    r.push(p.trim());
-                    p = '';
-                } else {
-                    p += c;
-                }
-            }
-            r.push(p.trim());
-            return r;
-        }
-
-        function parseCSVToProducts(csvText) {
-            const lines = csvText.trim().split(/\r?\n/);
-            if (lines.length < 2) return [];
-
-            const headers = parseCSVLine(lines[0]).map(h => h.toLowerCase().trim().replace(/^"|"$/g, ''));
-            const defaultUnavailableImg = 'https://via.placeholder.com/300x300/f1f5f9/64748b?text=%D9%86%D9%81%D8%AF+%D8%A7%D9%84%D9%83%D9%85%D9%8A%D8%A9';
-
-            return lines.slice(1).map((line, idx) => {
-                if (!line.trim()) return null;
-                const values = parseCSVLine(line).map(v => v.trim().replace(/^"|"$/g, ''));
-                
-                const row = {};
-                headers.forEach((header, index) => {
-                    row[header] = values[index] !== undefined ? values[index] : '';
-                });
-
-                const material = (row['material'] || 'PETG').toUpperCase();
-                const color = row['color'] || '';
-                const name = `خيوط ${material} High Speed (${color})`;
-                const id = row['id'] || `product-${idx}`;
-
-                const spoolAvailRaw = (row['spool_avail'] || 'TRUE').toString().toUpperCase().trim();
-                const isSpoolAvailable = (spoolAvailRaw === 'TRUE' || spoolAvailRaw === '1');
-
-                const refillAvailRaw = (row['refill_avail'] || 'TRUE').toString().toUpperCase().trim();
-                const isRefillAvailable = (refillAvailRaw === 'TRUE' || refillAvailRaw === '1');
-
-                const spoolPrice = parseFloat((row['spool_price'] || '0').replace(/[^0-9.]/g, '')) || 0;
-                const refillPrice = parseFloat((row['refill_price'] || '0').replace(/[^0-9.]/g, '')) || 0;
-
-                let spoolImg = row['spool_image'] || defaultUnavailableImg;
-                let refillImg = row['refill_image'] || spoolImg;
-
-                const hasSpool = isSpoolAvailable && spoolPrice > 0;
-                const hasRefill = isRefillAvailable && refillPrice > 0;
-
-                let defaultOption = 'spool';
-                if (!hasSpool && hasRefill) {
-                    defaultOption = 'refill';
-                }
-
-                return {
-                    id: id,
-                    name: name,
-                    category: material,
-                    materialName: material,
-                    colorName: color,
-                    selectedOption: defaultOption,
-                    options: {
-                        spool: {
-                            typeText: 'مع بكرة',
-                            spoolStatusText: 'مع بكرة',
-                            price: spoolPrice,
-                            image: spoolImg,
-                            isAvailable: hasSpool
-                        },
-                        refill: {
-                            typeText: 'بدون بكرة (Refill)',
-                            spoolStatusText: 'بدون بكرة',
-                            price: refillPrice,
-                            image: refillImg,
-                            isAvailable: hasRefill
-                        }
-                    }
-                };
-            }).filter(item => item !== null);
-        }
-
-        function renderProducts(filter = 'ALL') {
-            const container = document.getElementById('products-container');
-            if (!container) return;
-            container.innerHTML = '';
-
-            const activeCategory = filter || document.getElementById('category-select')?.value || 'ALL';
-
-            const filtered = activeCategory === 'ALL' 
-                ? productsData 
-                : productsData.filter(p => p.category === activeCategory);
-
-            if (filtered.length === 0) {
-                container.innerHTML = `<div class="loading-state">لا توجد منتجات متاحة ضمن هذا التصنيف حالياً.</div>`;
-                return;
-            }
-
-            filtered.forEach(product => {
-                const opt = product.options[product.selectedOption];
-                const canAddToCart = opt.isAvailable;
-
-                const cardHtml = `
-                    <div class="product-card" id="card-${product.id}">
-                        <div>
-                            <img src="${opt.image}" alt="${product.name}" id="img-${product.id}">
-                            <h3 style="margin: 0 0 8px 0; font-size: 1.05em; color: #0f172a;">${product.name}</h3>
-                            <div class="spool-options">
-                                <button type="button" id="btn-spool-${product.id}" class="spool-btn ${product.selectedOption === 'spool' ? 'active' : ''}" onclick="changeSpoolOption('${product.id}', 'spool')">مع بكرة</button>
-                                <button type="button" id="btn-refill-${product.id}" class="spool-btn ${product.selectedOption === 'refill' ? 'active' : ''}" onclick="changeSpoolOption('${product.id}', 'refill')">بدون بكرة</button>
-                            </div>
-                        </div>
-                        <div>
-                            <div style="font-size: 1.15em; font-weight: bold; color: ${canAddToCart ? '#16a34a' : '#64748b'}; margin: 10px 0;" id="price-container-${product.id}">
-                                ${canAddToCart ? `<span id="price-${product.id}">${opt.price.toLocaleString()}</span> د.ع` : 'غير متوفر حالياً'}
-                            </div>
-                            <button type="button" id="add-btn-${product.id}" class="add-to-cart-btn ${!canAddToCart ? 'disabled' : ''}" ${!canAddToCart ? 'disabled' : ''} onclick="addToCart('${product.id}')">
-                                ${canAddToCart ? '🛒 إضافة إلى السلة' : '⏳ نفدت الكمية'}
-                            </button>
-                        </div>
-                    </div>
-                `;
-                container.insertAdjacentHTML('beforeend', cardHtml);
-            });
-        }
-
-        function changeSpoolOption(productId, optionType) {
-            const product = productsData.find(p => p.id === productId);
-            if (!product) return;
-
-            product.selectedOption = optionType;
-            const opt = product.options[optionType];
-            const canAddToCart = opt.isAvailable;
-
-            const imgEl = document.getElementById(`img-${productId}`);
-            if (imgEl) imgEl.src = opt.image;
-
-            const priceContainer = document.getElementById(`price-container-${productId}`);
-            if (priceContainer) {
-                if (canAddToCart) {
-                    priceContainer.style.color = '#16a34a';
-                    priceContainer.innerHTML = `<span id="price-${productId}">${opt.price.toLocaleString()}</span> د.ع`;
-                } else {
-                    priceContainer.style.color = '#64748b';
-                    priceContainer.innerHTML = 'غير متوفر حالياً';
-                }
-            }
-
-            const addBtn = document.getElementById(`add-btn-${productId}`);
-            if (addBtn) {
-                if (canAddToCart) {
-                    addBtn.classList.remove('disabled');
-                    addBtn.removeAttribute('disabled');
-                    addBtn.innerHTML = '🛒 إضافة إلى السلة';
-                } else {
-                    addBtn.classList.add('disabled');
-                    addBtn.setAttribute('disabled', 'true');
-                    addBtn.innerHTML = '⏳ نفدت الكمية';
-                }
-            }
-
-            const spoolBtn = document.getElementById(`btn-spool-${productId}`);
-            const refillBtn = document.getElementById(`btn-refill-${productId}`);
-            if (spoolBtn) spoolBtn.classList.toggle('active', optionType === 'spool');
-            if (refillBtn) refillBtn.classList.toggle('active', optionType === 'refill');
-        }
-
-        function filterCategory(category) {
-            renderProducts(category);
-        }
-
-        function addToCart(productId) {
-            const product = productsData.find(p => p.id === productId);
-            if (!product) return;
-
-            const optKey = product.selectedOption;
-            const opt = product.options[optKey];
-            if (!opt.isAvailable) return;
-
-            const cartItemId = `${productId}-${optKey}`;
-            const existingItem = cart.find(item => item.cartItemId === cartItemId);
-
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push({
-                    cartItemId: cartItemId,
-                    productId: productId,
-                    name: product.name,
-                    optionType: optKey,
-                    typeName: opt.spoolStatusText,
-                    price: opt.price,
-                    image: opt.image,
-                    quantity: 1
-                });
-            }
-
-            updateCartUI();
-            triggerCartAnimation();
-        }
-
-        function updateCartUI() {
-            const cartCountEl = document.getElementById('nav-cart-count');
-            const cartItemsContainer = document.getElementById('cart-items');
-
-            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-            if (cartCountEl) cartCountEl.innerText = totalCount;
-
-            if (!cartItemsContainer) return;
-
-            if (cart.length === 0) {
-                cartItemsContainer.innerHTML = `
-                    <div style="text-align: center; color: #64748b; padding: 40px 0;">
-                        <div style="font-size: 3em; margin-bottom: 10px;">🛒</div>
-                        <p style="font-size: 1.1em; margin: 0;">سلة التسوق فارغة حالياً</p>
-                    </div>
-                `;
-                return;
-            }
-
-            let html = '';
-
-            cart.forEach(item => {
-                html += `
-                    <div class="cart-item-row">
-                        <div class="cart-item-info">
-                            <img src="${item.image}" alt="${item.name}" class="cart-item-thumb">
-                            <div>
-                                <h4 style="margin: 0 0 4px 0; font-size: 1em; color: #0f172a;">${item.name}</h4>
-                                <span style="font-size: 0.85em; color: #2563eb; background: #eff6ff; padding: 2px 8px; border-radius: 4px; font-weight: bold;">${item.typeName}</span>
-                                <div class="qty-controls">
-                                    <button type="button" class="qty-btn" onclick="updateQuantity('${item.cartItemId}', -1)">-</button>
-                                    <span style="font-weight: bold; min-width: 20px; text-align: center;">${item.quantity}</span>
-                                    <button type="button" class="qty-btn" onclick="updateQuantity('${item.cartItemId}', 1)">+</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="text-align: left; display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
-                            <button type="button" onclick="removeFromCart('${item.cartItemId}')" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 0.85em; font-weight: bold;">حذف</button>
-                        </div>
-                    </div>
-                `;
-            });
-
-            cartItemsContainer.innerHTML = html;
-        }
-
-        function updateQuantity(cartItemId, change) {
-            const item = cart.find(i => i.cartItemId === cartItemId);
-            if (!item) return;
-
-            item.quantity += change;
-            if (item.quantity <= 0) {
-                cart = cart.filter(i => i.cartItemId !== cartItemId);
-            }
-
-            updateCartUI();
-        }
-
-        function removeFromCart(cartItemId) {
-            cart = cart.filter(i => i.cartItemId !== cartItemId);
-            updateCardUI(); // تم تصحيح النداء هنا لـ updateCartUI
-            updateCartUI();
-        }
-
-        function toggleCart() {
-            const modal = document.getElementById('cart-modal');
-            if (modal) {
-                modal.classList.toggle('open');
-            }
-        }
-
-        function triggerCartAnimation() {
-            const btn = document.getElementById('cart-nav-btn');
-            if (!btn) return;
-            btn.classList.remove('cart-pop-animation');
-            void btn.offsetWidth;
-            btn.classList.add('cart-pop-animation');
-        }
-function sendWhatsAppOrder() {
-    if (cart.length === 0) {
-        alert('سلة التسوق فارغة!');
-        return;
-    }
-
-    let message = 'مرحباً، أود طلب:\n\n';
-    let totalSum = 0;
-
-    cart.forEach((item, index) => {
-        const qty = item.quantity || item.qty || 1;
-        const itemTotal = item.price * qty;
-        totalSum += itemTotal;
-
-        const optionText = item.typeName || item.optionText || '';
-        
-        // التنسيق المطلوب: اسم المنتج (الخيار) والعدد في نهاية السطر
-        message += `${index + 1}. ${item.name} (${optionText}) - العدد: ${qty}\n`;
-    });
-
-    message += `\nالسعر الإجمالي النهائي: ${totalSum.toLocaleString()} د.ع`;
-
-    const phone = '9647827573964';
-    const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-    window.open(url, '_blank');
-}
-       
-
-        document.addEventListener('DOMContentLoaded', () => {
-            loadProductsFromSheet();
-        });
-    </script>
 </body>
+
 </html>
