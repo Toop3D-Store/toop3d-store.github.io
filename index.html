@@ -249,7 +249,7 @@
 
                 const material = (row['material'] || 'PETG').toUpperCase();
                 const color = row['color'] || '';
-                const name = `خيوط ${material} High Speed (${color})`;
+                const name = ` ${material}  (${color})`;
                 const id = row['id'] || `product-${idx}`;
 
                 const spoolAvailRaw = (row['spool_avail'] || 'TRUE').toString().toUpperCase().trim();
