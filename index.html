@@ -236,7 +236,7 @@
             if (lines.length < 2) return [];
 
             const headers = parseCSVLine(lines[0]).map(h => h.toLowerCase().trim().replace(/^"|"$/g, ''));
-            const defaultUnavailableImg = 'https://via.placeholder.com/300x300/f1f5f9/64748b?text=%D9%86%D9%81%D8%AF+%D8%A7%D9%84%D9%83%D9%85%D9%8A%D8%A9';
+            const defaultUnavailableImg = 'https://via.placeholder.com/300x300/f1f5f9/64748b?text=%D8%B3%D9%8A%D8%AA%D9%88%D9%81%D8%B1+%D9%82%D8%B1%D9%8A%D8%A8%D8%A7ً';
 
             return lines.slice(1).map((line, idx) => {
                 if (!line.trim()) return null;
@@ -249,7 +249,7 @@
 
                 const material = (row['material'] || 'PETG').toUpperCase();
                 const color = row['color'] || '';
-                const name = ` ${material}  (${color})`;
+                const name = `خيوط ${material} High Speed (${color})`;
                 const id = row['id'] || `product-${idx}`;
 
                 const spoolAvailRaw = (row['spool_avail'] || 'TRUE').toString().toUpperCase().trim();
@@ -315,6 +315,9 @@
                 const opt = product.options[product.selectedOption];
                 const canAddToCart = opt.isAvailable;
 
+                // تنسيق لون الزر بناءً على توفر المنتج (رصاصي إن لم يكن متوفراً، أو التنسيق العادي إن كان متوفراً)
+                const btnStyle = !canAddToCart ? 'background-color: #64748b !important; color: #ffffff !important; border-color: #64748b !important; cursor: not-allowed;' : '';
+
                 const cardHtml = `
                     <div class="product-card" id="card-${product.id}">
                         <div>
@@ -329,8 +332,8 @@
                             <div style="font-size: 1.15em; font-weight: bold; color: ${canAddToCart ? '#16a34a' : '#64748b'}; margin: 10px 0;" id="price-container-${product.id}">
                                 ${canAddToCart ? `<span id="price-${product.id}">${opt.price.toLocaleString()}</span> د.ع` : 'غير متوفر حالياً'}
                             </div>
-                            <button type="button" id="add-btn-${product.id}" class="add-to-cart-btn ${!canAddToCart ? 'disabled' : ''}" ${!canAddToCart ? 'disabled' : ''} onclick="addToCart('${product.id}')">
-                                ${canAddToCart ? '🛒 إضافة إلى السلة' : '⏳ نفدت الكمية'}
+                            <button type="button" id="add-btn-${product.id}" class="add-to-cart-btn ${!canAddToCart ? 'disabled' : ''}" style="${btnStyle}" ${!canAddToCart ? 'disabled' : ''} onclick="addToCart('${product.id}')">
+                                ${canAddToCart ? '🛒 إضافة إلى السلة' : '⏳ سيتوفر قريباً'}
                             </button>
                         </div>
                     </div>
@@ -366,11 +369,13 @@
                 if (canAddToCart) {
                     addBtn.classList.remove('disabled');
                     addBtn.removeAttribute('disabled');
+                    addBtn.style.cssText = '';
                     addBtn.innerHTML = '🛒 إضافة إلى السلة';
                 } else {
                     addBtn.classList.add('disabled');
                     addBtn.setAttribute('disabled', 'true');
-                    addBtn.innerHTML = '⏳ نفدت الكمية';
+                    addBtn.style.cssText = 'background-color: #64748b !important; color: #ffffff !important; border-color: #64748b !important; cursor: not-allowed;';
+                    addBtn.innerHTML = '⏳ سيتوفر قريباً';
                 }
             }
 
@@ -409,7 +414,6 @@
             updateCartUI();
         }
 
-        // دالة تحديث واجهة السلة مع أزرار تحكم بالكمية واضحة ومضمونة الظهور
         function updateCartUI() {
             const cartCounter = document.getElementById('cart-counter');
             const container = document.getElementById('cartItemsContainer');
@@ -420,7 +424,6 @@
             let totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
             if (cartCounter) cartCounter.textContent = totalCount;
             
-            // إذا كانت السلة فارغة
             if (cart.length === 0) {
                 container.innerHTML = `
                     <div style="text-align: center; padding: 40px; color: #64748b;">
@@ -433,7 +436,6 @@
                 return;
             }
             
-            // إذا كانت السلة تحتوي على منتجات
             let itemsHTML = '';
             let totalPrice = 0;
             
@@ -447,7 +449,6 @@
                             <h4 style="margin: 0 0 4px 0; font-size: 0.95rem; color: #1e293b;">${item.name}</h4>
                             <span style="font-size: 0.8rem; color: #64748b; display: block; margin-bottom: 8px;">السعر: ${item.price.toLocaleString()} د.ع</span>
                             
-                            <!-- أزرار التحكم بالكمية (+ و -) بتنسيق مباشر لا يتأثر بالملف الخارجي -->
                             <div style="display: flex; align-items: center; gap: 6px;">
                                 <button type="button" onclick="changeQuantity(${index}, -1)" style="all: unset; background-color: #e2e8f0; color: #0f172a; width: 28px; height: 28px; border-radius: 4px; text-align: center; font-weight: bold; font-size: 16px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #cbd5e1;">-</button>
                                 <span style="font-size: 0.95rem; font-weight: bold; min-width: 24px; text-align: center; color: #0f172a;">${item.quantity}</span>
@@ -466,32 +467,26 @@
             if (totalPriceEl) totalPriceEl.innerText = `${totalPrice.toLocaleString()} د.ع`;
         }
 
-        // دالة تعديل كمية المنتج (+ أو -)
         function changeQuantity(index, amount) {
             cart[index].quantity += amount;
-            
-            // إذا أصبحت الكمية أقل من 1، يتم حذف المنتج تلقائياً
             if (cart[index].quantity <= 0) {
                 cart.splice(index, 1);
             }
-            
             updateCartUI();
         }
 
-        // دالة الحذف من السلة
         function removeFromCart(index) {
             cart.splice(index, 1);
             updateCartUI();
         }
 
-        // دالة إرسال الطلب عبر واتساب
         function checkoutWhatsApp() {
             if (cart.length === 0) {
                 alert("سلة التسوق فارغة!");
                 return;
             }
             
-            const phoneNumber = "9647827573964"; // رقم هاتف الدعم الفني لديك
+            const phoneNumber = "9647827573964";
             let message = "مرحباً، أريد طلب المنتجات التالية:\n\n";
             
             let totalPrice = 0;
