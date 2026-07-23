@@ -1,127 +1,241 @@
-/* Toop3D Professional Style.css
-   Version 1.0
-   This is the base stylesheet. We will extend it in the next steps.
-*/
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+/* ==========================================
+   1. الإعدادات العامة للموقع
+   ========================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
-body{
-  background:#f8fafc;
-  color:#1e293b;
-  line-height:1.6;
+body {
+    background-color: #f8fafc;
+    color: #1e293b;
+    line-height: 1.6;
 }
 
-.top-brand-banner{
-  background:linear-gradient(135deg,#090d16,#0f172a);
-  color:#fff;
-  padding:28px 20px;
-  border-bottom:3px solid #2563eb;
+/* ==========================================
+   2. البنر العلوي الاحترافي (Toop3D Top Banner)
+   ========================================== */
+.top-brand-banner {
+    background-color: #ffffff;
+    padding: 12px 20px;
+    border-bottom: 1px solid #e2e8f0;
+    direction: ltr; /* لجعل العرض محاذى لليار للغة الإنكليزية */
 }
 
-.banner-container{
-  max-width:1200px;
-  margin:auto;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:20px;
-  flex-wrap:wrap;
+.banner-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
 }
 
-.brand-left{display:flex;align-items:center;gap:18px;}
-.brand-logo{height:70px;}
-.company-name{font-size:1.8rem;font-weight:800;}
-.company-sub{color:#38bdf8;}
-
-.main-nav-bar{
-  display:flex;
-  gap:20px;
-  padding:15px 20px;
-  background:#0f172a;
-}
-.main-nav-bar a{
-  color:#fff;
-  text-decoration:none;
-  font-weight:bold;
-}
-.main-nav-bar a.active,
-.main-nav-bar a:hover{
-  color:#38bdf8;
+/* القسم الأيسر */
+.brand-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-.hero-section{
-  background:#1e293b;
-  color:#fff;
-  padding:60px 20px;
+.brand-logo {
+    height: 48px;
+    width: auto;
+    object-fit: contain;
 }
 
-.hero-content{
-  max-width:1200px;
-  margin:auto;
+.company-name {
+    font-size: 1.35em;
+    font-weight: 900;
+    color: #0f172a;
+    margin: 0;
+    letter-spacing: 0.5px;
 }
 
-.btn-primary{
-  display:inline-block;
-  margin-top:20px;
-  padding:12px 24px;
-  border-radius:30px;
-  background:#2563eb;
-  color:#fff;
-  text-decoration:none;
+.company-sub {
+    font-size: 0.78em;
+    color: #64748b;
+    margin: 2px 0 0 0;
+    font-weight: 600;
 }
 
-.main-content{
-  max-width:1200px;
-  margin:40px auto;
-  padding:0 20px;
+/* فاصل عمودي */
+.banner-divider {
+    width: 1px;
+    height: 42px;
+    background-color: #cbd5e1;
 }
 
-.products-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
-  gap:20px;
+/* القسم الأيمن */
+.brand-right {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
 }
 
-.product-card{
-  background:#fff;
-  border-radius:12px;
-  padding:15px;
-  box-shadow:0 2px 8px rgba(0,0,0,.08);
+/* شارات الجودة */
+.badges-row {
+    display: flex;
+    gap: 6px;
 }
 
-.product-card img{
-  width:100%;
-  height:180px;
-  object-fit:contain;
+.badge-icon {
+    border: 1px solid #0f172a;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.58em;
+    font-weight: bold;
+    color: #0f172a;
+    background-color: #f8fafc;
 }
 
-#cart-nav-btn{
-  position:fixed;
-  left:20px;
-  bottom:20px;
-  border:none;
-  border-radius:50px;
-  background:#2563eb;
-  color:#fff;
-  padding:12px 20px;
-  cursor:pointer;
+/* كبسولات المنتجات الأزرق */
+.main-products-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
 }
 
-.modal{display:none;}
-.modal.open{display:flex;}
-
-.site-footer{
-  margin-top:40px;
-  padding:30px 20px;
-  background:#0f172a;
-  color:#fff;
+.product-tag {
+    background-color: #2563eb;
+    color: #ffffff;
+    font-size: 0.7em;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 12px;
 }
 
-@media(max-width:768px){
-  .banner-container{flex-direction:column;text-align:center;}
+/* ==========================================
+   3. شريط التنقل العلوي (Navbar)
+   ========================================== */
+.navbar {
+    background-color: #0f172a;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.navbar::-webkit-scrollbar {
+    display: none;
+}
+
+.nav-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.95em;
+}
+
+.nav-link:hover, .nav-link.active-link {
+    background-color: #1e293b;
+    color: #38bdf8;
+}
+
+.nav-divider {
+    color: #475569;
+}
+
+.sub-cat-btn {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    font-size: 0.88em;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.sub-cat-btn:hover {
+    color: #ffffff;
+    background-color: #1e293b;
+}
+
+.sub-cat-btn.active {
+    color: #ffffff;
+    background-color: #2563eb;
+}
+
+/* ==========================================
+   4. قسم الهيرو (Hero Section)
+   ========================================== */
+.hero-section {
+    background-color: #1e293b;
+    color: #ffffff;
+    padding: 50px 20px;
+    text-align: right;
+}
+
+.hero-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hero-title {
+    font-size: 2.2em;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+.hero-title span {
+    color: #10b981;
+}
+
+.hero-features {
+    list-style: none;
+    margin-bottom: 25px;
+}
+
+.hero-features li {
+    font-size: 1.05em;
+    margin-bottom: 8px;
+}
+
+.btn-primary {
+    display: inline-block;
+    background-color: #2563eb;
+    color: #ffffff;
+    padding: 10px 24px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #1d4ed8;
+}
+
+/* ==========================================
+   5. التجاوب مع شاشات الجوال
+   ========================================== */
+@media (max-width: 768px) {
+    .banner-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .banner-divider {
+        display: none;
+    }
+    .brand-left {
+        flex-direction: column;
+    }
+    .brand-right {
+        align-items: center;
+    }
 }

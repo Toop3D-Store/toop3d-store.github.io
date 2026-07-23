@@ -1,45 +1,545 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Toop3D - متجر الطباعة ثلاثية الأبعاد</title>
+    <link rel="stylesheet" href="css/style.css?v=125">
+    
+    <style>
+        /* ==========================================
+            1. شريط التنقل العلوي والبنر (نسخة مكبرة وبارزة)
+            ========================================== */
+        .top-brand-banner {
+            background: linear-gradient(135deg, #090d16 0%, #0f172a 100%);
+            padding: 28px 20px !important;
+            border-bottom: 3px solid #2563eb;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
 
-    <link rel="stylesheet" href="css/style.css?v=1">
+        .banner-container {
+            max-width: 1350px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .brand-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .brand-logo {
+            height: 75px !important;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 8px rgba(255, 255, 255, 0.15));
+        }
+
+        .brand-title-box {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .company-name {
+            color: #ffffff !important;
+            font-size: 1.8em !important;
+            font-weight: 800 !important;
+            letter-spacing: 0.5px;
+            margin: 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+        }
+
+        .company-sub {
+            color: #38bdf8 !important;
+            font-size: 0.95em !important;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .banner-divider {
+            width: 2px;
+            height: 60px;
+            background: linear-gradient(to bottom, transparent, #334155, transparent);
+            display: none;
+        }
+
+        @media (min-width: 900px) {
+            .banner-divider { display: block; }
+        }
+
+        .brand-right {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        .badges-row, .main-products-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .badge-icon {
+            background-color: #1e293b;
+            color: #38bdf8;
+            font-size: 0.85em !important;
+            padding: 5px 10px !important;
+            border-radius: 6px;
+            font-weight: bold;
+            border: 1px solid #475569;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .product-tag {
+            color: #e2e8f0;
+            font-size: 0.85em !important;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 5px 10px !important;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .main-nav-bar {
+            background-color: #0f172a !important;
+            padding: 16px 30px !important;
+            display: flex !important;
+            gap: 30px !important;
+            align-items: center !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+            border-bottom: 2px solid #1e293b;
+            box-shadow: inset 0 -2px 5px rgba(0,0,0,0.2);
+        }
+        .main-nav-bar a {
+            color: #ffffff !important;
+            text-decoration: none !important;
+            font-weight: bold !important;
+            font-size: 1.15em !important;
+            transition: color 0.2s;
+        }
+        .main-nav-bar a:hover {
+            color: #38bdf8 !important;
+        }
+        .main-nav-bar a.active {
+            color: #38bdf8 !important;
+        }
+
+        /* ==========================================
+            2. 🖼️ ضبط كروت المنتجات والصور
+            ========================================== */
+        .products-grid {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important;
+            gap: 20px !important;
+            margin-top: 20px !important;
+        }
+
+        .product-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .product-card img {
+            width: 100% !important;
+            height: 180px !important;
+            max-height: 180px !important;
+            object-fit: contain !important;
+            border-radius: 8px !important;
+            background-color: #f8fafc !important;
+            margin-bottom: 12px !important;
+            display: block !important;
+        }
+
+        /* أزرار التعبئة (Spool / Refill) */
+        .spool-options {
+            display: flex;
+            gap: 8px;
+            margin: 10px 0;
+        }
+
+        .spool-btn {
+            flex: 1;
+            padding: 6px 10px;
+            border: 1px solid #cbd5e1;
+            background-color: #f8fafc;
+            color: #334155;
+            border-radius: 6px;
+            font-size: 0.85em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .spool-btn.active {
+            border: 2px solid #2563eb !important;
+            background-color: #eff6ff !important;
+            color: #2563eb !important;
+        }
+
+        /* 🛒 أزرار الإضافة للسلة */
+        .add-to-cart-btn {
+            background-color: #2563eb !important;
+            color: #ffffff !important;
+            border: none !important;
+            padding: 10px 15px !important;
+            border-radius: 6px !important;
+            font-weight: bold !important;
+            cursor: pointer !important;
+            width: 100% !important;
+            margin-top: 8px !important;
+            transition: background-color 0.2s ease !important;
+        }
+        .add-to-cart-btn:hover:not(:disabled) {
+            background-color: #1d4ed8 !important;
+        }
+
+        .add-to-cart-btn:disabled, .add-to-cart-btn.disabled {
+            background-color: #94a3b8 !important;
+            color: #ffffff !important;
+            cursor: not-allowed !important;
+            pointer-events: none !important;
+            opacity: 0.7 !important;
+        }
+
+        /* ==========================================
+            3. 🎈 زر السلة العائم الثابت
+            ========================================== */
+        #cart-nav-btn {
+            position: fixed !important;
+            bottom: 25px !important;
+            left: 25px !important;
+            background-color: #2563eb !important;
+            color: #ffffff !important;
+            border: none !important;
+            padding: 12px 22px !important;
+            border-radius: 50px !important;
+            font-size: 1.1em !important;
+            font-weight: bold !important;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4) !important;
+            cursor: pointer !important;
+            z-index: 9999 !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+            transition: transform 0.2s ease, background-color 0.2s ease !important;
+        }
+        #cart-nav-btn:hover {
+            transform: scale(1.05) !important;
+            background-color: #1d4ed8 !important;
+        }
+        #nav-cart-count {
+            background-color: #ffffff !important;
+            color: #2563eb !important;
+            padding: 2px 8px !important;
+            border-radius: 20px !important;
+            font-size: 0.9em !important;
+            font-weight: bold !important;
+        }
+
+        @keyframes cartBounce {
+            0%   { transform: scale(1); }
+            30%  { transform: scale(1.2) rotate(-6deg); background-color: #10b981 !important; }
+            60%  { transform: scale(0.95) rotate(6deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .cart-pop-animation {
+            animation: cartBounce 0.5s ease-in-out !important;
+        }
+
+        /* ==========================================
+            4. 🖼️ النافذة المنبثقة للسلة (Modal)
+            ========================================== */
+        .modal {
+            display: none;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            background-color: rgba(15, 23, 42, 0.6) !important;
+            backdrop-filter: blur(4px) !important;
+            z-index: 10000 !important;
+            justify-content: center !important;
+            align-items: center !important;
+            padding: 20px !important;
+            box-sizing: border-box !important;
+        }
+        
+        .modal.open {
+            display: flex !important;
+        }
+
+        .modal-content {
+            background-color: #ffffff !important;
+            width: 100% !important;
+            max-width: 580px !important;
+            max-height: 85vh !important;
+            border-radius: 16px !important;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            overflow: hidden !important;
+            animation: modalSlideUp 0.3s ease !important;
+        }
+
+        @keyframes modalSlideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            padding: 18px 20px !important;
+            background-color: #f8fafc !important;
+            border-bottom: 1px solid #e2e8f0 !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+        }
+
+        .modal-header h2 {
+            margin: 0 !important;
+            font-size: 1.3em !important;
+            color: #0f172a !important;
+        }
+
+        .close-btn {
+            background: none !important;
+            border: none !important;
+            font-size: 1.4em !important;
+            cursor: pointer !important;
+            color: #64748b !important;
+        }
+
+        .cart-body {
+            padding: 20px !important;
+            overflow-y: auto !important;
+            flex-grow: 1 !important;
+        }
+
+        .cart-item-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            padding: 16px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .cart-item-info {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            flex-grow: 1;
+        }
+
+        .cart-item-thumb {
+            width: 110px !important;
+            height: 110px !important;
+            min-width: 110px !important;
+            object-fit: contain;
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 6px;
+            flex-shrink: 0;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+        }
+
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .qty-btn {
+            background-color: #e2e8f0;
+            border: none;
+            color: #0f172a;
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+
+        .qty-btn:hover {
+            background-color: #cbd5e1;
+        }
+
+        .modal-footer {
+            padding: 18px 20px !important;
+            background-color: #f8fafc !important;
+            border-top: 1px solid #e2e8f0 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 12px !important;
+        }
+
+        .total-price-box {
+            display: flex !important;
+            justify-content: space-between !important;
+            font-size: 1.2em !important;
+            font-weight: bold !important;
+            color: #0f172a !important;
+        }
+
+        .whatsapp-btn {
+            background-color: #25d366 !important;
+            color: #ffffff !important;
+            border: none !important;
+            padding: 14px 20px !important;
+            border-radius: 10px !important;
+            font-size: 1.1em !important;
+            font-weight: bold !important;
+            cursor: pointer !important;
+            width: 100% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 8px !important;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3) !important;
+            transition: background-color 0.2s ease !important;
+        }
+
+        .whatsapp-btn:hover {
+            background-color: #1ebc57 !important;
+        }
+
+        .loading-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2em;
+            color: #64748b;
+        }
+
+        /* ==========================================
+            5. 🦶 الشريط السفلي المدمج (Compact Footer)
+            ========================================== */
+        .site-footer {
+            background-color: #0f172a;
+            color: #f8fafc;
+            padding: 20px 20px 15px 20px !important;
+            margin-top: 40px;
+            border-top: 2px solid #2563eb;
+            font-family: inherit;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            box-sizing: border-box;
+            align-items: center;
+        }
+
+        .footer-col h3, .footer-col h4 {
+            color: #ffffff;
+            margin: 0 0 8px 0;
+            font-size: 1.05em;
+        }
+
+        .footer-col p {
+            color: #94a3b8;
+            font-size: 0.85em;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links li {
+            margin: 0;
+        }
+
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 0.85em;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: #38bdf8;
+        }
+
+        .footer-contact-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: #25d366;
+            color: #ffffff !important;
+            padding: 6px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.85em;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+
+        .footer-contact-btn:hover {
+            background-color: #1ebc57;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 15px auto 0 auto;
+            padding-top: 10px;
+            border-top: 1px solid #1e293b;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.78em;
+            color: #64748b;
+        }
+    </style>
 </head>
-
 <body>
 
-    <!-- =========================
-         Header
-    ========================== -->
+    <!-- 1. البنر العلوي -->
     <header class="top-brand-banner">
         <div class="banner-container">
-
             <div class="brand-left">
-                <img src="images/logo.png"
-                     alt="Toop3D Logo"
-                     class="brand-logo"
-                     onerror="this.style.display='none'">
-
+                <img src="images/logo.png" alt="Toop3D Logo" class="brand-logo" onerror="this.style.display='none'">
                 <div class="brand-title-box">
-                    <h1 class="company-name">
-                        Toop3D TECHNOLOGY CO., LTD.
-                    </h1>
-
-                    <p class="company-sub">
-                        10+ Years of Industry Experience |
-                        Specializing in 3D Printer Materials
-                    </p>
+                    <h1 class="company-name">Toop3D TECHNOLOGY CO., LTD.</h1>
+                    <p class="company-sub">10+ Years of Industry Experience | Specializing in 3D printer material</p>
                 </div>
             </div>
 
             <div class="banner-divider"></div>
 
             <div class="brand-right">
-
                 <div class="badges-row">
                     <span class="badge-icon">ISO</span>
                     <span class="badge-icon">UKCA</span>
@@ -47,234 +547,489 @@
                     <span class="badge-icon">MSDS</span>
                     <span class="badge-icon">RoHS</span>
                 </div>
-
                 <div class="main-products-row">
-                    <span class="product-tag">PLA</span>
-                    <span class="product-tag">PETG</span>
-                    <span class="product-tag">ABS</span>
-                    <span class="product-tag">ASA</span>
-                    <span class="product-tag">TPU</span>
+                    <span class="product-tag">3D printer filament</span>
+                    <span class="product-tag">matte filament</span>
+                    <span class="product-tag">petg filament</span>
+                    <span class="product-tag">abs filament</span>
+                    <span class="product-tag">pla filament</span>
                 </div>
-
             </div>
-
         </div>
     </header>
 
-    <!-- =========================
-         Navigation
-    ========================== -->
-
+    <!-- 2. شريط التنقل العلوي -->
     <nav class="main-nav-bar">
-
-        <a href="#" class="active">
-            الرئيسية
-        </a>
-
-        <a href="#products">
-            المنتجات
-        </a>
-
+        <a href="#" class="active">الرئيسية</a>
+        <a href="#products">المنتجات</a>
     </nav>
 
-    <!-- =========================
-         Hero
-    ========================== -->
-
+    <!-- 3. قسم الهيرو -->
     <section class="hero-section">
-
         <div class="hero-content">
-
-            <h1 class="hero-title">
-                Toop3D
-                <span>High Speed PETG HF Filament</span>
-            </h1>
-
+            <h1 class="hero-title">Toop3D <span>High Speed PETG HF Filament</span></h1>
             <ul class="hero-features">
-                <li>✓ High-Speed Printing</li>
-                <li>✓ Excellent Toughness</li>
-                <li>✓ Strong Layer Adhesion</li>
+                <li>✓ High-Speed Printing (طباعة عالية السرعة)</li>
+                <li>✓ Excellent Toughness (متانة ممتازة)</li>
+                <li>✓ Strong Layer Adhesion (التحام قوي للطبقات)</li>
             </ul>
-
-            <a href="#products" class="btn-primary">
-                تسوق الآن
-            </a>
-
+            <a href="#products" class="btn-primary">تسوق الآن / Buy Now</a>
         </div>
-
     </section>
 
-    <!-- =========================
-         Products
-    ========================== -->
-
+    <!-- 4. قسم عرض المنتجات -->
     <main class="main-content">
-
         <section id="products">
-
             <div class="products-header">
-
-                <h2>المنتجات</h2>
-
+                <h2 style="margin: 0;">قائمة المنتجات</h2>
+                
                 <div class="filter-box">
-
-                    <label for="category-select">
-                        اختر الخامة
-                    </label>
-
-                    <select id="category-select">
-
+                    <label for="category-select" style="font-weight: bold; margin-left: 5px;">اختر الخامة:</label>
+                    <select id="category-select" onchange="filterCategory(this.value)" style="padding: 6px 12px; border-radius: 6px; border: 1px solid #cbd5e1; font-weight: bold;">
                         <option value="ALL">جميع المنتجات</option>
-                        <option value="PLA">PLA</option>
-                        <option value="PETG">PETG</option>
-                        <option value="TPU">TPU</option>
-                        <option value="ABS">ABS</option>
-
+                        <option value="PLA">خيوط PLA</option>
+                        <option value="PETG">خيوط PETG</option>
+                        <option value="TPU">خيوط TPU (Flex)</option>
+                        <option value="ABS">خيوط ABS / ASA</option>
                     </select>
-
                 </div>
-
             </div>
 
-            <div id="products-container"
-                 class="products-grid">
-
+            <div id="products-container" class="products-grid">
+                <div class="loading-state">جاري تحميل المنتجات من Google Sheets...</div>
             </div>
-
         </section>
-
     </main>
 
-    <!-- =========================
-         Floating Cart Button
-    ========================== -->
-
-    <button id="cart-nav-btn" type="button">
-
-        🛒
-
-        <span id="nav-cart-count">
-            0
-        </span>
-
+    <!-- 🎈 5. زر السلة العائم الثابت -->
+    <button id="cart-nav-btn" type="button" onclick="toggleCart()">
+        🛒 السلة <span id="nav-cart-count">0</span>
     </button>
 
-    <!-- =========================
-         Cart Modal
-    ========================== -->
-
+    <!-- 🖼️ 6. النافذة المنبثقة للسلة -->
     <div id="cart-modal" class="modal">
-
         <div class="modal-content">
-
             <div class="modal-header">
-
-                <h2>
-                    سلة التسوق
-                </h2>
-
-                <button class="close-btn"
-                        id="close-cart-btn">
-
-                    ✕
-
-                </button>
-
+                <h2>سلة التسوق</h2>
+                <button type="button" onclick="toggleCart()" class="close-btn">✕</button>
             </div>
-
-            <div id="cart-items"
-                 class="cart-body">
-
-            </div>
-
-            <div id="cart-total-container">
-
-                <span>
-                    المجموع
-                </span>
-
-                <span id="cart-total-price">
-                    0
-                </span>
-
-            </div>
-
+            <div id="cart-items" class="cart-body"></div>
             <div class="modal-footer">
-
-                <button id="checkout-whatsapp-btn"
-                        class="whatsapp-btn">
-
-                    💬 إتمام الطلب عبر واتساب
-
+                <div class="total-price-box">
+                    <span>المجموع الكلي:</span>
+                    <span id="cart-total-price">0 د.ع</span>
+                </div>
+                <button id="checkout-whatsapp-btn" type="button" onclick="sendWhatsAppOrder()" class="whatsapp-btn">
+                    💬 إتمام الطلب عبر الواتساب
                 </button>
-
             </div>
-
         </div>
-
     </div>
 
-    <!-- =========================
-         Footer
-    ========================== -->
-
+    <!-- 🦶 7. الشريط السفلي المدمج -->
     <footer class="site-footer">
-
         <div class="footer-container">
-
             <div class="footer-col">
-
-                <h3>
-                    Toop3D
-                </h3>
-
-                <p>
-                    متجر متخصص في حلول الطباعة ثلاثية الأبعاد.
-                </p>
-
+                <h3>Toop3D / NextShapes</h3>
+                <p>متجر متخصص في توفير حلول ومستلزمات الطباعة ثلاثية الأبعاد وخيوط الفلامنت عالية الجودة.</p>
             </div>
 
             <div class="footer-col">
-
-                <h4>
-                    روابط
-                </h4>
-
+                <h4>روابط سريعة</h4>
                 <ul class="footer-links">
-
                     <li><a href="#">الرئيسية</a></li>
-
                     <li><a href="#products">المنتجات</a></li>
-
+                    <li><a href="javascript:void(0)" onclick="toggleCart()">السلة</a></li>
                 </ul>
-
             </div>
 
             <div class="footer-col">
-
-                <h4>
-                    واتساب
-                </h4>
-
-                <a class="footer-contact-btn"
-                   href="https://wa.me/9647827573964"
-                   target="_blank">
-
-                    تواصل معنا
-
+                <h4>الدعم الفني</h4>
+                <a href="https://wa.me/9647827573964" target="_blank" class="footer-contact-btn">
+                    💬 راسلنا عبر الواتساب
                 </a>
-
             </div>
-
         </div>
 
+        <div class="footer-bottom">
+            <div>© 2026 Toop3D Co. جميع الحقوق محفوظة.</div>
+            <div>تطوير وإدارة متجر Toop3D الرقمي</div>
+        </div>
     </footer>
 
-    <!-- JavaScript -->
+    <!-- ==========================================
+        8. البرمجة ومزامنة Google Sheets
+        ========================================== -->
+    <script>
+        const SHEET_ID = '2PACX-1vQswuYaNx5xNjan745b2Dca59YUIojFeP8DWKut0jADKMLl4uPnOOHbVQsBx55m0FmhwEpobJlIEaap';
+        
+        let productsData = [];
+        let cart = [];
 
-    <script src="js/app.js"></script>
-    <script src="js/cart.js"></script>
+        async function loadProductsFromSheet() {
+            const csvUrl = `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=0&single=true&output=csv`;
 
+            try {
+                let response = await fetch(csvUrl + '&t=' + Date.now());
+                
+                if (!response.ok) {
+                    response = await fetch(`https://corsproxy.io/?${encodeURIComponent(csvUrl)}`);
+                }
+
+                if (!response.ok) throw new Error('تعذر الوصول لبيانات Google Sheets');
+
+                const csvText = await response.text();
+                productsData = parseCSVToProducts(csvText);
+                renderProducts();
+            } catch (error) {
+                console.error('خطأ أثناء التحميل:', error);
+                fetchViaGoogleJSONP();
+            }
+        }
+
+        function fetchViaGoogleJSONP() {
+            const csvUrl = `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=0&single=true&output=csv`;
+            
+            fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(csvUrl)}`)
+                .then(res => res.text())
+                .then(csvText => {
+                    productsData = parseCSVToProducts(csvText);
+                    renderProducts();
+                })
+                .catch(err => {
+                    const container = document.getElementById('products-container');
+                    if (container) {
+                        container.innerHTML = `<div class="loading-state" style="color: #ef4444;">
+                            تعذر تحميل المنتجات حالياً.<br>
+                            <small>يرجى التأكد من اتصال الإنترنت وتحديث الصفحة.</small>
+                        </div>`;
+                    }
+                });
+        }
+
+        function parseCSVLine(text) {
+            let p = '', c = '', r = [];
+            let q = false;
+            for (let i = 0; i < text.length; i++) {
+                c = text[i];
+                if (c === '"') {
+                    if (q && text[i+1] === '"') { p += '"'; i++; }
+                    else { q = !q; }
+                } else if (c === ',' && !q) {
+                    r.push(p.trim());
+                    p = '';
+                } else {
+                    p += c;
+                }
+            }
+            r.push(p.trim());
+            return r;
+        }
+
+        function parseCSVToProducts(csvText) {
+            const lines = csvText.trim().split(/\r?\n/);
+            if (lines.length < 2) return [];
+
+            const headers = parseCSVLine(lines[0]).map(h => h.toLowerCase().trim().replace(/^"|"$/g, ''));
+            const defaultUnavailableImg = 'https://via.placeholder.com/300x300/f1f5f9/64748b?text=%D9%86%D9%81%D8%AF+%D8%A7%D9%84%D9%83%D9%85%D9%8A%D8%A9';
+
+            return lines.slice(1).map((line, idx) => {
+                if (!line.trim()) return null;
+                const values = parseCSVLine(line).map(v => v.trim().replace(/^"|"$/g, ''));
+                
+                const row = {};
+                headers.forEach((header, index) => {
+                    row[header] = values[index] !== undefined ? values[index] : '';
+                });
+
+                const material = (row['material'] || 'PETG').toUpperCase();
+                const color = row['color'] || '';
+                const name = `خيوط ${material} High Speed (${color})`;
+                const id = row['id'] || `product-${idx}`;
+
+                const spoolAvailRaw = (row['spool_avail'] || 'TRUE').toString().toUpperCase().trim();
+                const isSpoolAvailable = (spoolAvailRaw === 'TRUE' || spoolAvailRaw === '1');
+
+                const refillAvailRaw = (row['refill_avail'] || 'TRUE').toString().toUpperCase().trim();
+                const isRefillAvailable = (refillAvailRaw === 'TRUE' || refillAvailRaw === '1');
+
+                const spoolPrice = parseFloat((row['spool_price'] || '0').replace(/[^0-9.]/g, '')) || 0;
+                const refillPrice = parseFloat((row['refill_price'] || '0').replace(/[^0-9.]/g, '')) || 0;
+
+                let spoolImg = row['spool_image'] || defaultUnavailableImg;
+                let refillImg = row['refill_image'] || spoolImg;
+
+                const hasSpool = isSpoolAvailable && spoolPrice > 0;
+                const hasRefill = isRefillAvailable && refillPrice > 0;
+
+                let defaultOption = 'spool';
+                if (!hasSpool && hasRefill) {
+                    defaultOption = 'refill';
+                }
+
+                return {
+                    id: id,
+                    name: name,
+                    category: material,
+                    materialName: material,
+                    colorName: color,
+                    selectedOption: defaultOption,
+                    options: {
+                        spool: {
+                            typeText: 'مع بكرة',
+                            spoolStatusText: 'مع بكرة',
+                            price: spoolPrice,
+                            image: spoolImg,
+                            isAvailable: hasSpool
+                        },
+                        refill: {
+                            typeText: 'بدون بكرة (Refill)',
+                            spoolStatusText: 'بدون بكرة',
+                            price: refillPrice,
+                            image: refillImg,
+                            isAvailable: hasRefill
+                        }
+                    }
+                };
+            }).filter(item => item !== null);
+        }
+
+        function renderProducts(filter = 'ALL') {
+            const container = document.getElementById('products-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const activeCategory = filter || document.getElementById('category-select')?.value || 'ALL';
+
+            const filtered = activeCategory === 'ALL' 
+                ? productsData 
+                : productsData.filter(p => p.category === activeCategory);
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="loading-state">لا توجد منتجات متاحة ضمن هذا التصنيف حالياً.</div>`;
+                return;
+            }
+
+            filtered.forEach(product => {
+                const opt = product.options[product.selectedOption];
+                const canAddToCart = opt.isAvailable;
+
+                const cardHtml = `
+                    <div class="product-card" id="card-${product.id}">
+                        <div>
+                            <img src="${opt.image}" alt="${product.name}" id="img-${product.id}">
+                            <h3 style="margin: 0 0 8px 0; font-size: 1.05em; color: #0f172a;">${product.name}</h3>
+                            <div class="spool-options">
+                                <button type="button" id="btn-spool-${product.id}" class="spool-btn ${product.selectedOption === 'spool' ? 'active' : ''}" onclick="changeSpoolOption('${product.id}', 'spool')">مع بكرة</button>
+                                <button type="button" id="btn-refill-${product.id}" class="spool-btn ${product.selectedOption === 'refill' ? 'active' : ''}" onclick="changeSpoolOption('${product.id}', 'refill')">بدون بكرة</button>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="font-size: 1.15em; font-weight: bold; color: ${canAddToCart ? '#16a34a' : '#64748b'}; margin: 10px 0;" id="price-container-${product.id}">
+                                ${canAddToCart ? `<span id="price-${product.id}">${opt.price.toLocaleString()}</span> د.ع` : 'غير متوفر حالياً'}
+                            </div>
+                            <button type="button" id="add-btn-${product.id}" class="add-to-cart-btn ${!canAddToCart ? 'disabled' : ''}" ${!canAddToCart ? 'disabled' : ''} onclick="addToCart('${product.id}')">
+                                ${canAddToCart ? '🛒 إضافة إلى السلة' : '⏳ نفدت الكمية'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', cardHtml);
+            });
+        }
+
+        function changeSpoolOption(productId, optionType) {
+            const product = productsData.find(p => p.id === productId);
+            if (!product) return;
+
+            product.selectedOption = optionType;
+            const opt = product.options[optionType];
+            const canAddToCart = opt.isAvailable;
+
+            const imgEl = document.getElementById(`img-${productId}`);
+            if (imgEl) imgEl.src = opt.image;
+
+            const priceContainer = document.getElementById(`price-container-${productId}`);
+            if (priceContainer) {
+                if (canAddToCart) {
+                    priceContainer.style.color = '#16a34a';
+                    priceContainer.innerHTML = `<span id="price-${productId}">${opt.price.toLocaleString()}</span> د.ع`;
+                } else {
+                    priceContainer.style.color = '#64748b';
+                    priceContainer.innerHTML = 'غير متوفر حالياً';
+                }
+            }
+
+            const addBtn = document.getElementById(`add-btn-${productId}`);
+            if (addBtn) {
+                if (canAddToCart) {
+                    addBtn.classList.remove('disabled');
+                    addBtn.removeAttribute('disabled');
+                    addBtn.innerHTML = '🛒 إضافة إلى السلة';
+                } else {
+                    addBtn.classList.add('disabled');
+                    addBtn.setAttribute('disabled', 'true');
+                    addBtn.innerHTML = '⏳ نفدت الكمية';
+                }
+            }
+
+            const spoolBtn = document.getElementById(`btn-spool-${productId}`);
+            const refillBtn = document.getElementById(`btn-refill-${productId}`);
+            if (spoolBtn) spoolBtn.classList.toggle('active', optionType === 'spool');
+            if (refillBtn) refillBtn.classList.toggle('active', optionType === 'refill');
+        }
+
+        function filterCategory(category) {
+            renderProducts(category);
+        }
+
+        function addToCart(productId) {
+            const product = productsData.find(p => p.id === productId);
+            if (!product) return;
+
+            const optKey = product.selectedOption;
+            const opt = product.options[optKey];
+
+            if (!opt.isAvailable) return;
+
+            const cartItemId = `${productId}-${optKey}`;
+            const existingItem = cart.find(item => item.cartItemId === cartItemId);
+
+            if (existingItem) {
+                existingItem.qty += 1;
+            } else {
+                cart.push({
+                    cartItemId: cartItemId,
+                    productId: productId,
+                    name: product.name,
+                    optionType: optKey,
+                    optionText: opt.spoolStatusText,
+                    price: opt.price,
+                    image: opt.image,
+                    qty: 1
+                });
+            }
+
+            updateCartCount();
+            renderCartItems();
+            
+            const cartBtn = document.getElementById('cart-nav-btn');
+            if (cartBtn) {
+                cartBtn.classList.remove('cart-pop-animation');
+                void cartBtn.offsetWidth;
+                cartBtn.classList.add('cart-pop-animation');
+            }
+        }
+
+        function updateCartCount() {
+            const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+            const countEl = document.getElementById('nav-cart-count');
+            if (countEl) countEl.innerText = totalQty;
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cart-modal');
+            if (modal) {
+                modal.classList.toggle('open');
+                if (modal.classList.contains('open')) {
+                    renderCartItems();
+                }
+            }
+        }
+
+        function changeQty(cartItemId, delta) {
+            const item = cart.find(i => i.cartItemId === cartItemId);
+            if (!item) return;
+
+            item.qty += delta;
+            if (item.qty <= 0) {
+                cart = cart.filter(i => i.cartItemId !== cartItemId);
+            }
+
+            updateCartCount();
+            renderCartItems();
+        }
+
+        function renderCartItems() {
+            const container = document.getElementById('cart-items');
+            const totalPriceEl = document.getElementById('cart-total-price');
+            if (!container) return;
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #64748b;">
+                        <div style="font-size: 3em; margin-bottom: 10px;">🛒</div>
+                        <p style="font-size: 1.1em; font-weight: bold; margin: 0;">سلة التسوق فارغة</p>
+                        <p style="font-size: 0.85em; color: #94a3b8; margin-top: 5px;">قم بإضافة بعض المنتجات البديلة أو الخيوط لبدء الطلب.</p>
+                    </div>
+                `;
+                if (totalPriceEl) totalPriceEl.innerText = '0 د.ع';
+                return;
+            }
+
+            let html = '';
+            let totalSum = 0;
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.qty;
+                totalSum += itemTotal;
+
+                html += `
+                    <div class="cart-item-row">
+                        <div class="cart-item-info">
+                            <img src="${item.image}" alt="${item.name}" class="cart-item-thumb">
+                            <div>
+                                <h4 style="margin: 0 0 4px 0; font-size: 0.98em; color: #0f172a;">${item.name}</h4>
+                                <p style="margin: 0 0 6px 0; font-size: 0.82em; color: #64748b;">التصنيف: ${item.optionText} | السعر: ${item.price.toLocaleString()} د.ع</p>
+                                <div class="qty-controls">
+                                    <button type="button" class="qty-btn" onclick="changeQty('${item.cartItemId}', -1)">-</button>
+                                    <span style="font-weight: bold; min-width: 24px; text-align: center;">${item.qty}</span>
+                                    <button type="button" class="qty-btn" onclick="changeQty('${item.cartItemId}', 1)">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="text-align: left; min-width: 90px;">
+                            <div style="font-weight: bold; color: #2563eb; font-size: 1.05em;">${itemTotal.toLocaleString()} د.ع</div>
+                            <button type="button" onclick="changeQty('${item.cartItemId}', -${item.qty})" style="background: none; border: none; color: #ef4444; font-size: 0.78em; cursor: pointer; margin-top: 6px; padding: 0;">حذف</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            if (totalPriceEl) totalPriceEl.innerText = totalSum.toLocaleString() + ' د.ع';
+        }
+
+        function sendWhatsAppOrder() {
+            if (cart.length === 0) {
+                alert('سلة التسوق فارغة!');
+                return;
+            }
+
+            let message = 'السلام عليكم، أود طلب المنتجات التالية من متجر Toop3D:%0A%0A';
+            let totalSum = 0;
+
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.qty;
+                totalSum += itemTotal;
+                message += `${index + 1}. *${item.name}*%0A`;
+                message += `   - النوع: ${item.optionText}%0A`;
+                message += `   - الكمية: ${item.qty}%0A`;
+                message += `   - السعر الفردي: ${item.price.toLocaleString()} د.ع%0A`;
+                message += `   - المجموع: ${itemTotal.toLocaleString()} د.ع%0A%0A`;
+            });
+
+            message += `*المجموع الكلي للطلب:* ${totalSum.toLocaleString()} د.ع%0A%0A`;
+            message += `يرجى تأكيد الطلب وتفاصيل التوصيل. شكراً جزيلاً!`;
+
+            const whatsappNumber = '9647827573964';
+            const url = `https://wa.me/${whatsappNumber}?text=${message}`;
+            window.open(url, '_blank');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProductsFromSheet();
+        });
+    </script>
 </body>
-
 </html>
