@@ -981,22 +981,32 @@
         }
 
         function sendWhatsAppOrder() {
-            if (cart.length === 0) {
-                alert('سلة التسوق فارغة!');
-                return;
-            }
+    if (cart.length === 0) {
+        alert('سلة التسوق فارغة!');
+        return;
+    }
 
-            let message = 'مرحباً، أود طلب المنتجات التالية من متجر Toop3D:\n\n';
+    let message = 'مرحباً، أود طلب المنتجات التالية من متجر Toop3D:\n\n';
+    let totalSum = 0;
 
-            cart.forEach((item, index) => {
-                message += `${index + 1}. ${item.name} (${item.typeName})\n`;
-                message += `   - الكمية: ${item.quantity}\n\n`;
-            });
+    cart.forEach((item, index) => {
+        const qty = item.quantity || item.qty || 1;
+        const itemTotal = item.price * qty;
+        totalSum += itemTotal;
 
-            const phone = '9647827573964';
-            const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-            window.open(url, '_blank');
-        }
+        message += `${index + 1}. *${item.name}*\n`;
+        message += `   - النوع: ${item.typeName || item.optionText || 'عادي'}\n`;
+        message += `   - الكمية: ${qty}\n`;
+        message += `   - السعر الفردي: ${item.price.toLocaleString()} د.ع\n`;
+        message += `   - المجموع: ${itemTotal.toLocaleString()} د.ع\n\n`;
+    });
+
+    message += `السعر الاجمالي الكلي : ${totalSum.toLocaleString()} د.ع`;
+
+    const phone = '9647827573964';
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+}
 
         document.addEventListener('DOMContentLoaded', () => {
             loadProductsFromSheet();
