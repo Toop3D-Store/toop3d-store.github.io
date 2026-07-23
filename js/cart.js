@@ -1,4 +1,3 @@
-// مصفوفة لتخزين المنتجات في السلة
 let cart = [];
 
 // دالة فتح وإغلاق سلة التسوق
@@ -6,20 +5,27 @@ function toggleCartModal() {
     document.body.classList.toggle('cart-open');
 }
 
-// دالة تحديث واجهة السلة (العداد، العناصر، الإجمالي)
+// دالة تحديث واجهة السلة
 function updateCartUI() {
     const cartCounter = document.getElementById('cart-counter');
-    const cartItemsContainer = document.getElementById('cartItemsContainer');
-    const cartTotalPrice = document.getElementById('cartTotalPrice');
+    const container = document.getElementById('cartItemsContainer'); // اسم الحاوية حسب الكود الذي أرسلته
+    const totalPriceEl = document.getElementById('cartTotalPrice');
     
-    if (!cartCounter || !cartItemsContainer || !cartTotalPrice) return;
+    if (!container) return;
     
+    // حساب العدد الإجمالي
     let totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-    cartCounter.textContent = totalCount;
+    if (cartCounter) cartCounter.textContent = totalCount;
     
     if (cart.length === 0) {
-        cartItemsContainer.innerHTML = `<p class="empty-cart-text">سلة التسوق فارغة حالياً</p>`;
-        cartTotalPrice.textContent = `0 د.ع`;
+        container.innerHTML = `
+            <div style="text-align: center; padding: 40px; color: #64748b;">
+                <div style="font-size: 3em; margin-bottom: 10px;">🛒</div>
+                <p style="font-size: 1.1em; font-weight: bold; margin: 0;">سلة التسوق فارغة</p>
+                <p style="font-size: 0.85em; color: #94a3b8; margin-top: 5px;">قم بإضافة بعض المنتجات البديلة أو الخيوط لبدء الطلب</p>
+            </div>
+        `;
+        if (totalPriceEl) totalPriceEl.innerText = '0 د.ع';
         return;
     }
     
@@ -31,7 +37,7 @@ function updateCartUI() {
         totalPrice += itemTotal;
         
         itemsHTML += `
-            <div class="cart-item" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f1f5f9;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f1f5f9;">
                 <div>
                     <h4 style="margin: 0 0 5px 0; font-size: 0.95rem; color: #1e293b;">${item.name}</h4>
                     <span style="font-size: 0.85rem; color: #64748b;">${item.price.toLocaleString()} د.ع × ${item.quantity}</span>
@@ -41,11 +47,11 @@ function updateCartUI() {
         `;
     });
     
-    cartItemsContainer.innerHTML = itemsHTML;
-    cartTotalPrice.textContent = `${totalPrice.toLocaleString()} د.ع`;
+    container.innerHTML = itemsHTML;
+    if (totalPriceEl) totalPriceEl.innerText = `${totalPrice.toLocaleString()} د.ع`;
 }
 
-// دالة حذف منتج من السلة
+// دالة الحذف
 function removeFromCart(index) {
     cart.splice(index, 1);
     updateCartUI();
@@ -58,7 +64,7 @@ function checkoutWhatsApp() {
         return;
     }
     
-    const phoneNumber = "9647700000000"; // استبدل هذا الرقم برقم هاتفك الحقيقي مع رمز الدولة العراقية
+    const phoneNumber = "9647700000000"; // استبدل هذا برقم هاتفك الحقيقي
     let message = "مرحباً، أريد طلب المنتجات التالية:\n\n";
     
     let totalPrice = 0;
@@ -74,47 +80,46 @@ function checkoutWhatsApp() {
     window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
 }
 
-// نظام تلقائي يلتقط أي ضغطة على زر "إضافة إلى السلة" في المتجر استناداً لبطاقة المنتج
-document.addEventListener('click', function(event) {
-    if (event.target.closest('.add-to-cart-btn') || event.target.matches('.add-to-cart-btn')) {
-        const card = event.target.closest('.product-card') || event.target.closest('div');
+// التقاط ضغطة أزرار "إضافة إلى السلة" في المتجر
+document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.add-to-cart-btn') || (e.target.matches('.add-to-cart-btn') ? e.target : null);
+    
+    if (btn) {
+        const card = btn.closest('.product-card') || btn.closest('div').parentElement;
+        
+        let productName = "خيوط PETG High Speed";
+        let productPrice = 17000;
         
         if (card) {
-            // محاولة استخراج اسم المنتج وسعره من البطاقة الحالية
-            const titleElement = card.querySelector('h2, h3, h4, .product-title');
-            const priceElement = card.querySelector('.price, span');
+            const titleEl = card.querySelector('h2, h3, h4, .product-title');
+            const priceEl = card.querySelector('.price, span');
             
-            let productName = titleElement ? titleElement.innerText : "منتج Toop3D";
-            let productPrice = 17000; // السعر الافتراضي
-            
-            if (priceElement) {
-                let priceText = priceElement.innerText.replace(/[^\d]/g, '');
-                if (priceText) productPrice = parseInt(priceText);
+            if (titleEl) productName = titleEl.innerText.trim();
+            if (priceEl) {
+                let p = priceEl.innerText.replace(/[^\d]/g, '');
+                if (p) productPrice = parseInt(p);
             }
-            
-            // التحقق من خيار البكرة (مع بكرة / بدون بكرة) إذا كان موجوداً
-            let spoolOption = "";
-            const activeSpoolBtn = card.querySelector('.product-options button.active, .spool-options button.active, input[type="radio"]:checked');
-            if (activeSpoolBtn) {
-                spoolOption = activeSpoolBtn.innerText || activeSpoolBtn.value;
-            }
-            
-            let finalName = productName + (spoolOption ? ` (${spoolOption})` : '');
-            
-            // إضافة المنتج للمصفوفة
-            let existingItem = cart.find(item => item.name === finalName);
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push({
-                    name: finalName,
-                    price: productPrice,
-                    quantity: 1
-                });
-            }
-            
-            updateCartUI();
-            toggleCartModal(); // فتح السلة للتأكد من الإضافة
         }
+        
+        // جلب خيار البكرة (مع بكرة / بدون بكرة) إذا وجد
+        let spool = "مع بكرة";
+        if (card) {
+            const activeSpool = card.querySelector('button.active, input[type="radio"]:checked');
+            if (activeSpool) {
+                spool = activeSpool.innerText || activeSpool.value;
+            }
+        }
+        
+        let finalName = `${productName} (${spool})`;
+        
+        let existing = cart.find(i => i.name === finalName);
+        if (existing) {
+            existing.quantity += 1;
+        } else {
+            cart.push({ name: finalName, price: productPrice, quantity: 1 });
+        }
+        
+        updateCartUI();
+        toggleCartModal(); // فتح السلة تلقائياً عند الإضافة لرؤية المنتج
     }
 });
