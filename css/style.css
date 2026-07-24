@@ -440,95 +440,71 @@ button[type="submit"]:active,
     transform: translateY(0) !important;
 }
 /* ==========================================
-   تنسيق الزر العائم للسلة
+   تنسيق الزر العائم للسلة (تصميم احترافي مستطيل بحواف دائرية)
    ========================================== */
 .floating-cart-btn {
     position: fixed;
     bottom: 25px;
-    left: 25px; /* يمكنك جعله يمين الشاشة بتغييرها إلى right: 25px */
-    background-color: #2563eb;
+    left: 25px; /* يمكنك تغييرها إلى right: 25px لتكون على يمين الشاشة */
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
     color: #ffffff;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
+    height: 52px;
+    padding: 0 22px;
+    border-radius: 30px;
+    border: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
-    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+    gap: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);
     cursor: pointer;
     z-index: 999;
-    transition: transform 0.2s ease, background-color 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .floating-cart-btn:hover {
-    background-color: #1d4ed8;
-    transform: scale(1.08);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px -5px rgba(37, 99, 235, 0.6);
 }
 
-/* عداد المنتجات المصغر فوق الزر */
+.floating-cart-btn:active {
+    transform: translateY(0) scale(0.97);
+}
+
+/* أيقونة السلة داخل الزر المستطيل */
+.floating-cart-btn svg {
+    width: 22px;
+    height: 22px;
+    stroke: #ffffff;
+    transition: transform 0.3s ease;
+}
+
+.floating-cart-btn:hover svg {
+    transform: scale(1.1);
+}
+
+/* عداد المنتجات داخل الزر المستطيل */
 #cart-counter {
-    position: absolute;
-    top: 5px;
-    right: 5px;
     background-color: #ef4444;
-    color: white;
-    font-size: 0.75rem;
+    color: #ffffff;
+    font-size: 0.8rem;
     font-weight: bold;
-    padding: 2px 6px;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
     border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 /* ==========================================
-   تنسيق الزر العائم للسلة (مستطيل بحواف دائرية)
+   تنسيق ظهور وإخفاء سلة التسوق (Drawer)
    ========================================== */
-.floating-cart-btn {
-    position: fixed;
-    bottom: 25px;
-    left: 25px; /* يمكن تغييره إلى right: 25px لليمين */
-    background-color: #2563eb; /* لون الخلفية */
-    color: #ffffff; /* لون الأيقونة والخط */
-    
-    /* تغييرات الشكل والأبعاد */
-    width: auto; /* العرض يتناسب تلقائياً مع المحتوى */
-    height: 55px; /* ارتفاع ثابت */
-    padding: 0 20px; /* مسافات داخلية يمنة ويسرة */
-    border-radius: 30px; /* حواف دائرية كاملة من الجانبين */
-    
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    /* إضافة نص بجانب الأيقونة */
-    font-size: 1.1rem;
-    font-weight: 600;
-    gap: 10px; /* مسافة بين الأيقونة والنص */
-    
-    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
-    cursor: pointer;
-    z-index: 999;
-    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.floating-cart-btn:hover {
-    background-color: #1d4ed8;
-    transform: translateY(-3px); /* رفعه قليلاً عند التحويم */
-    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
-}
-
-/* عداد المنتجات المصغر فوق الزر (تم تعديل مكانه ليتناسب مع المستطيل) */
-#cart-counter {
-    /* إزالة التموضع المطلق وجعله جزءاً من الـ Flexbox */
-    position: static; 
-    background-color: #ef4444;
-    color: white;
-    font-size: 0.8rem;
-    font-weight: bold;
-    padding: 2px 7px;
-    border-radius: 50%;
-    margin-left: -5px; /* لتقريبه قليلاً من النص */
-}
-/* تأثير ظهور وإخفاء سلة التسوق (Drawer) */
 .cart-drawer {
     position: fixed;
     top: 0;
@@ -567,7 +543,7 @@ body.cart-open .cart-modal-overlay {
     visibility: visible;
 }
 
-/* تنسيقات إضافية لمحتويات السلة داخل الـ Drawer */
+/* تنسيقات محتويات السلة داخل الـ Drawer */
 .cart-drawer-header {
     padding: 20px;
     border-bottom: 1px solid #e2e8f0;
@@ -620,23 +596,4 @@ body.cart-open .cart-modal-overlay {
     font-size: 1.5rem;
     cursor: pointer;
     color: #64748b;
-}
-
-.floating-cart-btn {
-    position: fixed;
-    bottom: 25px;
-    left: 25px;
-    background-color: #2563eb;
-    color: white;
-    border: none;
-    border-radius: 50px;
-    padding: 12px 20px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-    z-index: 997;
-    display: flex;
-    align-items: center;
-    gap: 8px;
 }
