@@ -529,5 +529,19 @@
             }
         }
     </script>
+    <!-- نافذة منبثقة لتفاصيل المنتج وإعدادات الطباعة -->
+<div id="productModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; justify-content: center; align-items: center;">
+    <div style="background: #fff; width: 90%; max-width: 500px; padding: 25px; border-radius: 12px; position: relative; font-family: 'Cairo', sans-serif; direction: rtl; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+        <button onclick="closeProductModal()" style="position: absolute; top: 15px; left: 15px; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #64748b;">✕</button>
+        <div id="modalBody">
+            <!-- سيتم تعبئة البيانات هنا ديناميكياً -->
+        </div>
+    </div>
+</div>
+
+<!-- نافذة منبثقة لتكبير الصورة -->
+<div id="imageModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; justify-content: center; align-items: center; cursor: pointer;" onclick="closeImageModal()">
+    <img id="modalImageSrc" src="" style="max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 5px 20px rgba(0,0,0,0.5);">
+</div>
 </body>
 </html>
