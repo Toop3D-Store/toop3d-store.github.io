@@ -31,7 +31,7 @@
                 </div>
             </div>
 
-            <!-- الوسوم السريعة (تختفي في الشاشات الصغيرة لتوفر مساحة أكبر) -->
+            <!-- الوسوم السريعة -->
             <div class="brand-right-tags">
                 <span class="product-tag">3D filament</span>
                 <span class="product-tag">PLA</span>
@@ -49,12 +49,11 @@
         </nav>
     </header>
 
-  <!-- ===== قسم الهيرو مع شريط الصور المتحرك (مُعدّل لتبديل المواقع في RTL) ===== -->
+  <!-- ===== قسم الهيرو مع شريط الصور المتحرك ===== -->
 <section class="hero-section">
     <div class="hero-content">
         <div class="text-and-gallery">
             
-            <!-- 1. معرض الصور المتحرك (تم نقله للأعلى ليكون في جهة اليمين في الـ RTL) -->
             <div class="hero-gallery-container">
                 <img src="images/1.webp" alt="Toop3D Filament 1" class="slide active">
                 <img src="images/2.webp" alt="Toop3D Filament 2" class="slide">
@@ -64,7 +63,6 @@
                 <img src="images/6.webp" alt="Toop3D Filament 6" class="slide">
             </div>
 
-            <!-- 2. الجزء النصي (تم نقله للأسفل ليظهر في جهة اليسار) -->
             <div class="hero-text-content">
                 <h1 class="hero-title">Toop3D <span>High Quality Filament</span></h1>
                 <ul class="hero-features">
@@ -263,6 +261,11 @@
                 const name = `${material} (${color})`;
                 const id = row['id'] || `product-${idx}`;
 
+                // قراءة إعدادات الطباعة والمعلومات من الشيت
+                const nozzleTemp = row['nozzletemp'] || row['nozzle_temp'] || 'حسب التوصية';
+                const bedTemp = row['bedtemp'] || row['bed_temp'] || 'حسب التوصية';
+                const description = row['description'] || 'مصنوع بعناية لضمان أفضل توافق مع طابعات FDM وسرعات الطباعة العالية.';
+
                 const spoolAvailRaw = (row['spool_avail'] || 'TRUE').toString().toUpperCase().trim();
                 const isSpoolAvailable = (spoolAvailRaw === 'TRUE' || spoolAvailRaw === '1');
 
@@ -287,6 +290,11 @@
                     id: id,
                     name: name,
                     category: material,
+                    material: material,
+                    color: color,
+                    nozzleTemp: nozzleTemp,
+                    bedTemp: bedTemp,
+                    description: description,
                     selectedOption: defaultOption,
                     options: {
                         spool: {
@@ -322,14 +330,16 @@
                 return;
             }
 
-            filtered.forEach(product => {
+            filtered.forEach((product, index) => {
                 const opt = product.options[product.selectedOption];
                 const canAddToCart = opt.isAvailable;
+                const globalIndex = productsData.indexOf(product); // للحصول على المؤشر الصحيح في المصفوفة العامة
 
                 const cardHtml = `
                     <div class="product-card" id="card-${product.id}">
                         <div class="product-card-top">
-                            <div class="product-img-wrapper">
+                            <!-- الصورة أصبحت قابلة للنقر للتكبير -->
+                            <div class="product-img-wrapper" style="cursor: pointer;" onclick="openImageModal('${opt.image}')" title="انقر لتكبير الصورة">
                                 <img src="${opt.image}" alt="${product.name}" id="img-${product.id}">
                             </div>
                             <h3 class="product-title">${product.name}</h3>
@@ -342,9 +352,14 @@
                             <div class="product-price ${!canAddToCart ? 'unavailable' : ''}" id="price-container-${product.id}">
                                 ${canAddToCart ? `<span id="price-${product.id}">${opt.price.toLocaleString()}</span> د.ع` : 'غير متوفر حالياً'}
                             </div>
-                            <button type="button" id="add-btn-${product.id}" class="add-to-cart-btn ${!canAddToCart ? 'disabled' : ''}" ${!canAddToCart ? 'disabled' : ''} onclick="addToCart('${product.id}')">
-                                ${canAddToCart ? '🛒 إضافة إلى السلة' : '⏳ سيتوفر قريباً'}
-                            </button>
+                            
+                            <!-- أزرار الإجراءات (التفاصيل وإضافة للسلة) -->
+                            <div style="display: flex; gap: 6px; width: 100%; margin-top: 8px;">
+                                <button type="button" onclick="openProductDetails(${globalIndex})" style="flex: 1; background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; padding: 8px 4px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: bold;">🔍 التفاصيل</button>
+                                <button type="button" id="add-btn-${product.id}" class="add-to-cart-btn ${!canAddToCart ? 'disabled' : ''}" ${!canAddToCart ? 'disabled' : ''} onclick="addToCart('${product.id}')" style="flex: 1;">
+                                    ${canAddToCart ? '🛒 إضافة' : '⏳ قريباً'}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -379,11 +394,11 @@
                 if (canAddToCart) {
                     addBtn.classList.remove('disabled');
                     addBtn.removeAttribute('disabled');
-                    addBtn.innerHTML = '🛒 إضافة إلى السلة';
+                    addBtn.innerHTML = '🛒 إضافة';
                 } else {
                     addBtn.classList.add('disabled');
                     addBtn.setAttribute('disabled', 'true');
-                    addBtn.innerHTML = '⏳ سيتوفر قريباً';
+                    addBtn.innerHTML = '⏳ قريباً';
                 }
             }
 
@@ -510,6 +525,44 @@
             window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
         }
 
+        // دوال النوافذ المنبثقة للتفاصيل وتكبير الصورة
+        function openProductDetails(index) {
+            const p = typeof productsData !== 'undefined' ? productsData[index] : null;
+            const modalBody = document.getElementById('modalBody');
+            
+            if (!p) return;
+            
+            modalBody.innerHTML = `
+                <h2 style="font-size: 1.2rem; color: #1e293b; margin-top: 0; margin-bottom: 15px; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;">${p.name || 'تفاصيل المنتج'}</h2>
+                
+                <div style="font-size: 0.95rem; color: #334155; display: flex; flex-direction: column; gap: 10px; text-align: right;">
+                    <div><strong>📦 نوع المادة:</strong> ${p.material || 'غير متوفر'}</div>
+                    <div><strong>🎨 اللون:</strong> ${p.color || 'متعدد الألوان'}</div>
+                    <div style="background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <div style="font-weight: bold; color: #0f172a; margin-bottom: 6px;">🔥 إعدادات الطباعة المقترحة:</div>
+                        <div style="margin-bottom: 5px;">• درجة حرارة الهوت إند (رأس الطباعة): <span style="color: #0284c7; font-weight: bold;">${p.nozzleTemp}</span></div>
+                        <div>• درجة حرارة السرير (Bed): <span style="color: #0284c7; font-weight: bold;">${p.bedTemp}</span></div>
+                    </div>
+                    <div><strong>📌 معلومات إضافية:</strong> ${p.description}</div>
+                </div>
+            `;
+            
+            document.getElementById('productModal').style.display = 'flex';
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').style.display = 'none';
+        }
+
+        function openImageModal(imgSrc) {
+            document.getElementById('modalImageSrc').src = imgSrc;
+            document.getElementById('imageModal').style.display = 'flex';
+        }
+
+        function closeImageModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             loadProductsFromSheet();
         });
@@ -528,59 +581,21 @@
                 slides[currentSlide].className = 'slide active';
             }
         }
-
-        // دالة فتح نافذة تفاصيل المنتج وإعدادات الطباعة
-function openProductDetails(index) {
-    const p = typeof productsData !== 'undefined' ? productsData[index] : null;
-    const modalBody = document.getElementById('modalBody');
-    
-    if (!p) return;
-    
-    modalBody.innerHTML = `
-        <h2 style="font-size: 1.2rem; color: #1e293b; margin-top: 0; margin-bottom: 15px; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;">${p.name || 'تفاصيل المنتج'}</h2>
-        
-        <div style="font-size: 0.95rem; color: #334155; display: flex; flex-direction: column; gap: 10px; text-align: right;">
-            <div><strong>📦 نوع المادة:</strong> ${p.material || 'غير متوفر'}</div>
-            <div><strong>🎨 اللون:</strong> ${p.color || 'متعدد الألوان'}</div>
-            <div style="background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                <div style="font-weight: bold; color: #0f172a; margin-bottom: 6px;">🔥 إعدادات الطباعة المقترحة:</div>
-                <div style="margin-bottom: 5px;">• درجة حرارة الهوت إند (رأس الطباعة): <span style="color: #0284c7; font-weight: bold;">${p.nozzleTemp || 'حسب التوصية'}</span></div>
-                <div>• درجة حرارة السرير (Bed): <span style="color: #0284c7; font-weight: bold;">${p.bedTemp || 'حسب التوصية'}</span></div>
-            </div>
-            <div><strong>📌 معلومات إضافية:</strong> ${p.description || 'مصنوع بعناية لضمان أفضل توافق مع طابعات FDM وسرعات الطباعة العالية.'}</div>
-        </div>
-    `;
-    
-    document.getElementById('productModal').style.display = 'flex';
-}
-
-function closeProductModal() {
-    document.getElementById('productModal').style.display = 'none';
-}
-
-// دوال تكبير الصورة عند النقر عليها
-function openImageModal(imgSrc) {
-    document.getElementById('modalImageSrc').src = imgSrc;
-    document.getElementById('imageModal').style.display = 'flex';
-}
-
-function closeImageModal() {
-    document.getElementById('imageModal').style.display = 'none';
-}
     </script>
+
     <!-- نافذة منبثقة لتفاصيل المنتج وإعدادات الطباعة -->
-<div id="productModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; justify-content: center; align-items: center;">
-    <div style="background: #fff; width: 90%; max-width: 500px; padding: 25px; border-radius: 12px; position: relative; font-family: 'Cairo', sans-serif; direction: rtl; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
-        <button onclick="closeProductModal()" style="position: absolute; top: 15px; left: 15px; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #64748b;">✕</button>
-        <div id="modalBody">
-            <!-- سيتم تعبئة البيانات هنا ديناميكياً -->
+    <div id="productModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; justify-content: center; align-items: center;">
+        <div style="background: #fff; width: 90%; max-width: 500px; padding: 25px; border-radius: 12px; position: relative; font-family: 'Cairo', sans-serif; direction: rtl; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+            <button type="button" onclick="closeProductModal()" style="position: absolute; top: 15px; left: 15px; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #64748b;">✕</button>
+            <div id="modalBody">
+                <!-- سيتم تعبئة البيانات هنا ديناميكياً -->
+            </div>
         </div>
     </div>
-</div>
 
-<!-- نافذة منبثقة لتكبير الصورة -->
-<div id="imageModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; justify-content: center; align-items: center; cursor: pointer;" onclick="closeImageModal()">
-    <img id="modalImageSrc" src="" style="max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 5px 20px rgba(0,0,0,0.5);">
-</div>
+    <!-- نافذة منبثقة لتكبير الصورة -->
+    <div id="imageModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; justify-content: center; align-items: center; cursor: pointer;" onclick="closeImageModal()">
+        <img id="modalImageSrc" src="" style="max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 5px 20px rgba(0,0,0,0.5);">
+    </div>
 </body>
 </html>
