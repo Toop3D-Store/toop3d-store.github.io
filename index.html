@@ -50,6 +50,12 @@
                 padding: 8px 15px !important;
             }
         }
+        /* تنسيق الأزرار غير المتوفرة لتكون واضحة للزبون */
+        .spool-btn.unavailable-option {
+            opacity: 0.4;
+            text-decoration: line-through;
+            cursor: not-allowed !important;
+        }
     </style>
 
     <!-- Google tag (gtag.js) -->
@@ -344,9 +350,14 @@
                 const hasSpool = isSpoolAvailable && spoolPrice > 0;
                 const hasRefill = isRefillAvailable && refillPrice > 0;
 
+                // اختيار الخيار الافتراضي ليكون الخيار المتوفر حصراً (تفضيل "مع بكرة" إذا توفر، وإلا "بدون بكرة")
                 let defaultOption = 'spool';
                 if (!hasSpool && hasRefill) {
                     defaultOption = 'refill';
+                } else if (hasSpool) {
+                    defaultOption = 'spool';
+                } else {
+                    defaultOption = 'spool'; // افتراضي إذا كلاهما غير متوفر
                 }
 
                 return {
@@ -398,6 +409,9 @@
                 const canAddToCart = opt.isAvailable;
                 const globalIndex = productsData.indexOf(product);
 
+                const spoolOpt = product.options['spool'];
+                const refillOpt = product.options['refill'];
+
                 const cardHtml = `
                     <div class="product-card" id="card-${product.id}" style="position: relative;">
                         <button type="button" onclick="openProductDetails(${globalIndex})" title="عرض إعدادات الطباعة والتفاصيل" style="position: absolute; top: 10px; left: 10px; background: rgba(255, 255, 255, 0.9); border: 1px solid #cbd5e1; color: #334155; padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold; z-index: 5; display: flex; align-items: center; gap: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
@@ -410,8 +424,8 @@
                             </div>
                             <h3 class="product-title">${product.name}</h3>
                             <div class="spool-options">
-                                <button type="button" id="btn-spool-${product.id}" class="spool-btn ${product.selectedOption === 'spool' ? 'active' : ''}" onclick="changeSpoolOption('${product.id}', 'spool')">مع بكرة</button>
-                                <button type="button" id="btn-refill-${product.id}" class="spool-btn ${product.selectedOption === 'refill' ? 'active' : ''}" onclick="changeSpoolOption('${product.id}', 'refill')">بدون بكرة</button>
+                                <button type="button" id="btn-spool-${product.id}" class="spool-btn ${product.selectedOption === 'spool' ? 'active' : ''} ${!spoolOpt.isAvailable ? 'unavailable-option' : ''}" onclick="changeSpoolOption('${product.id}', 'spool')" title="${spoolOpt.isAvailable ? 'مع بكرة' : 'غير متوفر مع بكرة'}">مع بكرة</button>
+                                <button type="button" id="btn-refill-${product.id}" class="spool-btn ${product.selectedOption === 'refill' ? 'active' : ''} ${!refillOpt.isAvailable ? 'unavailable-option' : ''}" onclick="changeSpoolOption('${product.id}', 'refill')" title="${refillOpt.isAvailable ? 'بدون بكرة' : 'غير متوفر بدون بكرة'}">بدون بكرة</button>
                             </div>
                         </div>
                         <div class="product-card-bottom">
@@ -420,7 +434,7 @@
                             </div>
                             
                             <button type="button" id="add-btn-${product.id}" class="add-to-cart-btn ${!canAddToCart ? 'disabled' : ''}" ${!canAddToCart ? 'disabled' : ''} onclick="addToCart('${product.id}')" style="width: 100%; margin-top: 8px;">
-                                ${canAddToCart ? '🛒 إضافة إلى السلة' : '⏳ قريباً'}
+                                ${canAddToCart ? '🛒 إضافة إلى السلة' : '⏳ غير متوفر'}
                             </button>
                         </div>
                     </div>
@@ -433,8 +447,13 @@
             const product = productsData.find(p => p.id === productId);
             if (!product) return;
 
-            product.selectedOption = optionType;
             const opt = product.options[optionType];
+            // منع اختيار خيار غير متوفر وتنبيه الزبون
+            if (!opt.isAvailable) {
+                return;
+            }
+
+            product.selectedOption = optionType;
             const canAddToCart = opt.isAvailable;
 
             const imgEl = document.getElementById(`img-${productId}`);
@@ -460,7 +479,7 @@
                 } else {
                     addBtn.classList.add('disabled');
                     addBtn.setAttribute('disabled', 'true');
-                    addBtn.innerHTML = '⏳ قريباً';
+                    addBtn.innerHTML = '⏳ غير متوفر';
                 }
             }
 
@@ -472,7 +491,6 @@
 
         function filterCategory(category) {
             renderProducts(category);
-            // الانتقال المباشر (التمرير) إلى قسم المنتجات عند الاختيار
             const productsSection = document.getElementById('products');
             if (productsSection) {
                 productsSection.scrollIntoView({ behavior: 'smooth' });
