@@ -10,7 +10,7 @@
     
     <!-- تنسيقات الحل النهائي لمنع اختفاء بطاقات المنتجات تحت الشريط العلوي وضبط المحاذاة لليمين -->
     <style>
-        /* إضافة مسافة علوية كافية عند التمرير لكي لا يختفي الجزء العلوي من البطاقات تحت الشريط */
+        /* مسافة علوية كافية عند التمرير لكي لا يختفي الجزء العلوي من البطاقات تحت الشريط */
         section#products {
             scroll-margin-top: 140px;
         }
@@ -154,9 +154,9 @@
             </div>
         </div>
 
-        <!-- شريط التنقل مع قائمة الفلتر (محاذاة كاملة لليمين) -->
+        <!-- شريط التنقل: الرئيسية وقائمة المنتجات بجانب بعضهما تماماً ومحاذيات لليمين -->
         <nav class="header-nav-bar" style="background: #0f172a; padding: 10px 20px; display: flex; justify-content: flex-start; align-items: center; flex-wrap: wrap; gap: 20px; direction: rtl;">
-            <div class="nav-links-wrapper" style="display: flex; gap: 10px;">
+            <div class="nav-links-wrapper" style="display: flex; gap: 10px; align-items: center;">
                 <a href="#" class="nav-btn active" style="color: #fff; background: #0284c7; padding: 6px 16px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 0.95rem;">الرئيسية</a>
             </div>
 
