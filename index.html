@@ -8,15 +8,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     
-    <!-- تنسيقات إضافية لحل مشكلة قص الصور والأزرار على الحاسبة والهواتف -->
+    <!-- تنسيقات الحل النهائي لمنع اختفاء بطاقات المنتجات تحت الشريط العلوي -->
     <style>
-        /* تنسيق بطاقات المنتجات لضمان عدم اختفاء أي جزء من الصورة أو الأزرار */
+        /* إضافة مسافة علوية كافية عند التمرير لكي لا يختفي الجزء العلوي من البطاقات تحت الشريط */
+        section#products {
+            scroll-margin-top: 140px;
+        }
+
         .product-card {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             height: auto !important;
-            min-height: 420px;
+            min-height: 430px;
             overflow: visible !important;
             background: #fff;
             border-radius: 12px;
@@ -47,7 +51,7 @@
         .product-img-wrapper img {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* ضمان ظهور الصورة كاملة بدون قص */
+            object-fit: contain;
             transition: transform 0.3s ease;
         }
 
@@ -61,6 +65,9 @@
         }
 
         @media (max-width: 768px) {
+            section#products {
+                scroll-margin-top: 110px;
+            }
             .unified-header {
                 position: relative !important;
             }
