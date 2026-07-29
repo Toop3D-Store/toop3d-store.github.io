@@ -261,7 +261,6 @@
                 const name = `${material} (${color})`;
                 const id = row['id'] || `product-${idx}`;
 
-                // قراءة إعدادات الطباعة والمعلومات من الشيت
                 const nozzleTemp = row['nozzletemp'] || row['nozzle_temp'] || 'حسب التوصية';
                 const bedTemp = row['bedtemp'] || row['bed_temp'] || 'حسب التوصية';
                 const description = row['description'] || 'مصنوع بعناية لضمان أفضل توافق مع طابعات FDM وسرعات الطباعة العالية.';
@@ -333,12 +332,16 @@
             filtered.forEach((product, index) => {
                 const opt = product.options[product.selectedOption];
                 const canAddToCart = opt.isAvailable;
-                const globalIndex = productsData.indexOf(product); // للحصول على المؤشر الصحيح في المصفوفة العامة
+                const globalIndex = productsData.indexOf(product);
 
                 const cardHtml = `
-                    <div class="product-card" id="card-${product.id}">
+                    <div class="product-card" id="card-${product.id}" style="position: relative;">
+                        <!-- زر التفاصيل تم نقله ليصبح زر تفاصيل أنيق أعلى البطاقة -->
+                        <button type="button" onclick="openProductDetails(${globalIndex})" title="عرض إعدادات الطباعة والتفاصيل" style="position: absolute; top: 10px; left: 10px; background: rgba(255, 255, 255, 0.9); border: 1px solid #cbd5e1; color: #334155; padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold; z-index: 5; display: flex; align-items: center; gap: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                            🔍 تفاصيل
+                        </button>
+
                         <div class="product-card-top">
-                            <!-- الصورة أصبحت قابلة للنقر للتكبير -->
                             <div class="product-img-wrapper" style="cursor: pointer;" onclick="openImageModal('${opt.image}')" title="انقر لتكبير الصورة">
                                 <img src="${opt.image}" alt="${product.name}" id="img-${product.id}">
                             </div>
@@ -353,13 +356,10 @@
                                 ${canAddToCart ? `<span id="price-${product.id}">${opt.price.toLocaleString()}</span> د.ع` : 'غير متوفر حالياً'}
                             </div>
                             
-                            <!-- أزرار الإجراءات (التفاصيل وإضافة للسلة) -->
-                            <div style="display: flex; gap: 6px; width: 100%; margin-top: 8px;">
-                                <button type="button" onclick="openProductDetails(${globalIndex})" style="flex: 1; background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; padding: 8px 4px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: bold;">🔍 التفاصيل</button>
-                                <button type="button" id="add-btn-${product.id}" class="add-to-cart-btn ${!canAddToCart ? 'disabled' : ''}" ${!canAddToCart ? 'disabled' : ''} onclick="addToCart('${product.id}')" style="flex: 1;">
-                                    ${canAddToCart ? '🛒 إضافة' : '⏳ قريباً'}
-                                </button>
-                            </div>
+                            <!-- زر الإضافة إلى السلة عاد لحجمه الطبيعي الكامل -->
+                            <button type="button" id="add-btn-${product.id}" class="add-to-cart-btn ${!canAddToCart ? 'disabled' : ''}" ${!canAddToCart ? 'disabled' : ''} onclick="addToCart('${product.id}')" style="width: 100%; margin-top: 8px;">
+                                ${canAddToCart ? '🛒 إضافة إلى السلة' : '⏳ قريباً'}
+                            </button>
                         </div>
                     </div>
                 `;
@@ -394,7 +394,7 @@
                 if (canAddToCart) {
                     addBtn.classList.remove('disabled');
                     addBtn.removeAttribute('disabled');
-                    addBtn.innerHTML = '🛒 إضافة';
+                    addBtn.innerHTML = '🛒 إضافة إلى السلة';
                 } else {
                     addBtn.classList.add('disabled');
                     addBtn.setAttribute('disabled', 'true');
@@ -525,7 +525,6 @@
             window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
         }
 
-        // دوال النوافذ المنبثقة للتفاصيل وتكبير الصورة
         function openProductDetails(index) {
             const p = typeof productsData !== 'undefined' ? productsData[index] : null;
             const modalBody = document.getElementById('modalBody');
