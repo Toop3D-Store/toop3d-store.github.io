@@ -8,11 +8,61 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     
-    <!-- تنسيقات إضافية للتحكم بحجم الهيدر على الهواتف وإلغاء التثبيت -->
+    <!-- تنسيقات إضافية لحل مشكلة قص الصور والأزرار على الحاسبة والهواتف -->
     <style>
+        /* تنسيق بطاقات المنتجات لضمان عدم اختفاء أي جزء من الصورة أو الأزرار */
+        .product-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: auto !important;
+            min-height: 420px;
+            overflow: visible !important;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            position: relative;
+        }
+
+        .product-card-top {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .product-img-wrapper {
+            width: 100%;
+            height: 200px;
+            background: #f8fafc;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .product-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* ضمان ظهور الصورة كاملة بدون قص */
+            transition: transform 0.3s ease;
+        }
+
+        .product-img-wrapper img:hover {
+            transform: scale(1.05);
+        }
+
+        .product-card-bottom {
+            margin-top: auto;
+            padding-top: 10px;
+        }
+
         @media (max-width: 768px) {
             .unified-header {
-                position: relative !important; /* إلغاء التثبيت تماماً لكي يتحرك مع الصفحة ولا يأخذ مساحة ثابتة */
+                position: relative !important;
             }
             .header-main-row {
                 flex-direction: column !important;
@@ -50,7 +100,7 @@
                 padding: 8px 15px !important;
             }
         }
-        /* تنسيق الأزرار غير المتوفرة لتكون واضحة للزبون */
+        
         .spool-btn.unavailable-option {
             opacity: 0.4;
             text-decoration: line-through;
@@ -350,14 +400,13 @@
                 const hasSpool = isSpoolAvailable && spoolPrice > 0;
                 const hasRefill = isRefillAvailable && refillPrice > 0;
 
-                // اختيار الخيار الافتراضي ليكون الخيار المتوفر حصراً (تفضيل "مع بكرة" إذا توفر، وإلا "بدون بكرة")
                 let defaultOption = 'spool';
                 if (!hasSpool && hasRefill) {
                     defaultOption = 'refill';
                 } else if (hasSpool) {
                     defaultOption = 'spool';
                 } else {
-                    defaultOption = 'spool'; // افتراضي إذا كلاهما غير متوفر
+                    defaultOption = 'spool';
                 }
 
                 return {
@@ -413,13 +462,13 @@
                 const refillOpt = product.options['refill'];
 
                 const cardHtml = `
-                    <div class="product-card" id="card-${product.id}" style="position: relative;">
-                        <button type="button" onclick="openProductDetails(${globalIndex})" title="عرض إعدادات الطباعة والتفاصيل" style="position: absolute; top: 10px; left: 10px; background: rgba(255, 255, 255, 0.9); border: 1px solid #cbd5e1; color: #334155; padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold; z-index: 5; display: flex; align-items: center; gap: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                    <div class="product-card" id="card-${product.id}">
+                        <button type="button" onclick="openProductDetails(${globalIndex})" title="عرض إعدادات الطباعة والتفاصيل" style="position: absolute; top: 15px; left: 15px; background: rgba(255, 255, 255, 0.95); border: 1px solid #cbd5e1; color: #334155; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold; z-index: 10; display: flex; align-items: center; gap: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.08);">
                             🔍 تفاصيل
                         </button>
 
                         <div class="product-card-top">
-                            <div class="product-img-wrapper" style="cursor: pointer;" onclick="openImageModal('${opt.image}')" title="انقر لتكبير الصورة">
+                            <div class="product-img-wrapper" onclick="openImageModal('${opt.image}')" title="انقر لتكبير الصورة">
                                 <img src="${opt.image}" alt="${product.name}" id="img-${product.id}">
                             </div>
                             <h3 class="product-title">${product.name}</h3>
@@ -448,7 +497,6 @@
             if (!product) return;
 
             const opt = product.options[optionType];
-            // منع اختيار خيار غير متوفر وتنبيه الزبون
             if (!opt.isAvailable) {
                 return;
             }
