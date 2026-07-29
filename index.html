@@ -528,6 +528,45 @@
                 slides[currentSlide].className = 'slide active';
             }
         }
+
+        // دالة فتح نافذة تفاصيل المنتج وإعدادات الطباعة
+function openProductDetails(index) {
+    const p = typeof productsData !== 'undefined' ? productsData[index] : null;
+    const modalBody = document.getElementById('modalBody');
+    
+    if (!p) return;
+    
+    modalBody.innerHTML = `
+        <h2 style="font-size: 1.2rem; color: #1e293b; margin-top: 0; margin-bottom: 15px; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;">${p.name || 'تفاصيل المنتج'}</h2>
+        
+        <div style="font-size: 0.95rem; color: #334155; display: flex; flex-direction: column; gap: 10px; text-align: right;">
+            <div><strong>📦 نوع المادة:</strong> ${p.material || 'غير متوفر'}</div>
+            <div><strong>🎨 اللون:</strong> ${p.color || 'متعدد الألوان'}</div>
+            <div style="background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                <div style="font-weight: bold; color: #0f172a; margin-bottom: 6px;">🔥 إعدادات الطباعة المقترحة:</div>
+                <div style="margin-bottom: 5px;">• درجة حرارة الهوت إند (رأس الطباعة): <span style="color: #0284c7; font-weight: bold;">${p.nozzleTemp || 'حسب التوصية'}</span></div>
+                <div>• درجة حرارة السرير (Bed): <span style="color: #0284c7; font-weight: bold;">${p.bedTemp || 'حسب التوصية'}</span></div>
+            </div>
+            <div><strong>📌 معلومات إضافية:</strong> ${p.description || 'مصنوع بعناية لضمان أفضل توافق مع طابعات FDM وسرعات الطباعة العالية.'}</div>
+        </div>
+    `;
+    
+    document.getElementById('productModal').style.display = 'flex';
+}
+
+function closeProductModal() {
+    document.getElementById('productModal').style.display = 'none';
+}
+
+// دوال تكبير الصورة عند النقر عليها
+function openImageModal(imgSrc) {
+    document.getElementById('modalImageSrc').src = imgSrc;
+    document.getElementById('imageModal').style.display = 'flex';
+}
+
+function closeImageModal() {
+    document.getElementById('imageModal').style.display = 'none';
+}
     </script>
     <!-- نافذة منبثقة لتفاصيل المنتج وإعدادات الطباعة -->
 <div id="productModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; justify-content: center; align-items: center;">
