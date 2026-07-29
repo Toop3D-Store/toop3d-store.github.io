@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     
-    <!-- تنسيقات الحل النهائي لمنع اختفاء بطاقات المنتجات تحت الشريط العلوي -->
+    <!-- تنسيقات الحل النهائي لمنع اختفاء بطاقات المنتجات تحت الشريط العلوي وضبط المحاذاة لليمين -->
     <style>
         /* إضافة مسافة علوية كافية عند التمرير لكي لا يختفي الجزء العلوي من البطاقات تحت الشريط */
         section#products {
@@ -105,6 +105,12 @@
             }
             .header-nav-bar {
                 padding: 8px 15px !important;
+                flex-direction: column !important;
+                align-items: flex-start !important;
+            }
+            .nav-links-wrapper, .filter-box {
+                width: 100%;
+                justify-content: flex-start !important;
             }
         }
         
@@ -148,16 +154,16 @@
             </div>
         </div>
 
-        <!-- شريط التنقل مع قائمة الفلتر والانتقال المباشر للمنتجات -->
-        <nav class="header-nav-bar" style="background: #0f172a; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <!-- شريط التنقل مع قائمة الفلتر (محاذاة كاملة لليمين) -->
+        <nav class="header-nav-bar" style="background: #0f172a; padding: 10px 20px; display: flex; justify-content: flex-start; align-items: center; flex-wrap: wrap; gap: 20px; direction: rtl;">
             <div class="nav-links-wrapper" style="display: flex; gap: 10px;">
                 <a href="#" class="nav-btn active" style="color: #fff; background: #0284c7; padding: 6px 16px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 0.95rem;">الرئيسية</a>
             </div>
 
             <div class="filter-box" style="display: flex; align-items: center; gap: 8px;">
-                <label for="category-select" style="color: #fff; font-size: 0.9rem; font-weight: 600;">اختر المنتج:</label>
+                <label for="category-select" style="color: #fff; font-size: 0.9rem; font-weight: 600;">قائمة المنتجات:</label>
                 <select id="category-select" onchange="filterCategory(this.value)" style="padding: 6px 12px; border-radius: 6px; border: 1px solid #475569; background: #1e293b; color: #fff; font-family: 'Cairo', sans-serif; cursor: pointer;">
-                    <option value="ALL">المنتجات</option>
+                    <option value="ALL">جميع المنتجات</option>
                     <option value="PLA">PLA</option>
                     <option value="PLA+">PLA+</option>
                     <option value="PETG">PETG</option>
@@ -685,8 +691,8 @@
                     <div><strong>📦 نوع المادة:</strong> ${p.material || 'غير متوفر'}</div>
                     <div><strong>🎨 اللون:</strong> ${p.color || 'متعدد الألوان'}</div>
                     <div style="background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                        <div style="font-weight: bold; color: #0f172a; margin-bottom: 6px;">🔥 إعدادات الطباعة :</div>
-                        <div style="margin-bottom: 5px;">• درجة حرارة رأس الطباعه (Nozzle): <span style="color: #0284c7; font-weight: bold;">${p.nozzleTemp}</span></div>
+                        <div style="font-weight: bold; color: #0f172a; margin-bottom: 6px;">🔥 إعدادات الطباعة المقترحة:</div>
+                        <div style="margin-bottom: 5px;">• درجة حرارة الهوت إند (رأس الطباعة): <span style="color: #0284c7; font-weight: bold;">${p.nozzleTemp}</span></div>
                         <div>• درجة حرارة السرير (Bed): <span style="color: #0284c7; font-weight: bold;">${p.bedTemp}</span></div>
                     </div>
                     <div><strong>📌 معلومات إضافية:</strong> ${p.description}</div>
