@@ -178,7 +178,6 @@
 
         function toggleCartModal() {
             document.body.classList.toggle('cart-open');
-            // قفل أو إتاحة السكرول للخلفية بناءً على حالة السلة
             if (document.body.classList.contains('cart-open')) {
                 document.body.style.overflow = 'hidden';
             } else {
@@ -471,21 +470,23 @@
                 let itemTotal = item.price * item.quantity;
                 totalPrice += itemTotal;
                 
+                // تعديل تصميم أزرار الكمية (+ و -) لتصبح واضحة وكبيرة ومريحة للمس بالهاتف
                 itemsHTML += `
-                    <div class="cart-item-row">
+                    <div class="cart-item-row" style="padding: 12px 0; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
                         <div style="flex-grow: 1;">
-                            <h4 class="cart-item-title">${item.name}</h4>
-                            <span class="cart-item-price-unit">السعر: ${item.price.toLocaleString()} د.ع</span>
+                            <h4 class="cart-item-title" style="font-size: 0.95rem; margin: 0 0 4px 0; color: #1e293b;">${item.name}</h4>
+                            <span class="cart-item-price-unit" style="font-size: 0.8rem; color: #64748b;">السعر: ${item.price.toLocaleString()} د.ع</span>
                             
-                            <div class="cart-qty-box">
-                                <button type="button" class="qty-btn" onclick="changeQuantity(${index}, -1)">-</button>
-                                <span class="qty-num">${item.quantity}</span>
-                                <button type="button" class="qty-btn" onclick="changeQuantity(${index}, 1)">+</button>
+                            <!-- صندوق التحكم بالكمية المحسّن للجوال -->
+                            <div class="cart-qty-box" style="display: flex; align-items: center; gap: 8px; margin-top: 8px;">
+                                <button type="button" class="qty-btn" onclick="changeQuantity(${index}, -1)" style="width: 34px; height: 34px; border-radius: 8px; border: 1px solid #cbd5e1; background: #f8fafc; color: #334155; font-size: 1.2rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">-</button>
+                                <span class="qty-num" style="min-width: 28px; text-align: center; font-size: 1.05rem; font-weight: bold; color: #0f172a;">${item.quantity}</span>
+                                <button type="button" class="qty-btn" onclick="changeQuantity(${index}, 1)" style="width: 34px; height: 34px; border-radius: 8px; border: 1px solid #cbd5e1; background: #f8fafc; color: #334155; font-size: 1.2rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">+</button>
                             </div>
                         </div>
-                        <div style="text-align: left; margin-left: 10px;">
-                            <div class="cart-item-total">${itemTotal.toLocaleString()} د.ع</div>
-                            <button type="button" class="cart-del-btn" onclick="removeFromCart(${index})" title="حذف">🗑️</button>
+                        <div style="text-align: left; margin-left: 10px; display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+                            <div class="cart-item-total" style="font-weight: bold; color: #0284c7; font-size: 0.95rem;">${itemTotal.toLocaleString()} د.ع</div>
+                            <button type="button" class="cart-del-btn" onclick="removeFromCart(${index})" title="حذف" style="background: none; border: none; cursor: pointer; font-size: 1.1rem; padding: 4px;">🗑️</button>
                         </div>
                     </div>
                 `;
@@ -552,13 +553,11 @@
             `;
             
             document.getElementById('productModal').style.display = 'flex';
-            // قفل حركة الصفحة في الخلفية
             document.body.style.overflow = 'hidden';
         }
 
         function closeProductModal() {
             document.getElementById('productModal').style.display = 'none';
-            // إعادة حركة الصفحة عند الإغلاق (بشرط ألا يكون نافذة السلة مفتوحة أيضاً)
             if (!document.body.classList.contains('cart-open')) {
                 document.body.style.overflow = 'auto';
             }
@@ -567,13 +566,11 @@
         function openImageModal(imgSrc) {
             document.getElementById('modalImageSrc').src = imgSrc;
             document.getElementById('imageModal').style.display = 'flex';
-            // قفل حركة الصفحة في الخلفية
             document.body.style.overflow = 'hidden';
         }
 
         function closeImageModal() {
             document.getElementById('imageModal').style.display = 'none';
-            // إعادة حركة الصفحة عند الإغلاق (بشرط ألا تكون السلة أو تفاصيل المنتج مفتوحة)
             if (!document.body.classList.contains('cart-open') && document.getElementById('productModal').style.display !== 'flex') {
                 document.body.style.overflow = 'auto';
             }
@@ -589,6 +586,8 @@
         let slides = document.querySelectorAll('.hero-gallery-container .slide');
         let currentSlide = 0;
         let slideInterval = setInterval(nextSlide, 5000);
+
+        function nextScale() {} // dummy fallback
 
         function nextSlide() {
             if(slides.length > 0) {
