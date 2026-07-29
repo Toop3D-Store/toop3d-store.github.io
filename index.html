@@ -85,16 +85,17 @@
             </div>
         </div>
 
-        <!-- شريط التنقل (زر الرئيسية فقط) وقائمة الفلتر بدون تسمية جانبية -->
+        <!-- شريط التنقل (زر الرئيسية فقط) وعودة عبارة "اختر المنتج" بجانب القائمة وتغيير الخيار إلى "المنتجات" -->
         <nav class="header-nav-bar" style="background: #0f172a; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
             <div class="nav-links-wrapper" style="display: flex; gap: 10px;">
                 <a href="#" class="nav-btn active" style="color: #fff; background: #0284c7; padding: 6px 16px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 0.95rem;">الرئيسية</a>
             </div>
 
-            <!-- قائمة الفلتر مع تغيير الخيار الأول إلى "اختر المنتج" -->
+            <!-- إرجاع "اختر المنتج:" بجانب الفلتر وتغيير الخيار الأول إلى "المنتجات" -->
             <div class="filter-box" style="display: flex; align-items: center; gap: 8px;">
+                <label for="category-select" style="color: #fff; font-size: 0.9rem; font-weight: 600;">اختر المنتج:</label>
                 <select id="category-select" onchange="filterCategory(this.value)" style="padding: 6px 12px; border-radius: 6px; border: 1px solid #475569; background: #1e293b; color: #fff; font-family: 'Cairo', sans-serif; cursor: pointer;">
-                    <option value="ALL">اختر المنتج</option>
+                    <option value="ALL">المنتجات</option>
                     <option value="PLA">PLA</option>
                     <option value="PLA+">PLA+</option>
                     <option value="PETG">PETG</option>
