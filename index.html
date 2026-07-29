@@ -113,12 +113,6 @@
                 justify-content: flex-start !important;
             }
         }
-        
-        .spool-btn.unavailable-option {
-            opacity: 0.4;
-            text-decoration: line-through;
-            cursor: not-allowed !important;
-        }
     </style>
 
     <!-- Google tag (gtag.js) -->
@@ -410,17 +404,7 @@
                 let spoolImg = row['spool_image'] || defaultUnavailableImg;
                 let refillImg = row['refill_image'] || spoolImg;
 
-                const hasSpool = isSpoolAvailable && spoolPrice > 0;
-                const hasRefill = isRefillAvailable && refillPrice > 0;
-
-                let defaultOption = 'spool';
-                if (!hasSpool && hasRefill) {
-                    defaultOption = 'refill';
-                } else if (hasSpool) {
-                    defaultOption = 'spool';
-                } else {
-                    defaultOption = 'spool';
-                }
+                let defaultOption = isSpoolAvailable ? 'spool' : (isRefillAvailable ? 'refill' : 'spool');
 
                 return {
                     id: id,
@@ -437,13 +421,13 @@
                             spoolStatusText: 'مع بكرة',
                             price: spoolPrice,
                             image: spoolImg,
-                            isAvailable: hasSpool
+                            isAvailable: isSpoolAvailable
                         },
                         refill: {
                             spoolStatusText: 'بدون بكرة (Refill)',
                             price: refillPrice,
                             image: refillImg,
-                            isAvailable: hasRefill
+                            isAvailable: isRefillAvailable
                         }
                     }
                 };
@@ -486,8 +470,8 @@
                             </div>
                             <h3 class="product-title">${product.name}</h3>
                             <div class="spool-options">
-                                <button type="button" id="btn-spool-${product.id}" class="spool-btn ${product.selectedOption === 'spool' ? 'active' : ''} ${!spoolOpt.isAvailable ? 'unavailable-option' : ''}" onclick="changeSpoolOption('${product.id}', 'spool')" title="${spoolOpt.isAvailable ? 'مع بكرة' : 'غير متوفر مع بكرة'}">مع بكرة</button>
-                                <button type="button" id="btn-refill-${product.id}" class="spool-btn ${product.selectedOption === 'refill' ? 'active' : ''} ${!refillOpt.isAvailable ? 'unavailable-option' : ''}" onclick="changeSpoolOption('${product.id}', 'refill')" title="${refillOpt.isAvailable ? 'بدون بكرة' : 'غير متوفر بدون بكرة'}">بدون بكرة</button>
+                                <button type="button" id="btn-spool-${product.id}" class="spool-btn ${product.selectedOption === 'spool' ? 'active' : ''}" onclick="changeSpoolOption('${product.id}', 'spool')">مع بكرة</button>
+                                <button type="button" id="btn-refill-${product.id}" class="spool-btn ${product.selectedOption === 'refill' ? 'active' : ''}" onclick="changeSpoolOption('${product.id}', 'refill')">بدون بكرة</button>
                             </div>
                         </div>
                         <div class="product-card-bottom">
@@ -509,12 +493,8 @@
             const product = productsData.find(p => p.id === productId);
             if (!product) return;
 
-            const opt = product.options[optionType];
-            if (!opt.isAvailable) {
-                return;
-            }
-
             product.selectedOption = optionType;
+            const opt = product.options[optionType];
             const canAddToCart = opt.isAvailable;
 
             const imgEl = document.getElementById(`img-${productId}`);
