@@ -20,9 +20,9 @@
 </head>
 <body>
 
-    <!-- 1. البنر العلوي -->
-    <header class="top-brand-banner">
-        <div class="banner-container">
+  <!-- 1. الهيدر المدمج الشامل (البنر + شريط التنقل) -->
+    <header class="unified-header">
+        <div class="header-main-row">
             <div class="brand-left">
                 <img src="images/logo.png" alt="Toop3D Logo" class="brand-logo" onerror="this.style.display='none'">
                 <div class="brand-title-box">
@@ -31,29 +31,23 @@
                 </div>
             </div>
 
-            <div class="banner-divider"></div>
-
-            <div class="brand-right">
-                <div class="main-products-row">
-                    <span class="product-tag">3D printer filament</span>
-                    <span class="product-tag">pla filament</span>
-                    <span class="product-tag">pla+ filament</span>
-                    <span class="product-tag">petg filament</span>
-                    <span class="product-tag">abs filament</span>
-                    <span class="product-tag">asa filament</span>
-                    <span class="product-tag">matte filament</span>
-                </div>
+            <!-- الوسوم السريعة (تختفي في الشاشات الصغيرة لتوفر مساحة أكبر) -->
+            <div class="brand-right-tags">
+                <span class="product-tag">3D filament</span>
+                <span class="product-tag">PLA</span>
+                <span class="product-tag">PETG</span>
+                <span class="product-tag">ABS/ASA</span>
             </div>
         </div>
-    </header>
 
-    <!-- 2. شريط التنقل العلوي -->
-    <nav class="main-nav-bar">
-        <div class="nav-container">
-            <a href="#" class="active">الرئيسية</a>
-            <a href="#products">المنتجات</a>
-        </div>
-    </nav>
+        <!-- شريط التنقل والقوائم المدمج بالأسفل -->
+        <nav class="header-nav-bar">
+            <div class="nav-links-wrapper">
+                <a href="#" class="nav-btn active">الرئيسية</a>
+                <a href="#products" class="nav-btn">المنتجات</a>
+            </div>
+        </nav>
+    </header>
 
     <!-- ===== قسم الهيرو مع شريط الصور المتحرك ===== -->
     <section class="hero-section">
