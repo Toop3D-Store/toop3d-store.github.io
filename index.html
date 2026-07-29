@@ -12,7 +12,7 @@
     <style>
         @media (max-width: 768px) {
             .unified-header {
-                position: relative !important; /* إلغاء التثبيت لكي يتحرك مع الصفحة ولا يأخذ مساحة ثابتة */
+                position: relative !important; /* إلغاء التثبيت تماماً لكي يتحرك مع الصفحة ولا يأخذ مساحة ثابتة */
             }
             .header-main-row {
                 flex-direction: column !important;
@@ -23,7 +23,7 @@
             .brand-left {
                 width: 100%;
                 justify-content: space-between;
-                direction: rtl !important; /* عكس اتجاه العرض لتكون الكلمة والشعار مرتبة بشكل مناسب للهاتف */
+                direction: rtl !important;
                 text-align: right !important;
             }
             .company-name {
@@ -85,16 +85,15 @@
             </div>
         </div>
 
-        <!-- شريط التنقل وقائمة الفلتر بجانبه -->
+        <!-- شريط التنقل (زر الرئيسية فقط) وقائمة الفلتر بجانبه -->
         <nav class="header-nav-bar" style="background: #0f172a; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
             <div class="nav-links-wrapper" style="display: flex; gap: 10px;">
                 <a href="#" class="nav-btn active" style="color: #fff; background: #0284c7; padding: 6px 16px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 0.95rem;">الرئيسية</a>
-                <a href="#products" class="nav-btn" style="color: #cbd5e1; padding: 6px 16px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 0.95rem;">المنتجات</a>
             </div>
 
-            <!-- فلتر المنتجات بجانب أزرار التنقل -->
+            <!-- فلتر المنتجات بجانب زر الرئيسية وتعديل النص إلى "اختر المنتج" -->
             <div class="filter-box" style="display: flex; align-items: center; gap: 8px;">
-                <label for="category-select" style="color: #fff; font-size: 0.9rem; font-weight: 600;">اختر الخامة:</label>
+                <label for="category-select" style="color: #fff; font-size: 0.9rem; font-weight: 600;">اختر المنتج:</label>
                 <select id="category-select" onchange="filterCategory(this.value)" style="padding: 6px 12px; border-radius: 6px; border: 1px solid #475569; background: #1e293b; color: #fff; font-family: 'Cairo', sans-serif; cursor: pointer;">
                     <option value="ALL">جميع المنتجات</option>
                     <option value="PLA">PLA</option>
