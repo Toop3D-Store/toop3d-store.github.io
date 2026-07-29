@@ -336,7 +336,7 @@
 
                 const cardHtml = `
                     <div class="product-card" id="card-${product.id}" style="position: relative;">
-                        <!-- زر التفاصيل تم نقله ليصبح زر تفاصيل أنيق أعلى البطاقة -->
+                        <!-- زر التفاصيل -->
                         <button type="button" onclick="openProductDetails(${globalIndex})" title="عرض إعدادات الطباعة والتفاصيل" style="position: absolute; top: 10px; left: 10px; background: rgba(255, 255, 255, 0.9); border: 1px solid #cbd5e1; color: #334155; padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold; z-index: 5; display: flex; align-items: center; gap: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
                             🔍 تفاصيل
                         </button>
@@ -356,7 +356,6 @@
                                 ${canAddToCart ? `<span id="price-${product.id}">${opt.price.toLocaleString()}</span> د.ع` : 'غير متوفر حالياً'}
                             </div>
                             
-                            <!-- زر الإضافة إلى السلة عاد لحجمه الطبيعي الكامل -->
                             <button type="button" id="add-btn-${product.id}" class="add-to-cart-btn ${!canAddToCart ? 'disabled' : ''}" ${!canAddToCart ? 'disabled' : ''} onclick="addToCart('${product.id}')" style="width: 100%; margin-top: 8px;">
                                 ${canAddToCart ? '🛒 إضافة إلى السلة' : '⏳ قريباً'}
                             </button>
@@ -582,9 +581,9 @@
         }
     </script>
 
-    <!-- نافذة منبثقة لتفاصيل المنتج وإعدادات الطباعة -->
-    <div id="productModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; justify-content: center; align-items: center;">
-        <div style="background: #fff; width: 90%; max-width: 500px; padding: 25px; border-radius: 12px; position: relative; font-family: 'Cairo', sans-serif; direction: rtl; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+    <!-- نافذة منبثقة لتفاصيل المنتج وإعدادات الطباعة (تم إضافة onclick للإغلاق عند النقر بالخارج) -->
+    <div id="productModal" onclick="closeProductModal()" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; justify-content: center; align-items: center; cursor: pointer;">
+        <div onclick="event.stopPropagation()" style="background: #fff; width: 90%; max-width: 500px; padding: 25px; border-radius: 12px; position: relative; font-family: 'Cairo', sans-serif; direction: rtl; box-shadow: 0 10px 25px rgba(0,0,0,0.2); cursor: default;">
             <button type="button" onclick="closeProductModal()" style="position: absolute; top: 15px; left: 15px; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #64748b;">✕</button>
             <div id="modalBody">
                 <!-- سيتم تعبئة البيانات هنا ديناميكياً -->
