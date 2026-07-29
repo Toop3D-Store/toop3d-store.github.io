@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toop3D - متجر الطباعة ثلاثية الأبعاد</title>
+    <!-- استيراد خط عربي عصري واحترافي (Cairo) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     
     <!-- Google tag (gtag.js) -->
@@ -24,7 +26,7 @@
             <div class="brand-left">
                 <img src="images/logo.png" alt="Toop3D Logo" class="brand-logo" onerror="this.style.display='none'">
                 <div class="brand-title-box">
-                    <h1 class="company-name">Toop3D TECHNOLOGY ., .</h1>
+                    <h1 class="company-name">Toop3D TECHNOLOGY</h1>
                     <p class="company-sub">Years of Filament Experience | Specializing in 3D printer material</p>
                 </div>
             </div>
@@ -32,16 +34,14 @@
             <div class="banner-divider"></div>
 
             <div class="brand-right">
-                
                 <div class="main-products-row">
                     <span class="product-tag">3D printer filament</span>
-                     <span class="product-tag">pla filament</span>
-                     <span class="product-tag">pla+ filament</span>
+                    <span class="product-tag">pla filament</span>
+                    <span class="product-tag">pla+ filament</span>
                     <span class="product-tag">petg filament</span>
                     <span class="product-tag">abs filament</span>
                     <span class="product-tag">asa filament</span>
                     <span class="product-tag">matte filament</span>
-                    
                 </div>
             </div>
         </div>
@@ -49,8 +49,10 @@
 
     <!-- 2. شريط التنقل العلوي -->
     <nav class="main-nav-bar">
-        <a href="#" class="active">الرئيسية</a>
-        <a href="#products">المنتجات</a>
+        <div class="nav-container">
+            <a href="#" class="active">الرئيسية</a>
+            <a href="#products">المنتجات</a>
+        </div>
     </nav>
 
     <!-- ===== قسم الهيرو مع شريط الصور المتحرك ===== -->
@@ -85,17 +87,17 @@
     <main class="main-content">
         <section id="products">
             <div class="products-header">
-                <h2 style="margin: 0;">قائمة المنتجات</h2>
+                <h2>قائمة المنتجات</h2>
                 
                 <div class="filter-box">
-                    <label for="category-select" style="font-weight: bold; margin-left: 5px;">اختر الخامة:</label>
-                    <select id="category-select" onchange="filterCategory(this.value)" style="padding: 6px 12px; border-radius: 6px; border: 1px solid #cbd5e1; font-weight: bold;">
-                        <option value="ALL">المنتجات</option>
+                    <label for="category-select">اختر الخامة:</label>
+                    <select id="category-select" onchange="filterCategory(this.value)">
+                        <option value="ALL">جميع المنتجات</option>
                         <option value="PLA">PLA</option>
                         <option value="PLA+">PLA+</option>
                         <option value="PETG">PETG</option>
-                        <option value="TPU">TPU(Flex)</option>
-                        <option value="ABS/ASA"> ABS / ASA </option>
+                        <option value="TPU">TPU (Flex)</option>
+                        <option value="ABS/ASA">ABS / ASA</option>
                     </select>
                 </div>
             </div>
@@ -105,17 +107,17 @@
             </div>
         </section>
     </main>
-<!-- 🎈 زر السلة العائم المستطيل -->
-<button id="cart-nav-btn" type="button" class="floating-cart-btn" onclick="toggleCartModal()">
-    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="9" cy="21" r="1"></circle>
-        <circle cx="20" cy="21" r="1"></circle>
-        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-    </svg>
-    <span>السلة</span>
-    <span id="cart-counter">0</span>
-</button>
-    
+
+    <!-- 🎈 زر السلة العائم -->
+    <button id="cart-nav-btn" type="button" class="floating-cart-btn" onclick="toggleCartModal()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span>السلة</span>
+        <span id="cart-counter">0</span>
+    </button>
 
     <!-- 🖼️ 6. النافذة المنبثقة للسلة (Drawer) -->
     <div class="cart-modal-overlay" id="cartOverlay" onclick="toggleCartModal()"></div>
@@ -180,7 +182,6 @@
         let productsData = [];
         let cart = [];
 
-        // دالة فتح وإغلاق السلة
         function toggleCartModal() {
             document.body.classList.toggle('cart-open');
         }
@@ -263,7 +264,7 @@
 
                 const material = (row['material'] || 'PETG').toUpperCase();
                 const color = row['color'] || '';
-                const name = ` ${material}  (${color})`;
+                const name = `${material} (${color})`;
                 const id = row['id'] || `product-${idx}`;
 
                 const spoolAvailRaw = (row['spool_avail'] || 'TRUE').toString().toUpperCase().trim();
@@ -329,24 +330,23 @@
                 const opt = product.options[product.selectedOption];
                 const canAddToCart = opt.isAvailable;
 
-                // تنسيق لون الزر بناءً على توفر المنتج (رصاصي إن لم يكن متوفراً، أو التنسيق العادي إن كان متوفراً)
-                const btnStyle = !canAddToCart ? 'background-color: #64748b !important; color: #ffffff !important; border-color: #64748b !important; cursor: not-allowed;' : '';
-
                 const cardHtml = `
                     <div class="product-card" id="card-${product.id}">
-                        <div>
-                            <img src="${opt.image}" alt="${product.name}" id="img-${product.id}">
-                            <h3 style="margin: 0 0 8px 0; font-size: 1.05em; color: #0f172a;">${product.name}</h3>
+                        <div class="product-card-top">
+                            <div class="product-img-wrapper">
+                                <img src="${opt.image}" alt="${product.name}" id="img-${product.id}">
+                            </div>
+                            <h3 class="product-title">${product.name}</h3>
                             <div class="spool-options">
                                 <button type="button" id="btn-spool-${product.id}" class="spool-btn ${product.selectedOption === 'spool' ? 'active' : ''}" onclick="changeSpoolOption('${product.id}', 'spool')">مع بكرة</button>
                                 <button type="button" id="btn-refill-${product.id}" class="spool-btn ${product.selectedOption === 'refill' ? 'active' : ''}" onclick="changeSpoolOption('${product.id}', 'refill')">بدون بكرة</button>
                             </div>
                         </div>
-                        <div>
-                            <div style="font-size: 1.15em; font-weight: bold; color: ${canAddToCart ? '#16a34a' : '#64748b'}; margin: 10px 0;" id="price-container-${product.id}">
+                        <div class="product-card-bottom">
+                            <div class="product-price ${!canAddToCart ? 'unavailable' : ''}" id="price-container-${product.id}">
                                 ${canAddToCart ? `<span id="price-${product.id}">${opt.price.toLocaleString()}</span> د.ع` : 'غير متوفر حالياً'}
                             </div>
-                            <button type="button" id="add-btn-${product.id}" class="add-to-cart-btn ${!canAddToCart ? 'disabled' : ''}" style="${btnStyle}" ${!canAddToCart ? 'disabled' : ''} onclick="addToCart('${product.id}')">
+                            <button type="button" id="add-btn-${product.id}" class="add-to-cart-btn ${!canAddToCart ? 'disabled' : ''}" ${!canAddToCart ? 'disabled' : ''} onclick="addToCart('${product.id}')">
                                 ${canAddToCart ? '🛒 إضافة إلى السلة' : '⏳ سيتوفر قريباً'}
                             </button>
                         </div>
@@ -370,10 +370,10 @@
             const priceContainer = document.getElementById(`price-container-${productId}`);
             if (priceContainer) {
                 if (canAddToCart) {
-                    priceContainer.style.color = '#16a34a';
+                    priceContainer.className = 'product-price';
                     priceContainer.innerHTML = `<span id="price-${productId}">${opt.price.toLocaleString()}</span> د.ع`;
                 } else {
-                    priceContainer.style.color = '#64748b';
+                    priceContainer.className = 'product-price unavailable';
                     priceContainer.innerHTML = 'غير متوفر حالياً';
                 }
             }
@@ -383,12 +383,10 @@
                 if (canAddToCart) {
                     addBtn.classList.remove('disabled');
                     addBtn.removeAttribute('disabled');
-                    addBtn.style.cssText = '';
                     addBtn.innerHTML = '🛒 إضافة إلى السلة';
                 } else {
                     addBtn.classList.add('disabled');
                     addBtn.setAttribute('disabled', 'true');
-                    addBtn.style.cssText = 'background-color: #64748b !important; color: #ffffff !important; border-color: #64748b !important; cursor: not-allowed;';
                     addBtn.innerHTML = '⏳ سيتوفر قريباً';
                 }
             }
@@ -458,20 +456,20 @@
                 totalPrice += itemTotal;
                 
                 itemsHTML += `
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 12px; border-bottom: 1px solid #e2e8f0;">
+                    <div class="cart-item-row">
                         <div style="flex-grow: 1;">
-                            <h4 style="margin: 0 0 4px 0; font-size: 0.95rem; color: #1e293b;">${item.name}</h4>
-                            <span style="font-size: 0.8rem; color: #64748b; display: block; margin-bottom: 8px;">السعر: ${item.price.toLocaleString()} د.ع</span>
+                            <h4 class="cart-item-title">${item.name}</h4>
+                            <span class="cart-item-price-unit">السعر: ${item.price.toLocaleString()} د.ع</span>
                             
-                            <div style="display: flex; align-items: center; gap: 6px;">
-                                <button type="button" onclick="changeQuantity(${index}, -1)" style="all: unset; background-color: #e2e8f0; color: #0f172a; width: 28px; height: 28px; border-radius: 4px; text-align: center; font-weight: bold; font-size: 16px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #cbd5e1;">-</button>
-                                <span style="font-size: 0.95rem; font-weight: bold; min-width: 24px; text-align: center; color: #0f172a;">${item.quantity}</span>
-                                <button type="button" onclick="changeQuantity(${index}, 1)" style="all: unset; background-color: #e2e8f0; color: #0f172a; width: 28px; height: 28px; border-radius: 4px; text-align: center; font-weight: bold; font-size: 16px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #cbd5e1;">+</button>
+                            <div class="cart-qty-box">
+                                <button type="button" class="qty-btn" onclick="changeQuantity(${index}, -1)">-</button>
+                                <span class="qty-num">${item.quantity}</span>
+                                <button type="button" class="qty-btn" onclick="changeQuantity(${index}, 1)">+</button>
                             </div>
                         </div>
                         <div style="text-align: left; margin-left: 10px;">
-                            <div style="font-size: 0.95rem; font-weight: bold; color: #16a34a; margin-bottom: 8px;">${itemTotal.toLocaleString()} د.ع</div>
-                            <button type="button" onclick="removeFromCart(${index})" style="all: unset; color: #ef4444; cursor: pointer; font-size: 1.1rem; padding: 4px;" title="حذف">🗑️</button>
+                            <div class="cart-item-total">${itemTotal.toLocaleString()} د.ع</div>
+                            <button type="button" class="cart-del-btn" onclick="removeFromCart(${index})" title="حذف">🗑️</button>
                         </div>
                     </div>
                 `;
