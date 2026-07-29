@@ -45,7 +45,7 @@ body {
 }
 
 .brand-logo {
-    height: 50px; /* حجم متناسق داخل الهيدر المدمج */
+    height: 50px;
     width: auto;
     object-fit: contain;
 }
@@ -79,7 +79,7 @@ body {
 
 @media (max-width: 900px) {
     .brand-right-tags {
-        display: none; /* إخفاء الوسوم في الشاشات الصغيرة لتوفير المساحة */
+        display: none;
     }
 }
 
@@ -156,7 +156,7 @@ body {
 }
 
 /* ==========================================
-   3. تنسيق قسم الهيرو (Hero Section)
+   3. تنسيق قسم الهيرو (Hero Section) - ضبط المعرض والصورة في اليمين
    ========================================== */
 .hero-section {
     background: #ffffff;
@@ -175,14 +175,33 @@ body {
     align-items: center !important;
     justify-content: space-between !important;
     gap: 40px !important;
-    flex-direction: row !important;
+    /* في الـ RTL: العنصر الأول في الـ HTML يظهر يميناً، والثاني يساراً */
+    flex-direction: row !important; 
     width: 100% !important;
+}
+
+/* بما أننا نريد الصورة في اليمين والنص في اليسار في الـ RTL، تأكد أن حاوية الصورة تأتي أولاً في الـ HTML أو استخدمنا الترتيب الصحيح */
+.hero-gallery-container {
+    flex: 1 !important;
+    max-width: 40% !important;
+    position: relative !important;
+    height: 320px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    background-color: #ffffff !important;
+    border-radius: 12px !important;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05) !important;
+    order: 1 !important; /* ضمان ظهورها في الجهة اليمنى مع الاتجاه العربي */
 }
 
 .hero-text-content {
     flex: 1 !important;
     max-width: 55% !important;
     text-align: right !important;
+    order: 2 !important; /* النص يظهر إلى اليسار قليلاً */
 }
 
 .hero-title {
@@ -214,21 +233,6 @@ body {
     font-weight: 600 !important;
 }
 
-.hero-gallery-container {
-    flex: 1 !important;
-    max-width: 40% !important;
-    position: relative !important;
-    height: 320px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    overflow: hidden !important;
-    background-color: #ffffff !important;
-    border-radius: 12px !important;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05) !important;
-}
-
 .hero-gallery-container .slide {
     position: absolute;
     top: 0;
@@ -248,7 +252,7 @@ body {
 }
 
 /* ==========================================
-   4. شبكة المنتجات والصور (Products Grid & Cards)
+   4. شبكة المنتجات والتأثير التقني المطور (Products Grid & Cards)
    ========================================== */
 .products-grid {
     display: grid;
@@ -260,22 +264,26 @@ body {
 }
 
 .product-card {
-    background: #ffffff; /* بطاقة بيضاء نظيفة تماماً */
+    background: #ffffff; 
     border: 1px solid #e2e8f0;
     border-radius: 12px;
     padding: 16px;
     text-align: center;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                border-color 0.3s ease;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    position: relative;
+    overflow: hidden;
 }
 
 .product-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-    border-color: #cbd5e1;
+    transform: translateY(-5px);
+    box-shadow: 0 14px 25px -5px rgba(37, 99, 235, 0.12);
+    border-color: #2563eb;
 }
 
 .product-card img {
@@ -287,6 +295,11 @@ body {
     margin: 0 auto 12px auto;
     background: #f8fafc;
     border-radius: 8px;
+    transition: transform 0.4s ease;
+}
+
+.product-card:hover img {
+    transform: scale(1.06); 
 }
 
 /* ==========================================
@@ -509,11 +522,13 @@ body.cart-open .cart-modal-overlay {
     .hero-text-content {
         max-width: 100% !important;
         text-align: center !important;
+        order: 2 !important;
     }
     .hero-gallery-container {
         max-width: 100% !important;
         width: 100% !important;
         height: 280px !important;
+        order: 1 !important;
     }
 }
 
