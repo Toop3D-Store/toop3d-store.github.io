@@ -8,6 +8,50 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     
+    <!-- تنسيقات إضافية للتحكم بحجم الهيدر على الهواتف وإلغاء التثبيت -->
+    <style>
+        @media (max-width: 768px) {
+            .unified-header {
+                position: relative !important; /* إلغاء التثبيت لكي يتحرك مع الصفحة ولا يأخذ مساحة ثابتة */
+            }
+            .header-main-row {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 8px !important;
+                padding: 10px 15px !important;
+            }
+            .brand-left {
+                width: 100%;
+                justify-content: space-between;
+                direction: rtl !important; /* عكس اتجاه العرض لتكون الكلمة والشعار مرتبة بشكل مناسب للهاتف */
+                text-align: right !important;
+            }
+            .company-name {
+                font-size: 1.1rem !important;
+            }
+            .company-sub {
+                font-size: 0.7rem !important;
+            }
+            .brand-logo {
+                height: 35px !important;
+            }
+            .brand-right-tags {
+                width: 100%;
+                overflow-x: auto;
+                padding-bottom: 5px;
+                justify-content: flex-start;
+            }
+            .brand-right-tags span {
+                font-size: 0.75rem !important;
+                padding: 3px 8px !important;
+                white-space: nowrap;
+            }
+            .header-nav-bar {
+                padding: 8px 15px !important;
+            }
+        }
+    </style>
+
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8PQ6D8B7NJ"></script>
     <script>
@@ -20,20 +64,20 @@
 </head>
 <body>
 
-  <!-- 1. الهيدر المدمج الشامل (تم تعديل التوزيع: الشعار يساراً، والفلتر بجانب التنقل) -->
-    <header class="unified-header">
-        <div class="header-main-row" style="display: flex; justify-content: space-between; align-items: center; flex-direction: row-reverse;">
-            <!-- الشعار ومعلومات المتجر أصبحت في الجهة اليسرى -->
-            <div class="brand-left" style="display: flex; align-items: center; gap: 15px; direction: ltr; text-align: left;">
+  <!-- 1. الهيدر المدمج الشامل -->
+    <header class="unified-header" style="background: #fff; border-bottom: 1px solid #e2e8f0;">
+        <div class="header-main-row" style="display: flex; justify-content: space-between; align-items: center; flex-direction: row-reverse; padding: 12px 20px;">
+            <!-- الشعار ومعلومات المتجر في الجهة اليسرى -->
+            <div class="brand-left" style="display: flex; align-items: center; gap: 12px; direction: ltr; text-align: left;">
                 <div class="brand-title-box">
-                    <h1 class="company-name" style="margin: 0; font-size: 1.4rem; color: #0f172a;">Toop3D TECHNOLOGY</h1>
+                    <h1 class="company-name" style="margin: 0; font-size: 1.4rem; color: #0f172a; font-weight: 800;">Toop3D TECHNOLOGY</h1>
                     <p class="company-sub" style="margin: 0; font-size: 0.8rem; color: #64748b;">Years of Filament Experience | Specializing in 3D printer material</p>
                 </div>
-                <img src="images/logo.png" alt="Toop3D Logo" class="brand-logo" style="height: 45px; object-fit: contain;" onerror="this.style.display='none'">
+                <img src="images/logo.png" alt="Toop3D Logo" class="brand-logo" style="height: 42px; object-fit: contain;" onerror="this.style.display='none'">
             </div>
 
             <!-- الوسوم السريعة في الجهة اليمنى -->
-            <div class="brand-right-tags" style="display: flex; gap: 8px;">
+            <div class="brand-right-tags" style="display: flex; gap: 6px;">
                 <span class="product-tag" style="background: #f1f5f9; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; color: #334155;">ABS/ASA</span>
                 <span class="product-tag" style="background: #f1f5f9; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; color: #334155;">PETG</span>
                 <span class="product-tag" style="background: #f1f5f9; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; color: #334155;">PLA</span>
@@ -91,7 +135,7 @@
     </div>
 </section>  
 
-    <!-- 4. قسم عرض المنتجات (تمت إزالة الفلتر القديم من هنا لعدم تكراره) -->
+    <!-- 4. قسم عرض المنتجات -->
     <main class="main-content">
         <section id="products">
             <div class="products-header" style="margin-bottom: 20px;">
@@ -115,7 +159,7 @@
         <span id="cart-counter">0</span>
     </button>
 
-    <!-- 🖼️ 6. النافذة المنبثقة للسلة (Drawer) مع منع اهتزاز الخلفية وقفل التمرير -->
+    <!-- 🖼️ 6. النافذة المنبثقة للسلة (Drawer) -->
     <div class="cart-modal-overlay" id="cartOverlay" onclick="toggleCartModal()"></div>
     <div class="cart-drawer" id="cartDrawer" style="overscroll-behavior: contain; -webkit-overflow-scrolling: touch;">
         <div class="cart-drawer-header" style="position: relative; padding-bottom: 12px; border-bottom: 2px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
@@ -609,7 +653,6 @@
         let currentSlide = 0;
         let slideInterval = setInterval(nextSlide, 5000);
 
-        function nextScale() {}
         function nextSlide() {
             if(slides.length > 0) {
                 slides[currentSlide].className = 'slide';
