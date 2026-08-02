@@ -1,117 +1,402 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>متجر Toop_3D | خيوط الطابعات ثلاثية الأبعاد</title>
-    <!-- هنا يمكنك وضع الروابط والتنسيقات الخاصة بك -->
+    <title>Toop3D - متجر الطباعة ثلاثية الأبعاد</title>
+    <!-- استيراد خط عربي عصري واحترافي (Cairo) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- تنسيقات الحل النهائي لمنع اختفاء بطاقات المنتجات تحت الشريط العلوي وضبط المحاذاة لليمين -->
     <style>
-        body { font-family: 'Cairo', sans-serif; margin: 0; background: #f8fafc; color: #1e293b; }
-        /* تنسيقات أساسية للفوتر */
-        .site-footer {
-            background: #0f172a;
-            color: #94a3b8;
-            padding: 40px 20px 20px;
-            font-size: 0.9rem;
-            direction: rtl;
-            text-align: right;
-            margin-top: 50px;
+        /* مسافة علوية كافية عند التمرير لكي لا يختفي الجزء العلوي من البطاقات تحت الشريط */
+        section#products {
+            scroll-margin-top: 140px;
         }
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            padding-bottom: 30px;
-            border-bottom: 1px solid #1e293b;
-        }
-        .footer-col h3 {
-            color: #f8fafc;
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-        }
-        .footer-col p, .footer-col a {
-            color: #94a3b8;
-            text-decoration: none;
-            display: block;
-            margin-bottom: 8px;
-            transition: color 0.2s;
-        }
-        .footer-col a:hover {
-            color: #38bdf8;
-        }
-        .footer-bottom {
-            max-width: 1200px;
-            margin: 20px auto 0;
+
+        .product-card {
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
+            height: auto !important;
+            min-height: 430px;
+            overflow: visible !important;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            position: relative;
+        }
+
+        .product-card-top {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .product-img-wrapper {
+            width: 100%;
+            height: 200px;
+            background: #f8fafc;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            font-size: 0.85rem;
-            color: #64748b;
+            justify-content: center;
+            position: relative;
+        }
+
+        .product-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .product-img-wrapper img:hover {
+            transform: scale(1.05);
+        }
+
+        .product-card-bottom {
+            margin-top: auto;
+            padding-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            section#products {
+                scroll-margin-top: 110px;
+            }
+            .unified-header {
+                position: relative !important;
+            }
+            .header-main-row {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 8px !important;
+                padding: 10px 15px !important;
+            }
+            .brand-left {
+                width: 100%;
+                justify-content: space-between;
+                direction: rtl !important;
+                text-align: right !important;
+            }
+            .company-name {
+                font-size: 1.1rem !important;
+            }
+            .company-sub {
+                font-size: 0.7rem !important;
+            }
+            .brand-logo {
+                height: 35px !important;
+            }
+            .brand-right-tags {
+                width: 100%;
+                overflow-x: auto;
+                padding-bottom: 5px;
+                justify-content: flex-start;
+            }
+            .brand-right-tags span {
+                font-size: 0.75rem !important;
+                padding: 3px 8px !important;
+                white-space: nowrap;
+            }
+            .header-nav-bar {
+                padding: 8px 15px !important;
+                flex-direction: column !important;
+                align-items: flex-start !important;
+            }
+            .nav-links-wrapper, .filter-box {
+                width: 100%;
+                justify-content: flex-start !important;
+            }
         }
     </style>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8PQ6D8B7NJ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-8PQ6D8B7NJ');
+    </script>
 </head>
 <body>
 
-    <!-- محتوى الصفحة والمتجر (المنتجات، السلة، النوافذ المنبثقة) -->
-    <div id="products-container" style="padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto;"></div>
+  <!-- 1. الهيدر المدمج الشامل -->
+    <header class="unified-header" style="background: #fff; border-bottom: 1px solid #e2e8f0;">
+        <div class="header-main-row" style="display: flex; justify-content: space-between; align-items: center; flex-direction: row-reverse; padding: 12px 20px;">
+            <!-- الشعار ومعلومات المتجر في الجهة اليسرى -->
+            <div class="brand-left" style="display: flex; align-items: center; gap: 12px; direction: ltr; text-align: left;">
+                <div class="brand-title-box">
+                    <h1 class="company-name" style="margin: 0; font-size: 1.4rem; color: #0f172a; font-weight: 800;">Toop3D TECHNOLOGY</h1>
+                    <p class="company-sub" style="margin: 0; font-size: 0.8rem; color: #64748b;">Years of Filament Experience | Specializing in 3D printer material</p>
+                </div>
+                <img src="images/logo.png" alt="Toop3D Logo" class="brand-logo" style="height: 42px; object-fit: contain;" onerror="this.style.display='none'">
+            </div>
 
-    <!-- الفوتر الجديد والمضغوط -->
-    <footer class="site-footer">
-        <div class="footer-content">
-            <div class="footer-col">
-                <h3>عن متجر Toop_3D</h3>
-                <p>وجهتك الأولى لتوفير أجود خيوط الطابعات ثلاثية الأبعاد (Filaments) والبكرات وإكسسوارات الطباعة في العراق بأفضل الأسعار.</p>
-            </div>
-            <div class="footer-col">
-                <h3>روابط سريعة</h3>
-                <a href="#products" onclick="filterCategory('ALL')">جميع المنتجات</a>
-                <a href="#" onclick="openProductDetails(0)">أحدث الإعدادات</a>
-            </div>
-            <div class="footer-col">
-                <h3>تواصل معنا والدعم</h3>
-                <p>الدعم الفني واستفسارات الطباعة:</p>
-                <a href="https://wa.me/9647827573964" target="_blank">💬 مراسلة عبر واتساب</a>
+            <!-- الوسوم السريعة في الجهة اليمنى -->
+            <div class="brand-right-tags" style="display: flex; gap: 6px;">
+                <span class="product-tag" style="background: #f1f5f9; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; color: #334155;">ABS/ASA</span>
+                <span class="product-tag" style="background: #f1f5f9; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; color: #334155;">PETG</span>
+                <span class="product-tag" style="background: #f1f5f9; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; color: #334155;">PLA</span>
+                <span class="product-tag" style="background: #f1f5f9; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; color: #334155;">3D filament</span>
             </div>
         </div>
+
+        <!-- شريط التنقل: الرئيسية وقائمة المنتجات بجانب بعضهما تماماً ومحاذيات لليمين -->
+        <nav class="header-nav-bar" style="background: #0f172a; padding: 10px 20px; display: flex; justify-content: flex-start; align-items: center; flex-wrap: wrap; gap: 20px; direction: rtl;">
+            <div class="nav-links-wrapper" style="display: flex; gap: 10px; align-items: center;">
+                <a href="#" class="nav-btn active" style="color: #fff; background: #0284c7; padding: 6px 16px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 0.95rem;">الرئيسية</a>
+            </div>
+
+            <div class="filter-box" style="display: flex; align-items: center; gap: 8px;">
+                <label for="category-select" style="color: #fff; font-size: 0.9rem; font-weight: 600;">قائمة المنتجات:</label>
+                <select id="category-select" onchange="filterCategory(this.value)" style="padding: 6px 12px; border-radius: 6px; border: 1px solid #475569; background: #1e293b; color: #fff; font-family: 'Cairo', sans-serif; cursor: pointer;">
+                    <option value="ALL">جميع المنتجات</option>
+                    <option value="PLA">PLA</option>
+                    <option value="PLA+">PLA+</option>
+                    <option value="PETG">PETG</option>
+                    <option value="TPU">TPU (Flex)</option>
+                    <option value="ABS/ASA">ABS / ASA</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+
+  <!-- ===== قسم الهيرو مع شريط الصور المتحرك ===== -->
+<section class="hero-section">
+    <div class="hero-content">
+        <div class="text-and-gallery">
+            
+            <div class="hero-gallery-container">
+                <img src="images/1.webp" alt="Toop3D Filament 1" class="slide active">
+                <img src="images/2.webp" alt="Toop3D Filament 2" class="slide">
+                <img src="images/3.webp" alt="Toop3D Filament 3" class="slide">
+                <img src="images/4.webp" alt="Toop3D Filament 4" class="slide">
+                <img src="images/5.webp" alt="Toop3D Filament 5" class="slide">
+                <img src="images/6.webp" alt="Toop3D Filament 6" class="slide">
+            </div>
+
+            <div class="hero-text-content">
+                <h1 class="hero-title">Toop3D <span>High Quality Filament</span></h1>
+                <ul class="hero-features">
+                    <li>✓ High-Speed Printing (طباعة عالية السرعة)</li>
+                    <li>✓ Excellent Toughness (متانة ممتازة)</li>
+                    <li>✓ Strong Layer Adhesion (التحام قوي للطبقات)</li>
+                </ul>
+                <a href="#products" class="btn-primary">تسوق الآن / Buy Now</a>
+            </div>
+
+        </div>
+    </div>
+</section>  
+
+    <!-- 4. قسم عرض المنتجات -->
+    <main class="main-content">
+        <section id="products">
+            <div class="products-header" style="margin-bottom: 20px;">
+                <h2 style="font-size: 1.5rem; color: #1e293b; margin: 0;">قائمة المنتجات</h2>
+            </div>
+
+            <div id="products-container" class="products-grid">
+                <div class="loading-state">جاري تحميل المنتجات من Google Sheets...</div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 🎈 زر السلة العائم -->
+    <button id="cart-nav-btn" type="button" class="floating-cart-btn" onclick="toggleCartModal()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span>السلة</span>
+        <span id="cart-counter">0</span>
+    </button>
+
+    <!-- 🖼️ 6. النافذة المنبثقة للسلة (Drawer) -->
+    <div class="cart-modal-overlay" id="cartOverlay" onclick="toggleCartModal()"></div>
+    <div class="cart-drawer" id="cartDrawer" style="overscroll-behavior: contain; -webkit-overflow-scrolling: touch;">
+        <div class="cart-drawer-header" style="position: relative; padding-bottom: 12px; border-bottom: 2px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
+            <h3 style="margin: 0; font-size: 1.2rem; color: #1e293b;">سلة التسوق</h3>
+            <button type="button" class="close-cart-btn" onclick="toggleCartModal()" style="background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #64748b; padding: 4px 8px; border-radius: 6px; display: flex; align-items: center; justify-content: center;">✕</button>
+        </div>
+        
+        <div class="cart-drawer-body" id="cartItemsContainer" style="overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;">
+            <p class="empty-cart-text">سلة التسوق فارغة حالياً</p>
+        </div>
+
+        <div class="cart-drawer-footer">
+            <div class="cart-total">
+                <span>الإجمالي:</span>
+                <span id="cartTotalPrice">0 د.ع</span>
+            </div>
+            <button type="button" class="checkout-whatsapp-btn" onclick="checkoutWhatsApp()">
+                إرسال الطلب عبر واتساب 💬
+            </button>
+        </div>
+    </div>
+
+    <!-- 🦶 7. الشريط السفلي المدمج -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>Toop3D / NextShapes</h3>
+                <p>متجر متخصص في توفير حلول ومستلزمات الطباعة ثلاثية الأبعاد وخيوط الفلامنت عالية الجودة.</p>
+            </div>
+
+            <div class="footer-col">
+                <h4>روابط سريعة</h4>
+                <ul class="footer-links">
+                    <li><a href="#">الرئيسية</a></li>
+                    <li><a href="#products">المنتجات</a></li>
+                    <li><a href="javascript:void(0)" onclick="toggleCartModal()">السلة</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>الدعم الفني</h4>
+                <a href="https://wa.me/9647827573964" target="_blank" class="footer-contact-btn">
+                    💬 راسلنا عبر الواتساب
+                </a>
+            </div>
+        </div>
+
         <div class="footer-bottom">
-            <div>جميع الحقوق محفوظة © 2026 - Toop_3D</div>
-            <div>تم التطوير والإدارة بحرفية لتلبية احتياجات مجتمع الطباعة ثلاثية الأبعاد</div>
+            <div>© 2026 Toop3D Co. جميع الحقوق محفوظة.</div>
+            <div>تطوير وإدارة متجر Toop3D الرقمي</div>
         </div>
     </footer>
 
+    <!-- ==========================================
+        8. البرمجة ومزامنة Google Sheets (مع LocalStorage)
+        ========================================== -->
     <script>
-        // محاكاة لمتغيرات البيانات والتحكم
+        const SHEET_ID = '2PACX-1vQswuYaNx5xNjan745b2Dca59YUIojFeP8DWKut0jADKMLl4uPnOOHbVQsBx55m0FmhwEpobJlIEaap';
+        
         let productsData = [];
         let cart = JSON.parse(localStorage.getItem('toop3d_cart')) || [];
-        const defaultUnavailableImg = 'https://via.placeholder.com/150';
+        let scrollPosition = 0;
 
-        function loadProductsFromSheet() {
-            // بيانات تجريبية لاختبار الكود المحفوظ مسبقاً
-            const rawRows = [
-                {
-                    id: '1',
-                    name: 'PLA Basic White',
-                    material: 'PLA',
-                    color: 'أبيض',
-                    nozzleTemp: '200-210°C',
-                    bedTemp: '50-60°C',
-                    description: 'خيوط PLA عالية الجودة وسهلة الطباعة ومناسبة للمجسمات العامة.',
-                    spool_price: '20000',
-                    refill_price: '18000',
-                    is_spool_available: 'TRUE',
-                    is_refill_available: 'TRUE',
-                    spool_image: ''
+        function lockScroll() {
+            scrollPosition = window.pageYOffset;
+            document.body.style.overflow = 'hidden';
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${scrollPosition}px`;
+            document.body.style.width = '100%';
+        }
+
+        function unlockScroll() {
+            document.body.style.removeProperty('overflow');
+            document.body.style.removeProperty('position');
+            document.body.style.removeProperty('top');
+            document.body.style.removeProperty('width');
+            window.scrollTo(0, scrollPosition);
+        }
+
+        function toggleCartModal() {
+            document.body.classList.toggle('cart-open');
+            if (document.body.classList.contains('cart-open')) {
+                lockScroll();
+            } else {
+                unlockScroll();
+            }
+        }
+
+        async function loadProductsFromSheet() {
+            const csvUrl = `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=0&single=true&output=csv`;
+
+            try {
+                let response = await fetch(csvUrl + '&t=' + Date.now());
+                if (!response.ok) {
+                    response = await fetch(`https://corsproxy.io/?${encodeURIComponent(csvUrl)}`);
                 }
-            ];
+                if (!response.ok) throw new Error('تعذر الوصول لبيانات Google Sheets');
 
-            productsData = rawRows.map(row => {
-                const isSpoolAvailable = (row['is_spool_available'] || '').toUpperCase() === 'TRUE';
-                const isRefillAvailable = (row['is_refill_available'] || '').toUpperCase() === 'TRUE';
+                const csvText = await response.text();
+                productsData = parseCSVToProducts(csvText);
+                renderProducts();
+            } catch (error) {
+                console.error('خطأ أثناء التحميل:', error);
+                fetchViaGoogleJSONP();
+            }
+        }
+
+        function fetchViaGoogleJSONP() {
+            const csvUrl = `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=0&single=true&output=csv`;
+            
+            fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(csvUrl)}`)
+                .then(res => res.text())
+                .then(csvText => {
+                    productsData = parseCSVToProducts(csvText);
+                    renderProducts();
+                })
+                .catch(err => {
+                    const container = document.getElementById('products-container');
+                    if (container) {
+                        container.innerHTML = `<div class="loading-state" style="color: #ef4444;">
+                            تعذر تحميل المنتجات حالياً.<br>
+                            <small>يرجى التأكد من اتصال الإنترنت وتحديث الصفحة.</small>
+                        </div>`;
+                    }
+                });
+        }
+
+        function parseCSVLine(text) {
+            let p = '', c = '', r = [];
+            let q = false;
+            for (let i = 0; i < text.length; i++) {
+                c = text[i];
+                if (c === '"') {
+                    if (q && text[i+1] === '"') { p += '"'; i++; }
+                    else { q = !q; }
+                } else if (c === ',' && !q) {
+                    r.push(p.trim());
+                    p = '';
+                } else {
+                    p += c;
+                }
+            }
+            r.push(p.trim());
+            return r;
+        }
+
+        function parseCSVToProducts(csvText) {
+            const lines = csvText.trim().split(/\r?\n/);
+            if (lines.length < 2) return [];
+
+            const headers = parseCSVLine(lines[0]).map(h => h.toLowerCase().trim().replace(/^"|"$/g, ''));
+            const defaultUnavailableImg = 'https://via.placeholder.com/300x300/f1f5f9/64748b?text=%D8%B3%D9%8A%D8%AA%D9%88%D9%81%D8%B1+%D9%82%D8%B1%D9%8A%D8%A8%D8%A7ً';
+
+            return lines.slice(1).map((line, idx) => {
+                if (!line.trim()) return null;
+                const values = parseCSVLine(line).map(v => v.trim().replace(/^"|"$/g, ''));
+                
+                const row = {};
+                headers.forEach((header, index) => {
+                    row[header] = values[index] !== undefined ? values[index] : '';
+                });
+
+                const material = (row['material'] || 'PETG').toUpperCase();
+                const color = row['color'] || '';
+                const name = `${material} (${color})`;
+                const id = row['id'] || `product-${idx}`;
+
+                const nozzleTemp = row['nozzletemp'] || row['nozzle_temp'] || 'حسب التوصية';
+                const bedTemp = row['bedtemp'] || row['bed_temp'] || 'حسب التوصية';
+                const description = row['description'] || 'مصنوع بعناية لضمان أفضل توافق مع طابعات FDM وسرعات الطباعة العالية.';
+
+                const spoolAvailRaw = (row['spool_avail'] || 'TRUE').toString().toUpperCase().trim();
+                const isSpoolAvailable = (spoolAvailRaw === 'TRUE' || spoolAvailRaw === '1');
+
+                const refillAvailRaw = (row['refill_avail'] || 'TRUE').toString().toUpperCase().trim();
+                const isRefillAvailable = (refillAvailRaw === 'TRUE' || refillAvailRaw === '1');
 
                 const spoolPrice = parseFloat((row['spool_price'] || '0').replace(/[^0-9.]/g, '')) || 0;
                 const refillPrice = parseFloat((row['refill_price'] || '0').replace(/[^0-9.]/g, '')) || 0;
@@ -122,14 +407,14 @@
                 let defaultOption = isSpoolAvailable ? 'spool' : (isRefillAvailable ? 'refill' : 'spool');
 
                 return {
-                    id: row.id,
-                    name: row.name,
-                    category: row.material,
-                    material: row.material,
-                    color: row.color,
-                    nozzleTemp: row.nozzleTemp,
-                    bedTemp: row.bedTemp,
-                    description: row.description,
+                    id: id,
+                    name: name,
+                    category: material,
+                    material: material,
+                    color: color,
+                    nozzleTemp: nozzleTemp,
+                    bedTemp: bedTemp,
+                    description: description,
                     selectedOption: defaultOption,
                     options: {
                         spool: {
@@ -147,8 +432,6 @@
                     }
                 };
             }).filter(item => item !== null);
-
-            renderProducts();
         }
 
         function renderProducts(filter = 'ALL') {
@@ -156,7 +439,11 @@
             if (!container) return;
             container.innerHTML = '';
 
-            const filtered = filter === 'ALL' ? productsData : productsData.filter(p => p.category === filter);
+            const activeCategory = filter || document.getElementById('category-select')?.value || 'ALL';
+
+            const filtered = activeCategory === 'ALL' 
+                ? productsData 
+                : productsData.filter(p => p.category === activeCategory);
 
             if (filtered.length === 0) {
                 container.innerHTML = `<div class="loading-state">لا توجد منتجات متاحة ضمن هذا التصنيف حالياً.</div>`;
@@ -168,26 +455,31 @@
                 const canAddToCart = opt.isAvailable;
                 const globalIndex = productsData.indexOf(product);
 
+                const spoolOpt = product.options['spool'];
+                const refillOpt = product.options['refill'];
+
                 const cardHtml = `
-                    <div class="product-card" id="card-${product.id}" style="background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 15px; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-                        <button type="button" onclick="openProductDetails(${globalIndex})" title="عرض إعدادات الطباعة والتفاصيل" style="position: absolute; top: 15px; left: 15px; background: rgba(255, 255, 255, 0.95); border: 1px solid #cbd5e1; color: #334155; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold; z-index: 10;">
+                    <div class="product-card" id="card-${product.id}">
+                        <button type="button" onclick="openProductDetails(${globalIndex})" title="عرض إعدادات الطباعة والتفاصيل" style="position: absolute; top: 15px; left: 15px; background: rgba(255, 255, 255, 0.95); border: 1px solid #cbd5e1; color: #334155; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold; z-index: 10; display: flex; align-items: center; gap: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.08);">
                             🔍 تفاصيل
                         </button>
+
                         <div class="product-card-top">
-                            <div class="product-img-wrapper" style="text-align: center; margin-bottom: 10px;">
-                                <img src="${opt.image}" alt="${product.name}" id="img-${product.id}" style="max-height: 150px; max-width: 100%; object-fit: contain;">
+                            <div class="product-img-wrapper" onclick="openImageModal('${opt.image}')" title="انقر لتكبير الصورة">
+                                <img src="${opt.image}" alt="${product.name}" id="img-${product.id}">
                             </div>
-                            <h3 class="product-title" style="font-size: 1rem; margin: 0 0 10px 0;">${product.name}</h3>
-                            <div class="spool-options" style="display: flex; gap: 5px; margin-bottom: 10px;">
-                                <button type="button" id="btn-spool-${product.id}" class="spool-btn ${product.selectedOption === 'spool' ? 'active' : ''}" onclick="changeSpoolOption('${product.id}', 'spool')" style="flex: 1; padding: 6px; font-size: 0.8rem; cursor: pointer;">مع بكرة</button>
-                                <button type="button" id="btn-refill-${product.id}" class="spool-btn ${product.selectedOption === 'refill' ? 'active' : ''}" onclick="changeSpoolOption('${product.id}', 'refill')" style="flex: 1; padding: 6px; font-size: 0.8rem; cursor: pointer;">بدون بكرة</button>
+                            <h3 class="product-title">${product.name}</h3>
+                            <div class="spool-options">
+                                <button type="button" id="btn-spool-${product.id}" class="spool-btn ${product.selectedOption === 'spool' ? 'active' : ''}" onclick="changeSpoolOption('${product.id}', 'spool')">مع بكرة</button>
+                                <button type="button" id="btn-refill-${product.id}" class="spool-btn ${product.selectedOption === 'refill' ? 'active' : ''}" onclick="changeSpoolOption('${product.id}', 'refill')">بدون بكرة</button>
                             </div>
                         </div>
                         <div class="product-card-bottom">
-                            <div class="product-price" id="price-container-${product.id}" style="font-weight: bold; color: #0284c7; margin-bottom: 10px;">
+                            <div class="product-price ${!canAddToCart ? 'unavailable' : ''}" id="price-container-${product.id}">
                                 ${canAddToCart ? `<span id="price-${product.id}">${opt.price.toLocaleString()}</span> د.ع` : 'غير متوفر حالياً'}
                             </div>
-                            <button type="button" id="add-btn-${product.id}" class="add-to-cart-btn" onclick="addToCart('${product.id}')" style="width: 100%; padding: 8px; background: #0284c7; color: white; border: none; border-radius: 6px; cursor: pointer;">
+                            
+                            <button type="button" id="add-btn-${product.id}" class="add-to-cart-btn ${!canAddToCart ? 'disabled' : ''}" ${!canAddToCart ? 'disabled' : ''} onclick="addToCart('${product.id}')" style="width: 100%; margin-top: 8px;">
                                 ${canAddToCart ? '🛒 إضافة إلى السلة' : '⏳ غير متوفر'}
                             </button>
                         </div>
@@ -210,16 +502,44 @@
 
             const priceContainer = document.getElementById(`price-container-${productId}`);
             if (priceContainer) {
-                priceContainer.innerHTML = canAddToCart ? `<span id="price-${productId}">${opt.price.toLocaleString()}</span> د.ع` : 'غير متوفر حالياً';
+                if (canAddToCart) {
+                    priceContainer.className = 'product-price';
+                    priceContainer.innerHTML = `<span id="price-${productId}">${opt.price.toLocaleString()}</span> د.ع`;
+                } else {
+                    priceContainer.className = 'product-price unavailable';
+                    priceContainer.innerHTML = 'غير متوفر حالياً';
+                }
             }
 
             const addBtn = document.getElementById(`add-btn-${productId}`);
             if (addBtn) {
-                addBtn.innerHTML = canAddToCart ? '🛒 إضافة إلى السلة' : '⏳ غير متوفر';
+                if (canAddToCart) {
+                    addBtn.classList.remove('disabled');
+                    addBtn.removeAttribute('disabled');
+                    addBtn.innerHTML = '🛒 إضافة إلى السلة';
+                } else {
+                    addBtn.classList.add('disabled');
+                    addBtn.setAttribute('disabled', 'true');
+                    addBtn.innerHTML = '⏳ غير متوفر';
+                }
             }
 
-            document.getElementById(`btn-spool-${productId}`).style.background = optionType === 'spool' ? '#e2e8f0' : '#fff';
-            document.getElementById(`btn-refill-${productId}`).style.background = optionType === 'refill' ? '#e2e8f0' : '#fff';
+            const spoolBtn = document.getElementById(`btn-spool-${productId}`);
+            const refillBtn = document.getElementById(`btn-refill-${productId}`);
+            if (spoolBtn) spoolBtn.classList.toggle('active', optionType === 'spool');
+            if (refillBtn) refillBtn.classList.toggle('active', optionType === 'refill');
+        }
+
+        function filterCategory(category) {
+            renderProducts(category);
+            const productsSection = document.getElementById('products');
+            if (productsSection) {
+                productsSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function saveCartToLocalStorage() {
+            localStorage.setItem('toop3d_cart', JSON.stringify(cart));
         }
 
         function addToCart(productId) {
@@ -228,6 +548,7 @@
 
             const optKey = product.selectedOption;
             const opt = product.options[optKey];
+
             if (!opt.isAvailable) return;
 
             const finalName = `${product.name} (${opt.spoolStatusText})`;
@@ -236,32 +557,184 @@
             if (existingItem) {
                 existingItem.quantity += 1;
             } else {
-                cart.push({ name: finalName, price: opt.price, quantity: 1 });
+                cart.push({
+                    name: finalName,
+                    price: opt.price,
+                    quantity: 1
+                });
             }
 
-            localStorage.setItem('toop3d_cart', JSON.stringify(cart));
-            alert("تمت الإضافة إلى السلة بنجاح!");
+            saveCartToLocalStorage();
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const cartCounter = document.getElementById('cart-counter');
+            const container = document.getElementById('cartItemsContainer');
+            const totalPriceEl = document.getElementById('cartTotalPrice');
+            
+            if (!container) return;
+            
+            let totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            if (cartCounter) cartCounter.textContent = totalCount;
+            
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #64748b;">
+                        <div style="font-size: 3em; margin-bottom: 10px;">🛒</div>
+                        <p style="font-size: 1.1em; font-weight: bold; margin: 0;">سلة التسوق فارغة</p>
+                        <p style="font-size: 0.85em; color: #94a3b8; margin-top: 5px;">قم بإضافة بعض المنتجات لبدء الطلب</p>
+                    </div>
+                `;
+                if (totalPriceEl) totalPriceEl.innerText = '0 د.ع';
+                return;
+            }
+            
+            let itemsHTML = '';
+            let totalPrice = 0;
+            
+            cart.forEach((item, index) => {
+                let itemTotal = item.price * item.quantity;
+                totalPrice += itemTotal;
+                
+                itemsHTML += `
+                    <div class="cart-item-row" style="padding: 12px 0; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="flex-grow: 1;">
+                            <h4 class="cart-item-title" style="font-size: 0.95rem; margin: 0 0 4px 0; color: #1e293b;">${item.name}</h4>
+                            <span class="cart-item-price-unit" style="font-size: 0.8rem; color: #64748b;">السعر: ${item.price.toLocaleString()} د.ع</span>
+                            
+                            <div class="cart-qty-box" style="display: flex; align-items: center; gap: 8px; margin-top: 8px;">
+                                <button type="button" class="qty-btn" onclick="changeQuantity(${index}, -1)" style="width: 34px; height: 34px; border-radius: 8px; border: 1px solid #cbd5e1; background: #f8fafc; color: #334155; font-size: 1.2rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">-</button>
+                                <span class="qty-num" style="min-width: 28px; text-align: center; font-size: 1.05rem; font-weight: bold; color: #0f172a;">${item.quantity}</span>
+                                <button type="button" class="qty-btn" onclick="changeQuantity(${index}, 1)" style="width: 34px; height: 34px; border-radius: 8px; border: 1px solid #cbd5e1; background: #f8fafc; color: #334155; font-size: 1.2rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">+</button>
+                            </div>
+                        </div>
+                        <div style="text-align: left; margin-left: 10px; display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+                            <div class="cart-item-total" style="font-weight: bold; color: #0284c7; font-size: 0.95rem;">${itemTotal.toLocaleString()} د.ع</div>
+                            <button type="button" class="cart-del-btn" onclick="removeFromCart(${index})" title="حذف" style="background: none; border: none; cursor: pointer; font-size: 1.1rem; padding: 4px;">🗑️</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = itemsHTML;
+            if (totalPriceEl) totalPriceEl.innerText = `${totalPrice.toLocaleString()} د.ع`;
+        }
+
+        function changeQuantity(index, amount) {
+            cart[index].quantity += amount;
+            if (cart[index].quantity <= 0) {
+                cart.splice(index, 1);
+            }
+            saveCartToLocalStorage();
+            updateCartUI();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            saveCartToLocalStorage();
+            updateCartUI();
+        }
+
+        function checkoutWhatsApp() {
+            if (cart.length === 0) {
+                alert("سلة التسوق فارغة!");
+                return;
+            }
+            
+            const phoneNumber = "9647827573964";
+            let message = "مرحباً، أريد طلب المنتجات التالية:\n\n";
+            
+            let totalPrice = 0;
+            cart.forEach(item => {
+                let itemTotal = item.price * item.quantity;
+                totalPrice += itemTotal;
+                message += `▪️ ${item.name} | الكمية: ${item.quantity} | السعر: ${itemTotal.toLocaleString()} د.ع\n`;
+            });
+            
+            message += `\n💰 الإجمالي الكلي: ${totalPrice.toLocaleString()} د.ع`;
+            
+            let encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
         }
 
         function openProductDetails(index) {
-            const p = productsData[index];
+            const p = typeof productsData !== 'undefined' ? productsData[index] : null;
+            const modalBody = document.getElementById('modalBody');
+            
             if (!p) return;
-            alert(`تفاصيل المنتج: ${p.name}\nالمادة: ${p.material}\nحرارة الهوت إند: ${p.nozzleTemp}\nحرارة السرير: ${p.bedTemp}`);
+            
+            modalBody.innerHTML = `
+                <h2 style="font-size: 1.2rem; color: #1e293b; margin-top: 0; margin-bottom: 15px; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;">${p.name || 'تفاصيل المنتج'}</h2>
+                
+                <div style="font-size: 0.95rem; color: #334155; display: flex; flex-direction: column; gap: 10px; text-align: right;">
+                    <div><strong>📦 نوع المادة:</strong> ${p.material || 'غير متوفر'}</div>
+                    <div><strong>🎨 اللون:</strong> ${p.color || 'متعدد الألوان'}</div>
+                    <div style="background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <div style="font-weight: bold; color: #0f172a; margin-bottom: 6px;">🔥 إعدادات الطباعة المقترحة:</div>
+                        <div style="margin-bottom: 5px;">• درجة حرارة الهوت إند (رأس الطباعة): <span style="color: #0284c7; font-weight: bold;">${p.nozzleTemp}</span></div>
+                        <div>• درجة حرارة السرير (Bed): <span style="color: #0284c7; font-weight: bold;">${p.bedTemp}</span></div>
+                    </div>
+                    <div><strong>📌 معلومات إضافية:</strong> ${p.description}</div>
+                </div>
+            `;
+            
+            document.getElementById('productModal').style.display = 'flex';
+            lockScroll();
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').style.display = 'none';
+            if (!document.body.classList.contains('cart-open')) {
+                unlockScroll();
+            }
+        }
+
+        function openImageModal(imgSrc) {
+            document.getElementById('modalImageSrc').src = imgSrc;
+            document.getElementById('imageModal').style.display = 'flex';
+            lockScroll();
+        }
+
+        function closeImageModal() {
+            document.getElementById('imageModal').style.display = 'none';
+            if (!document.body.classList.contains('cart-open') && document.getElementById('productModal').style.display !== 'flex') {
+                unlockScroll();
+            }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             loadProductsFromSheet();
+            updateCartUI();
         });
     </script>
 
-    <!-- نافذة تفاصيل المنتج المنبثقة -->
-    <div id="productModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; justify-content: center; align-items: center;">
-        <div style="background: #fff; width: 90%; max-width: 500px; padding: 25px; border-radius: 12px; position: relative;">
-            <button type="button" onclick="document.getElementById('productModal').style.display='none'" style="position: absolute; top: 15px; left: 15px; background: none; border: none; font-size: 1.2rem; cursor: pointer;">✕</button>
+    <!-- Script للتحكم بتبديل صور الهيرو تلقائياً -->
+    <script>
+        let slides = document.querySelectorAll('.hero-gallery-container .slide');
+        let currentSlide = 0;
+        let slideInterval = setInterval(nextSlide, 5000);
+
+        function nextSlide() {
+            if(slides.length > 0) {
+                slides[currentSlide].className = 'slide';
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].className = 'slide active';
+            }
+        }
+    </script>
+
+    <!-- نافذة منبثقة لتفاصيل المنتج -->
+    <div id="productModal" onclick="closeProductModal()" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; justify-content: center; align-items: center; cursor: pointer;">
+        <div onclick="event.stopPropagation()" style="background: #fff; width: 90%; max-width: 500px; padding: 25px; border-radius: 12px; position: relative; font-family: 'Cairo', sans-serif; direction: rtl; box-shadow: 0 10px 25px rgba(0,0,0,0.2); cursor: default; max-height: 85vh; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;">
+            <button type="button" onclick="closeProductModal()" style="position: absolute; top: 15px; left: 15px; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #64748b; padding: 4px 8px; border-radius: 6px; display: flex; align-items: center; justify-content: center;">✕</button>
             <div id="modalBody"></div>
         </div>
     </div>
+
+    <!-- نافذة منبثقة لتكبير الصورة -->
+    <div id="imageModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; justify-content: center; align-items: center; cursor: pointer;" onclick="closeImageModal()">
+        <img id="modalImageSrc" src="" style="max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 5px 20px rgba(0,0,0,0.5);">
+    </div>
 </body>
 </html>
-
-```
